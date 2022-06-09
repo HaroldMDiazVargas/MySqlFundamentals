@@ -1,0 +1,27 @@
+Head over => mysql.com
+            => download page and scroll down
+                => MySQL Community Edition which is free
+                    => MySQL Community Server and download!
+
+Set Up wizard => Developer Default next
+              => Check requirements warning if we dont have python, next
+              => Products to install => Sever, Workbench(graphical tool we use to connect our DatabaseServer and manage our databases and run SQL querys), execute 10-15 min
+              => Group replication, next
+              => Type an networkin let default settings, next
+              => Password for the root of admin user, next
+              => MySQL Root Password, type this password for admin user
+              => Execute and finish
+              => Connect To Serve, we need to enter the admin password, check and next
+              => Exe cute and finish
+Now we have command promp window where we can type instructions to talk to MySQL server, but we dont really need this
+
+In MySQL workbench => MySQL Coneections
+                   => If we dont see our connection here, we add + 
+                   => we give a Connection Name e.x Local Instance and for password in Store in Vault, type the password setted for admin user, test connection
+                   => Click on Local Instance to connect to our database server
+
+Interface we will use:
+    => left side we have Navigator panel
+    => middle we have the Query editor => we can resize, here we will write our SQL querys
+    => right side we have SQL Additions
+                    
