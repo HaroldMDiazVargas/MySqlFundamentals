@@ -1,0 +1,37 @@
+Database:
+    A database is a collection of data stored in a format that can easily be accessed
+
+In order to manage our databases, we use a software app call: Database Management System DBMS
+We connect to a given DBMS and give it instructions for querying or modify data
+The DBMS executes our instructions and send results back
+
+PC----------------> DBMS ----------------------> Database
+
+We have several DBMS classify into 2 categories:
+1. Relational: We store data in tables that are link to each other using relationships
+    that's why we call these dbs relational. Each table stores data about specific type of object like customers, orders, products, so on
+
+    Structured Query Language(SQL): The language we use to work with these Relational Databases Management Systems(RDBMS)
+                                    We use SQL to query or modify our data
+    Some of the most popular of RDBMS are:
+        MySQL
+        SQL Server by Microsoft
+        Oracle 
+    Most of SQL will work with any RDBMS
+
+2. No Relational or NoSQL: We dont have tables or relationships
+    these databases are very diferent for relational databases
+    NoSQL systems don't understand SQL. They have their own query language
+
+
+History
+
+SEQUEL: Developed by IBM in 70s
+Structured
+English
+Query
+Language
+
+Later change to SQL for another company name
+Not english countries call = SQL
+Others call SQUEL
