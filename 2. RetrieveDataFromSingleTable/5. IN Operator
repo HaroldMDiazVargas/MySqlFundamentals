@@ -1,0 +1,39 @@
+IN Operator => Used where we want to compare an attribute with a list of values
+    Instead of combining multiple conditions using OR operator. We can use IN operator
+    Syntax:
+        WHERE column IN (AllValues)
+        the order of the values doesnot matter
+
+
+    e.x customers that are located in Virginia OR Florida OR Georgia
+        SELECT *
+        FROM customers
+        WHERE state = 'VA' OR state = 'GA' OR state = 'FL'
+
+        SELECT *
+        FROM customers
+        WHERE state IN ('VA', 'FL', 'GA')
+
+
+    We can also use the NOT operator with IN operator
+    e.x customers are located outside of Virginia AND Florida AND Georgia
+        SELECT *
+        FROM customers
+        WHERE state NOT IN ('VA', 'FL', 'GA')
+
+
+-- Query
+USE sql_store;
+SELECT *
+FROM customers
+WHERE state NOT IN ('VA', 'FL', 'GA')
+
+
+
+Exercise. Query to get products where quantity in stock equal to one of the values: 49, 38, 72
+
+
+USE sql_store;
+SELECT *
+FROM products
+WHERE quantity_in_stock IN (49,38,72)
