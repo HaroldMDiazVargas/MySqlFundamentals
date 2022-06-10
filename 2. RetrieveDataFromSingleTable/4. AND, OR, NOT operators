@@ -1,0 +1,43 @@
+The AND, OR and NOT operators
+
+Combine multiple search conditions when filter data
+
+Using WHERE clause:
+    AND operator => Both conditions should be true
+        e.x filter all customer born after given year and have more than 1000 points
+            SELECT *
+            FROM customers
+            WHERE birth_date > '2022-01-01' AND points > 1000
+        
+    OR operator => If at least one of the conditions is true, that row will retrieve in the result set
+    
+    Combine multiple logical operators, is better to be aware. 
+        AND => Always evaluated first
+        But we can change the order using parenthesis and make the code cleaner
+    
+    NOT operator => negate the condition
+        e.x customers born before 1990 and have less than 1000 points 
+        SELECT *
+        FROM customers
+        WHERE NOT (birth_date > '1990-01-01' OR points > 1000)
+            this is equal to:
+        WHERE birth_date <= '1990-01-01' AND points <= 1000 => Remove NOT operator and negate all operators
+
+
+-- Query
+
+USE sql_store;
+
+SELECT *
+FROM customers
+WHERE birth_date > '1990-01-01' OR 
+	(points > 1000  AND state = 'VA')
+
+
+Exercise. From order_items table. Get items form order#6 and where total price is greather than 30
+
+USE sql_store;
+
+SELECT *
+FROM order_items
+WHERE  order_id = 6 AND unit_price*quantity > 30
