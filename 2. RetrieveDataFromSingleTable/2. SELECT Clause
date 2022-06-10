@@ -1,0 +1,68 @@
+SELECT clause in detail
+
+With the SELECT clause we can do:
+    * we can select all the columns in a table
+    specify columns that we want. Very useful with table with many columns and perhaps millions records
+        e.x SELECT first_name, last_name
+            SELECT last_name, first_name => last_name columns comes first
+            SELECT last_name, first_name, points
+            FROM customers
+        e.x we want to get the points a put in a math formula to calculate the discount we can give to each customers
+            SELECT last_name, first_name, points + 10 => This is a math expression
+            FROM customers
+
+            SELECT last_name, first_name, points, points+10
+            FROM customers
+        We have:
+            + operator: for addition
+            *
+            /
+            -
+            %
+        e.x
+            SELECT
+                last_name,
+                first_name,
+                points,
+                points * 10 + 100   => the name of the column will be this expression
+            FROM customers
+        We can give to a column an alias(name) using the AS keyword.
+        e.x
+            SELECT
+                last_name,
+                first_name,
+                points,
+                (points + 10) * 100 AS discount_factor (or use "discount factor" to allow space)
+            FROM customers  
+    
+    We can select unique values of a given column(remove duplicates). For this we use the DISTINCT keywork
+        e.x
+            SELECT DISTINCT state
+            FROM customers
+        with this query we retrieve the unique list of state of customers table.
+
+-- Query
+
+USE sql_store;
+
+SELECT 
+	last_name,
+    first_name,
+    points,
+    (points + 10) * 100 AS "discount factor"
+FROM customers
+
+
+
+Exercise. Retrieve all the products in a database.
+        Result set should have 3 columns: name, unit price, new price(unit price * 1.1)
+
+-- Query
+
+USE sql_store;
+
+SELECT 
+    name,
+    unit_price,
+    unit_price * 1.1 AS "new price"
+FROM products
