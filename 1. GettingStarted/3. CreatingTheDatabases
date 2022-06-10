@@ -1,0 +1,69 @@
+MySQL Workbench interface
+    In the top left side we have buttons for creating a new tab for writing new SQL code
+    as well as opening a SQL file. Next we have bunch of buttons for creating a database,
+    creating tables, so on.
+
+    Left side we have Navigator panel with 2 tabs:
+        Administration tab: to do administrate work such a starting or stopping our server, importing or exporting
+                            data and so on
+        Schemas: shows the databases that we have in the current database server. Currently we have 1 database that
+                is 'sys', this is the database that MySQL uses internally to do its work
+    
+    In the middle: where we write our SQL code, so we expend most of the time in this windows
+    
+    Right side we have another panel with 2 tabs:
+        Context Help 
+        Snippets
+     
+
+
+Creating database:
+    Download .zip file attached, this has a bunch of SQL files. 
+    
+    The main one we use is 'create-databases.sql' this file contains all the SQL code to create all the 
+    databases that we use here.
+
+    We also have another individuals SQL files for creating individuals database. We just have these files
+    in case we create databases in the future.
+
+
+In MySQL Workbench:
+    Open 'create-database.sql'
+    Run click on yellow thunder to execute a selection or if there's not selection, all the SQL code.
+    We get all databases prefix with sql_, to avoid has same name of other database in our database server
+        sql_hr
+        sql_inventory
+        sql_invoicing
+        sql_store
+
+    For each database we have:
+        Tables: where we store our data
+        Views: Kind like a virtual tables, we can combine data from multiple tables and put them in a view
+                very powerful for creating reports.
+        Stored Procedures: Program stored inside of our database for querying data.
+                           e.x we can have a stored procedure for getting all the customer of a given city
+                               so, we call that procedure and ask to give us all the customer in Pereira.
+        Functions: Program stores inside of our database for querying data
+
+    
+    For sql_store database:
+        Tables: we have the next tables
+                customers
+                orders
+                products
+                shippers
+                ...
+                if we select one of these table, we see 3 icons:
+                    right icon(table with a thunder): we can see all the data in this table
+                        e.x customers table we can see column customer_id(unique id), first_name, last_name, so on
+                            every row is called a record. Every row represent one customer.
+                        e.x orders table we can see columns like order_id, customer_id, order_data, status, so on
+                            customer_id is used to identify who has placed each other
+                            The interesting part here, if customer may place multiple orders in our system
+                            everytime that customer place order, we need to look at his address, phone to ship order
+                            is possible this information change in future. If we repeat all these information next to
+                            each other, we need to come back and replace this new information in multiple places.
+                            So instead of changing information about given customer, we just come back to customers table
+                            and in orders table we dont modify nothing.
+                            This is RELATIONAL databases: Multiple tables that are related to each other using a relationship
+                        
