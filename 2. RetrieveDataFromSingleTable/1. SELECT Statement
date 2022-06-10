@@ -1,0 +1,46 @@
+Retrieve data from a single table
+
+Note: SQL is not a case sensitive language. Best practice use capitalize for SQL keywords
+Steps 
+    1. Select a database for query to get data from a database: select one database(bold)
+        the query we will write will be executed against that database
+        USE sql_store
+    2. SELECT statement basic structure:
+        SELECT columnToRetrieve, columnToRetrieve, * (Retrieve all columns)
+        FROM clause: where we specify a table that we want to query
+        e.x select all customers in a given table
+            USE sql_store;
+            SELECT *
+            FROM customers
+        When we have multiple SQL statements, we need to terminate each statement using a semicolon
+    
+    There're other filters we can use to sort and select data.
+        WHERE clause: filter the result and get the customer with id=1
+        e.x
+            WHERE customer_id = 1
+        ORDER BY clause: we specify the columns we want to sort the result on
+        e.x 
+            ORDER BY first_name
+
+    These 3 clauses:
+        FROM, WHERE and ORDER BY are optional
+        But in real world we quite often used all of them
+        The order pf these clauses matters:
+            Always we have SELECT
+                           FROM
+                           WHERE
+                           ORDER BY
+        We can not change the order of these clauses. Otherwise we get a syntax error
+    
+    Tecnhically we put each clause in new line, but whitespaces, tabs and linebreaks are ignored when executed
+    SQL statements. But if as our qurys get more complex is better to put each clause in new line
+
+
+-- Query  
+    
+USE sql_store;
+
+SELECT *
+FROM customers
+WHERE customer_id = 1
+ORDER BY first_name
