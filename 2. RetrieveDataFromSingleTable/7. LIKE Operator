@@ -1,0 +1,70 @@
+LIKE Operator
+    Retrieve rows/records that match a specific String Pattern.
+    % any number of characters
+    _ single character
+
+    Note: This LIKE operator in MySQL is a older operator. We have a new one more powerful and allows use
+          to search for any String Pattern
+
+    e.x get customers whose last name start with 'b'
+
+        SELECT *
+        FROM customers
+        WHERE last_name LIKE 'b%' => Doesn't matter is lower/upper case 'b'
+    
+    We use the % assign to indicate any number of characters(not char, 1, or whatever).
+    This % assign can be anywhere place.
+
+    e.x get customers have 'b' in the last name
+
+        SELECT *
+        FROM customers
+        WHERE last_name LIKE '%b%'
+
+    e.x get customers whose last name end with 'y'
+        SELECT *
+        FROM customers
+        WHERE last_name LIKE '%y'
+
+
+    We also have underscore '_', this matches a single character. 
+
+    e.x get customers whose last name end with 'y' and has exactly 2 characters long 
+        SELECT *
+        FROM customers
+        WHERE last_name LIKE '_y'
+    
+    e.x get customers whose last name start with 'b' then we have exactly 4 characters and ends with 'y'
+        SELECT *
+        FROM customers
+        WHERE last_name LIKE 'b____y'
+
+
+-- Query
+
+
+USE sql_store;
+SELECT *
+FROM customers
+WHERE last_name LIKE 'b____y'
+
+
+
+Exercise. Query to get the customers whose addresses contain TRAIL or AVENUE
+          Query to get customers whose phone numbers not end with 9
+
+-- Query 1
+
+USE sql_store;
+SELECT * 
+FROM customers
+WHERE address LIKE '%TRAIL%'  OR
+     address LIKE '%AVENUE%'
+
+
+-- Query 2
+
+USE sql_store;
+SELECT * 
+FROM customers
+WHERE phone NOT LIKE '%9'
