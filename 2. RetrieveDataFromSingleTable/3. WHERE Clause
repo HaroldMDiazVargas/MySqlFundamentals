@@ -1,0 +1,58 @@
+WHERE clause in SQL
+
+We use WHERE clause to filter data:
+    Filter by a given condition.
+    The query execution engine in MySQL is going to iterate over all the customers in the customer table
+    and for each customer is going to evaluate the condition. If condition is true will retrieve customer in
+    result set.
+        e.x filter customers with points > 3000
+            SELECT *
+            FROM customers
+            WHERE points > 3000
+    List of comparison operators:
+        > greater than
+        >= greater than or equal to
+        < less than
+        <= less than or equal to
+        = equality operator
+        != or <> no equality operators
+
+        e.x get all customers from state of Virginia
+            SELECT *
+            FROM customers
+            WHERE state = 'VA' => sequence of chars(string need quotes can be single or double quotes)
+                               => this also can be  'va' doesnt matter lower/upper case
+        
+        e.x get all customers outside of state of Virginia
+            SELECT
+            FROM customers
+            WHERE state  <> 'va'
+        
+        e.x get all customers born after January 1st 1990. We use quotes for date values
+            default format for representing dates in MySQL: yyyy-mm-dd
+            SELECT 
+            FROM customers
+            WHERE birth_date > '1990-01-01'
+
+
+
+
+-- Query
+
+USE sql_store;
+
+SELECT *
+FROM customers
+WHERE state = 'VA'
+        
+
+
+
+Exercise. Get the orders placed this year
+
+-- Query
+USE sql_store;
+
+SELECT *
+FROM orders
+WHERE order_data >= '20222-01-01'
