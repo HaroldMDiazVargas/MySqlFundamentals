@@ -1,0 +1,28 @@
+IS NULL Operator
+    Look for records that miss an attribute. NULL means the absense of a value.
+
+    e.x we may have customer that doesnt have phone number (NULL value). Get customers who dont have a phone
+    SELECT *
+    FROM customers
+    WHERE phone IS NULL
+
+    e.x get customers who have a phone
+    SELECT *
+    FROM customers
+    WHERE phone IS NOT NULL
+
+
+-- Query
+USE sql_store;
+SELECT *
+FROM customers
+WHERE phone IS NOT NULL
+
+Exercise. get the orders thar are not shipped yet. Used in a lot  of real world app
+
+-- Query
+
+USE sql_store
+SELECT *
+FROM orders
+WHERE  shipped_date IS NULL
