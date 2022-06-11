@@ -1,0 +1,45 @@
+Inner Joins
+    We have used SELECT clause until now to SELECT columns from a single table. Real world we quite often select columns
+    from multiple tables. So we can combine(join) columns of multiple tables which have relationship.
+    This INNER JOIN or just JOIN, is one type of join in SQL
+    INNER keyword before JOIN is optional. Syntax:
+        JOIN tableToJoin ON baseConditionToJoin
+
+    Note: We can use an ALIAS for the tables to make shorter code. Because we may have a lot of repetition when using
+          join.
+    
+    e.x select all columns in orders table, but in this table instead of showing customer_id
+        show the full name of each customer which is in customers table.
+    SELECT *
+    FROM orders
+    JOIN customers ON orders.customer_id = customers.customer_id
+
+    e.x The same before example. But simplify to show only order_id, first_name and last_name
+    SELECT order_id, first_name, last_name
+    FROM orders
+    JOIN customers ON orders.customer_id = customers.customer_id
+
+    e.x Now to the simplify result query, also show the customer_id => We need to prefix because is ambigous
+        because we have same column in multiple tables
+    SELECT order_id, orders.customer_id, first_name, last_name 
+    FROM orders
+    JOIN customers ON orders.customer_id = customers.customer_id
+
+    e.x Abbreviate the tables names
+    SELECT order_id, o.customer_id, first_name, last_name 
+    FROM orders o
+    JOIN customers  c
+        ON o.customer_id = c.customer_id
+
+
+Exercise. Look at the order_items table. Query to join this table with the products table.
+          And return order_id, product_id, name of product, quantity and unit_price
+
+-- Query
+
+USE sql_store;
+
+SELECT order_id, oi.product_id, p.name, oi.quantity, oi.unit_price
+FROM order_items oi
+JOIN products p
+    ON oi.product_id = p.product_id 
