@@ -1,0 +1,88 @@
+REGEXP Operator (Regular Expression)
+    Search for row that match String Patten. Are extemely powerful when it comes to searching strings.
+    Allow to search more complex String Patterns.
+    
+    In REGEXP we have additional characters that we dont have whe we use the LIKE operator.
+    We can use:
+        ^ indicate the begining of a string
+        $ represent the end of a string
+        | (pipe) represent multiple search patterns (logical or)
+        []  combinate various string patterns
+        [x-y] range of characters
+        MySQL supports more special characters. But these 5 are the most we use 90% of time
+
+
+    e.x search for customers who have the word 'field' in the last name
+    SELECT *
+    FROM customers
+    WHERE last_name LIKE '%field%'
+
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP 'field' => Not need '%' 
+    
+    e.x get customers that last name must start with 'field'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP '^field'
+
+    e.x get customers that last name must end with 'field'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP 'field$'
+
+    e.x get customer that last name contains 'field' or 'mac' or 'rose'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP 'field|mac|rose'
+
+    e.x get customers that last name start with 'field' or should have 'mac' or should have 'rose'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP '^field|mac|rose'
+
+    e.x search customers who have an 'e' in the last_name and before this 'e' we either have a 'g' or 'i' or 'm'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP '[gim]e'  => ge ie me
+
+    e.x search customers who have an 'e' in the last_name and after this 'e' we either have 'f' or 'm' or 'q'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP 'e[fmq]' => ef em eq
+
+    e.x searh customers who have an 'e in the last name and before this 'e' we either have characters from 'a' to 'h'
+    SELECT *
+    FROM customers
+    WHERE last_name REGEXP '[a-h]e' => equal to [abcdefgh]e (this is very verbose)
+
+
+
+-- Query
+USE sql_store;
+
+SELECT *
+FROM customers
+WHERE last_name REGEXP '[a-h]e'
+
+Exercise. Get customers who
+        first names are ELKA or AMBUR
+        last names end with EY or ON
+        last names start with MY or contains SE
+        last names contain B followed by R or U
+
+
+-- Query
+
+USE sql_store;
+
+SELECT *
+FROM customers
+WHERE first_name REGEXP 'elka|ambur'
+-------------------------------------
+WHERE last_name REGEXP 'ey$|on$'
+-------------------------------------
+WHERE last_name REGEXP '^my|se'
+-------------------------------------
+WHERE last_name REGEXP 'b[ru]'
+
