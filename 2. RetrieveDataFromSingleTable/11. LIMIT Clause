@@ -1,0 +1,32 @@
+LIMIT Clause
+    limit the number of records returned from our query. 
+    if argument we pass is greater than number of records => we will get all records in our query result
+    we can pass an offset => useful when we want to paginate the data => LIMIT x,y
+                             tells to MySQL skip x of records and then pick y records
+
+
+    e.x get only the first 3 records of customers table
+        SELECT *
+        FROM customers
+        LIMIT 3
+
+    e.x imagine a webpage for user to see al customers in the database. imagine show only 3 customers per page
+        page 1: customers 1 to 3, page 2: customers 4 to 6 and page 3: customers 7 to 9
+        SELECT *
+        FROM customers
+        LIMIT 6, 3  => this represent the page 3 of the webpage
+
+
+
+
+Exercise. Get the top 3 loyal customers, these are the customers who have more points than everyone else
+
+-- Query
+
+USE sql_store;
+
+SELECT *
+FROM customers
+ORDER BY points DESC
+LIMIT 3
+    
