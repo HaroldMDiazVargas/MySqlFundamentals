@@ -1,0 +1,29 @@
+Joining Across Databases
+    Real world when we work as developer or database admin, we work with multiple databases.
+    Combine columns from tables across multiple databases. 
+    We can prefix table with the name of database that are not part of the current database
+    
+
+    e.x sql_store database has a products table exactly to the product table of sql_inventory database
+        this is not a good design. 
+        Join the order_items table(from sql_store) with products table(from sql_inventory)
+        SELECT *
+        FROM order_items oi
+        JOIN sql_inventory.products p
+            ON oi.product_id = p.product_id
+    
+    e.x select the sql_inventory(USE keyword) and make the same join
+        USE sql_inventory;
+        SELECT *
+        FROM sql_store.order_items oi
+        JOIN products p
+            ON oi.product_id = -product_id
+    
+
+        
+-- Query
+
+USE sql_store;
+FROM order_items oi
+JOIN sql_inventory.products p
+    ON oi.product_id = p.product_id
