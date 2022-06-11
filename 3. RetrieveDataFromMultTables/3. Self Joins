@@ -1,0 +1,17 @@
+Self Joins
+    We can join a table with itself
+    We need to define different Alias for different table, even it is the same table
+    
+    e.x Query to join employees tablle(from sql_hr) with itself. To select the name of each emloyee and their manager
+        USE sql_hr;
+        SELECT *
+        FROM employees e
+        JOIN employees m => m means manager
+            ON e.reports_to = m.employee_id
+    
+    e.x simplify the last query to have the name of the employee and their manager
+        USE sql_hr;
+        SELECT SELECT e.employee_id, e.first_name, m.first_name AS manager
+        FROM employees e
+        JOIN employees m => m means manager
+            ON e.reports_to = m.employee_id
