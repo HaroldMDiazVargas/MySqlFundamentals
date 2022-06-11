@@ -1,0 +1,78 @@
+ORDER BY Clause
+    Sort data in our SQL querys. 
+    We can sort data of multiple attributes
+    In MySQL we can sort data by any columns wheter that columns is in the SELECT clause or not.
+        Other DBMS dont allow this kind of querys
+    We can sort data by an Alias defined in SELECT clause
+    We can sort data by column positions => this approach we should avoid, unexpected results to change
+
+    Default sort column in customer tables is the customer_id.
+        customers table => click middle icon(like a tool) to open our table in the design mode.
+                            In this mode we can change our columns, add new columns, remove existing, change name, order, so on
+                            Yellow key before customer_id => this means this is the primary columns for this table
+                                                             In RDBs every table should have a primary key
+                                                             the values of this columns should unique identify the records of that table
+
+    To sort data by a different column:
+    e.x  sort customers by theirs first_name in ascending order
+        SELECT *
+        FROM customers
+        ORDER BY first_name                                             
+
+    e.x sort customers by theirs first_name in descending order
+        SELECT *
+        FROM customers
+        ORDER BY first_name DESC
+
+    e.x sort customers by their state. Then sort by their first_name(if there're customers from same state, order by first_name)
+        SELECT *
+        FROM customers
+        ORDER BY state, first_name
+    
+    e.x sort customer by their state in DESC order. Then sort by their first_name in ascending order
+        SELECT *
+        FROM customers
+        ORDER BY state DESC, first_name
+    
+    e.x select only first and last_name. Then sort result by their birth_date
+        SELECT first_name, last_name
+        FROM customers
+        ORDER BY birth_date
+    
+    e.x in select clause add a expressión and give it an alias. Then sort by this alias and by their first_name
+        SELECT first_name, last_name, 10 AS points => points is an alias 
+        FROM customers
+        ORDER BY points, first_name
+    
+    e.x sort customers by column positions, where position are: first_name and then last_name
+    SELECT first_name, last_name => position of the columns
+    FROM customers
+    ORDER BY 1,2 => 1 represent first_name, 2 represent last_name
+
+-- Query
+USE sql_store;
+
+SELECT first_name, last_name, 10 AS points => points is an alias 
+FROM customers
+ORDER BY points, first_name DESC
+
+
+Exercise. get orders with order_id = 2. Sort these items based on the total price of each item(quatity*unit_price)
+
+-- Query
+
+USE sql_store;
+
+SELECT *
+FROM order_items
+WHERE order_id = 2
+ORDER BY quantity*unit_price
+
+-- Query - cleaner
+
+USE sql_store;
+
+SELECT *, quantity * unit_price AS total_price
+FROM order_items
+WHERE order_id = 2
+ORDER BY total_price DESC
