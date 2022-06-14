@@ -1,0 +1,18 @@
+Implicit Join Syntax
+    Another way to write a simple join between 2 tables. Syntax:
+    FROM selectMultipleTables => table1, table2
+    WHERE baseJoinCondition => table1.id = table2.id
+    Note: Not very suggest to use even this is supported in MySQL. Because if we forget WHERE clause  we will get
+          a cross join(every record in table1 is join with every record in table2).
+          Better use JOIN syntax, because forces us to use the baseJoinCondition.
+
+    e.x join orders tables with customers table
+        SELECT *
+        FROM orders o
+        JOIN customers c
+            ON o.customer_id = c.customer_id
+        
+        -- Implicit Join Syntax
+        SELECT *
+        FROM orders o, customers c
+        WHERE o.customer_id = c.customer_id
