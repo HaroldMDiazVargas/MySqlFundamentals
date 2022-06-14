@@ -1,0 +1,34 @@
+Outer Joins Between Multiple Tables
+    Join more than 2 tables using outer join.
+
+    Note: Avoid using RIGHT JOIN, because when join multiple tables, and we use RIGHT and LEFT JOINS the things
+          get really complex.
+
+    e.x query to join customers table with orders table to get all customers wether they have ordered or not.
+        and  with shippers table to display the name of the shipper, to return all orders wheter they have 
+        shipper or not.
+
+
+        SELECT c.customer_id, c.first_name, o.order_id, sh.name AS shipper
+        FROM customers c
+        LEFT JOIN orders o
+            ON c.customer_id = o.customer_id
+        LEFT JOIN shippers sh
+            ON o.shipper_id = sh.shipper_id
+        ORDER BY c.customer_id
+
+
+
+Exercise. Query that produces order_date, order_id, first_name, shipper and status. 
+
+USE sql_store;
+SELECT o.order_date, o.order_id, c.first_name AS customer, sh.name AS shipper, os.name AS status
+FROM orders o
+LEFT JOIN customers c
+    ON o.customer_id = c.customer_id
+LEFT JOIN shippers sh
+    ON o.shipper_id = sh.shipper_id
+LEFT JOIN order_statuses os
+    ON o.status = os.order_status_id
+ORDER BY status
+
