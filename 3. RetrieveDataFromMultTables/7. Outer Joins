@@ -1,0 +1,47 @@
+Outer Joins
+    This is the 2nd type of join in SQL. We have 2 types of OUTER JOINS:
+        - LEFT  JOIN: All records from the left table(FROM) are returned wheter the joinCondition is true or not 
+        - RIGHT JOIN: All the records from the right table(JOIN) are returned wheter the joinCondition is true or not
+
+    Note: OUTER keyword is optional just like the INNER keyword. LEFT OUTER JOIN
+          But is better if we dont use, to keep cleaner code.
+
+    e.x convert a query written using inner join to outer join. In this result query we dont see all the customers
+        because in orders table not all the customers have made an order yet. This is because the joinCondition
+        we only return the records that match this joinCondition.
+
+        SELECT c.customer_id, c.first_name, o.order_id
+        FROM customers c
+        JOIN orders o
+            ON c.customer_id = o.customer_id
+        ORDER BY c.customer_id
+
+        To see all customers even if they have ordered or not => we use Outer Join
+        In this example if we use LEFT JOIN => we see all customers even if they have not ordered
+                        if we use RIGHT JOIN => we see all orders but not all the customers(same result as INNER JOIN)
+        But if we want to see all customers using RIGHT JOIN => swap the tables:
+
+        SELECT c.customer_id, c.first_name, o.order_id
+        FROM orders o
+        RIGHT JOIN customers c
+            ON c.customer_id = o.customer_id
+        ORDER BY c.customer_id
+
+-- Query 
+
+USE sql_store;
+SELECT c.customer_id, c.first_name, o.order_id
+FROM customers c
+LEFT JOIN orders o
+    ON c.customer_id = o.customer_id
+ORDER BY c.customer_id
+
+
+Exercise. Query to produce product_id, name, quantity. Join the products table with order_items table, to see
+          how mane times a product have been ordered, even if it was never ordered(null)
+
+USE sql_store;
+SELECT p.product_id, p.name, oi.quantity
+FROM products p
+LEFT JOIN order_items oi
+    ON p.product_id = oi.product_id
