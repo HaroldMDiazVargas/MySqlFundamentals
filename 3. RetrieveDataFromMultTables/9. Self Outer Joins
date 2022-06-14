@@ -1,0 +1,16 @@
+Self Outer Joins
+    Join a tables with itself, where a column has a relationship with another column of the same table.
+
+
+    e.x employees table(from sql_hr) we can get all the employees and their manager.
+        SELECT e.employee_id, e.first_name, m.first_name AS manager
+        FROM employees e
+        JOIN employees m
+            ON e.reports_to = m.employee_id
+
+    but we want to return all th employees wheter they have a manager or not.
+
+        SELECT e.employee_id, e.first_name, m.first_name AS manager
+        FROM employees e
+        LEFT JOIN employees m
+            ON e.reports_to = m.employee_id
