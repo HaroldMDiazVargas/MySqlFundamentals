@@ -1,0 +1,16 @@
+Compound Join Conditions
+    We have used a single column to unique identify the rows in a given table(e.x customer_id).
+    But we may have a table with different columns and none of these columns have unique identify 
+    the values are repeated, so we can not use a column to unique identify the records.
+    So we can use the combination of 2 columns to unique identify, but we have to be sure that we dont have
+    2 records that have the same combination, this combination must be UNIQUE(according to the problem context)
+    If we open a table like this in design mode, we can see that yellow key(primary key) exist on both columns
+    this is called a Composite Primary Key.
+
+    e.x join order_items tables with order_items_notes table. This join based on 2 columns
+        SELECT *
+        FROM order_items oi
+        JOIN order_items_notes oin
+            ON oi.order_id = oin_order_id 
+            AND oi.product_id = oin.product_id
+         
