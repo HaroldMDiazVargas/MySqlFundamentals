@@ -1,0 +1,39 @@
+Cross Joins
+    We use to combine or join every record of the 1st table with every record of the 2nd table.
+    So we dont have a joinCondition
+    explicit syntax:
+        CROSS JOIN tableToCrossJoin  => more clear
+    implicit syntax:
+        FROM table1, table2 => we put multiple tables in the FROM clause
+    
+    Real example to use this => when we have a table of sizes(small, medium and large) and table of colors(blue, green, etc)
+                                then we want to combine all the sizes with all the colors.
+
+    e.x Cross join customers table with products table. Every record in customers table will be combine with
+        every record in the products table. This in order to have name of every customer in combinatio with
+        the different products.
+        SELECT c.first_name AS customer, p.name AS product
+        FROM customers c
+        CROSS JOIN products p
+        ORDER BY c.first_name
+
+    e.x Use now the implicit syntax
+        SELECT c.first_name AS customer, p.name AS product
+        FROM customers c, orders o
+        ORDER BY c.first_name
+
+
+Exercise. Cross join between shippers table and products table using both syntax
+
+-- Query
+
+USE sql_store;
+SELECT p.name AS product, sh.name AS shipper
+FROM shippers sh
+CROSS JOIN products p
+ORDER BY p.name
+
+USE sql_store;
+SELECT p.name AS product, sh.name AS shipper
+FROM shippers sh, products p
+ORDER BY p.name
