@@ -1,0 +1,56 @@
+Unions
+    Instead of combine columns from multiple tables(joins), we can combine rows from multiple tables(unions).
+    Extremely powerful.
+    We can get querys results from a single table and then union the records. But we can also combine querys
+    against different tables and then combine the result into one result set.
+    Syntax:
+        SELECT numberOfColumnsQuery1Return
+        FROM table1Name
+        UNION
+        SELECT numberOfColumnsQuery2Return
+        FROM table2Name
+
+        Note: numberOfColumnsQuery1Return = numberOfColumnsQuery2Return
+
+    e.x from orders table, get all the orders and next to each order add a label=> if order is place in 2019
+        which is the current year, the label is active and otherwise label as archived
+
+        SELECT order_id, order_date, 'Active' AS status
+        FROM orders
+        WHERE order_date >= '2019-01-01' => this is not ideal, later we can see how to get current year
+        
+        UNION
+
+        SELECT order_id, order_date, 'Archived' AS status
+        FROM orders
+        WHERE order_Date < '2019-01-01'
+
+    e.x. combine records from customers table and with records from shippers table. Select only 1 column to get
+        only one column in the query result.
+        SELECT first_name
+        FROM customers
+        UNION
+        SELECT name
+        FROM shippers
+        
+Exercise. Write a report query that have customer_id, first_name, points and type. We dont have type column,
+          calculate it based on the points each customer has:
+            if points < 2000 points => Bronze 
+            if points >2000 and <3000 => Silver
+            if points > 3000 => Gold
+        
+-- Query
+
+USE sql_store;
+SELECT customer_id, first_name, points, 'Bronze' AS type
+FROM customers
+WHERE points < 2000 
+UNION
+SELECT customer_id, first_name, points, 'Silver' AS type
+FROM customers
+WHERE points >= 2000 AND points < 3000
+UNION
+SELECT customer_id, first_name, points, 'Gold' AS type
+FROM customers
+WHERE points >= 3000 
+ORDER BY first_name
