@@ -1,0 +1,34 @@
+The USING Clause
+    As our query get more complex, the joinConditions get in the way making our query hard to read.
+    In MySQL we have this power feature to simplify these querys.
+    If our column name used in joinCondition across the 2 tables, we can replace the ON clause with USING clause
+    syntax:
+        USING (columnName)
+        USING (column1Name, column2Name) => CompundJoinConditions
+
+    e.x join orders tables with customers table. And also join with the shippers table
+        SELECT o.order_id, c.first_name, sh.name AS shipper
+        FROM orders o
+        JOIN customers c
+            USING (customer_id)
+        LEFT JOIN shippers sh
+            USING (shipper_id)
+
+    e.x join order_items table with order_item_notes table, where there're 2 columns that unique identify(keys)
+        each record(CompundJoinConditions)
+        SELECT 
+        FROM order_items oi
+        JOIN order_item_notes oin
+            USING (order_id, product_id)
+
+
+Exercise. get a query with date, client, amount and name of payment method. For this
+          use sql_invoicing database.
+    
+USE sql_invoicing;
+SELECT p.date, c.name AS client, p.amount, pm.name 
+FROM payments p
+JOIN clients c
+    USING(client_id)
+JOIN payment_methods pm
+    ON p.payment_method = pm.payment_method_id
