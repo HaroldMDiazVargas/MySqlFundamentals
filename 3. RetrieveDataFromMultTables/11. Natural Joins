@@ -1,0 +1,12 @@
+Natural Joins
+    In MySQL we also have another simpler way to join 2 tables, easier to code
+    But this is something not recommend, sometimes produces unexpected results.
+    We dont explicitly specify the column names(joinCondition), the database engine will looking at
+    the 2 tables, and join them based on the common columns(same name). But is not good to let the database engine
+    figured out or guess the join
+
+    e.x Join orders table with customers table.
+
+    SELECT o.order_id, c.first_name
+    FROM orders o
+    NATURAL JOIN customers c
