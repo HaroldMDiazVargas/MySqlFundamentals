@@ -1,0 +1,25 @@
+Inserting a Single Row
+    Insert a row into a table we use INSERT INTO statement and the VALUES clause
+    Syntax:
+        INSERT INTO tableName (listOfColumns)
+        VALUES (valuesForEveryColumnInTheTable)
+    Note: The listOfColumns represent these columns that we want to insert values into. This is optional.
+          so we can avoid to supply values like DEFAULT, NULL for these columns we dont want to insert into.
+          and also, we can sort the listOfColumns in the order we prefer
+    We can use DEFAULT to let MySQL to take care of generating the value, this is used where column attribute has AI
+    We can use NULL to represent the absence of a value, this is used for optional columns
+
+
+    e.x insert into customers table a new row.
+        INSERT INTO customers
+        VALUES (DEFAULT, 'John', 'Smith', '1197-10-02', NULL, 'address1', 'city1', 'ST', 2000)
+            --  cust_id, firstNa, lastNam, birthdate, phone,   address,    city,  state, points
+
+    e.x insert into customers table a new row, but specify the list of columns we want to insert into.
+        INSERT INTO customers (first_name, last_name, birth_date, address, city, state, points)
+        VALUES ('John', 'Smith', '1197-10-02', 'address1', 'city1', 'ST', 2000)
+
+    e.x make the same last example, but change the order of the columns.
+        INSERT INTO customers (last_name, first_name, points,  birth_date, address, city, state)
+        VALUES ( 'Smith','John' ,2000, '1197-10-02', 'address1', 'city1', 'ST' )
+    
