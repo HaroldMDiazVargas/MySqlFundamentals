@@ -1,0 +1,19 @@
+Column Attributes
+    Open a table in design mode. We have different columns:
+    
+    ColumnName: Just the name assigned to that column
+    Datatype(NUM): Just the type of data assigned to that column. NUM represent the maximum of that data type.
+                   we have:
+                    INT=> hold number 
+                    VARCHAR => Variable Character(save space dynamically)
+                    CHAR =>  Character(Waste space unnecesary)
+                    DATE => for date time, become with standard space(fixed)
+    PK: Mark the column as the Primary Key
+    NN: Determinates if the column can't accept Not values or Null
+        if we dont check a column, means the column is optional(can accept null values)
+    AI: Often use with PK column, means Auto Increment. Everytime we insert a new record, we let MySQL 
+        insert a value in this column(see the last value e.x customer_id and set +1)
+    Default/Expression: Specify the default value for each column. Often(Not always) used when we mark columns as optionals(NN)
+                        so we specify default values. e.x NULL, '0'
+
+    
