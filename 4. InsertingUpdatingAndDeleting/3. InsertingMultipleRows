@@ -1,0 +1,25 @@
+Inserting Multiple Rows
+    Insert multiple rows in one go. We use just a comma(',') to separate pair of parenthesis in the VALUES clause
+    to determinate different rows to insert.
+    Syntax:
+        INSERT INTO tableName (listOfColumns)
+        VALUES (valuesToInsertRowX),
+               (valuesToInsertRowY)
+
+
+    e.x insert into shippers table, which have shipper_id(SMALLINT(6),PK, NN, AI) and name(VARCHAR(50), NN)
+        INSERT INTO shippers (name)
+        VALUES ('Shipper1'),
+               ('Shipper2'),
+               ('Shipper3')
+
+Exercise. Insert 3 rows in the products table
+
+-- Query
+
+USE sql_store;
+INSERT INTO products (name, quantity_in_stock, unit_price)
+VALUES ('Apple', '72', 0.52),
+       ('Banana', '113', 0.32),
+       ('Onion', '25', 0.42)
+
