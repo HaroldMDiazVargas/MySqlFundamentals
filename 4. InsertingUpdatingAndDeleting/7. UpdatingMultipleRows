@@ -1,0 +1,45 @@
+Updating Multiple Rows
+    The syntax to update multiple records is exactly the same that update single row.
+    The condition has to be more general.
+
+    MySQL workbench runs in the safe update mode, so only allows us to update a single record.(Others DBMS allow this)
+    On top => MySQL Edit => Preferences => SQL editor => Untick Safe Updated check box.
+    Then we need to reconnect to this instance of MySQL => close Local Instance => and reconnect again.
+
+    We can also use the IN operator, to update by a range. An all the operators we use in the WHERE clause also
+    apply to this approach. 
+
+    Tecnhically the WHERE clause is optional. If we want update all the records we simply leave it out.
+
+    Syntax:
+        UPDATE tableName
+        SET columnName = newValue,
+            columnName = newValue
+        WHERE columnName = valueCondition   (=)  WHERE columnName IN (x,y)
+
+    e.x Update at invoices table, all the invoices for the client_id 3, because we have various invoices
+        for the same client.
+
+        UPDATE invoices
+        SET payment_total = invoice_total*0.5,
+            payment_date = due_date
+
+        WHERE client_id = 3
+
+    e.x Update at invoices table, all the invoices for client_id 3 and 4-
+        UPDATE invoices
+        SET payment_total = invoice_total*0.5,
+            payment_date = due_date
+
+        WHERE client_id IN (3,4)
+
+
+Exercise. In sql_store db, write a SQL statement to:
+            give any customers born before 1990  => 50 extrapoint
+
+USE sql_store;
+UPDATE customers
+SET points = points + 50
+WHERE birth_date < '1990-01-01'
+
+    
