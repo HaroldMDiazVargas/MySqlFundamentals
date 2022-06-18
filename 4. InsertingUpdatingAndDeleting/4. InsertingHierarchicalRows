@@ -1,0 +1,24 @@
+Inserting Hierarchical Rows
+    We have learnt how to insert data into single table. But we can insert data into multiple tables.
+    A real example of this is where we have a parent-child relationship, e.g orders table is parent and 
+    order_items table is a child, because 1 order we can have multiple order items(multiple products in same order)
+    So 1 row in the parent table => can have 1 or more children inside the child table.
+
+    As soon as we insert new row in parent table, MySQL is going to generate an id to the PK column. Then,
+    we need to be able to access to that unique id in order to insert the new rows in the child table. Because 
+    that PK column is the relationship bewteen these parent-child tables.
+
+    In MySQL we have a bunch of built-in functions, a function is a basically a piece of code that  we can reuse.
+    One of this function is LAST_INSERT_ID => we can call this function adding parenthesis and will return ID
+    MySQL generate when we insert a new row.
+
+    e.x query to insert an order and all its items, so insert in order table and also in order_items table
+        INSERT INTO orders (customer_id, order_date, status)
+        VALUES (1, '2022-01-02', 1);
+
+        INSERT INTO order_items 
+        VALUES (LAST_INSERT_ID(), 1, 1, 2.95)
+        VALUES (LAST_INSERT_ID(), 2, 1, 3.95)
+
+    
+
