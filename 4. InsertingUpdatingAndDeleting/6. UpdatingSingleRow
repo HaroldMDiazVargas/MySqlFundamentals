@@ -1,0 +1,35 @@
+Updating a Single Row
+    We use UPDATE statement to update 1 or more records in a table. Then we add SET clause to specify
+    the new value for 1 or more columns. Finally we type the condition using WHERE clause, to identify
+    the record or records that need updated.
+    Syntax:
+        UPDATE tableName
+        SET columnName = newValue
+        WHERE recordCondition
+
+
+    We can use NULL keyword to insert NULL value to a column that accepts these values
+    We can use DEFAULT keyword to let MySQL uses the default values for that column defined in the design mode
+
+
+    e.x Update at invoices table, the 1st record where there's not payment_date and payment_total is 0.
+        This can be due e.g the system that records the payment failed. So we need to update the table
+        
+        UPDATE invoices
+        SET payment_total = 10, payment_date = '2022-03-01'
+        WHERE invoice_id = 1
+
+    e.x Restore the original values of the table.
+        UPDATE invoices
+        SET payment_total = DEFAULT, payment_date = NULL
+        WHERE invoice_id = 1
+    
+    e.x Update the 3rd invoice. Imagine client made 50% on the due_date
+        UPDATE invoices
+        SET payment_total = invoice_total * 0.5, payment_date = due_date
+        WHERE invoice_id = 3
+    
+    Note: The values are truncated, so when we update we dont see digits after decimal points(for now dont worry)
+          
+    
+
