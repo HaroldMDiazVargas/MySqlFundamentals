@@ -1,0 +1,21 @@
+Deleting Rows
+    We use the DELETE FROM statement for delete records from a table.
+    Optionally we can add search condition(WHERE) to identify the records we want to delete. If we dont use the 
+    condition, all the records will be deleted(dangerous)
+    Syntax:
+        DELETE FROM tableName
+        WHERE searchCondition
+
+    We can also use subqueries in the WHERE clause(as search condition)
+    
+    e.x delete the invoice with id 1 form invoices table.
+        DELETE FROM invoices
+        WHERE invoice_id = 1
+    
+    e.x delete all the invoices for the client called 'Myworks'
+        DELETE FROM invoices
+        WHERE client_id =
+                        (SELECT client_id
+                         FROM clients
+                         WHERE name = 'Myworks' )
+                         
