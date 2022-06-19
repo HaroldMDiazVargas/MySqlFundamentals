@@ -1,0 +1,4 @@
+Restoring the databases
+    To restore the databases to their original state. In MySQL menu:
+        File => Open SQL script => find the sql scripts in the folder where we stored them => create-databases.sql
+                                                                                             => run and thats all
