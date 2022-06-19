@@ -1,0 +1,74 @@
+Using Subqueries In Updates
+    Use subqueries in an UPDATE statement => extremely powerful.
+    A subquery is a SELECT statement that is within another SQL statement.
+    We put the subquery in parenthesis to allow SQL will execute the subquery first.
+
+    When a subquery returns multiple records, we can not use equal assign(=), we replace with IN operator.
+
+    Note: Before execute our UPDATE statement, run our query to see what records we will update, to avoid 
+          mistakes.
+
+    e.x update all the invoices for client_id 2, but instead of passing he id 2, we pass the client name, and then
+        with the name we figure out what client_id corresponds.
+
+        UPDATE invoices
+        SET
+            payment_total = invoice_total*0.5,
+            payment_date = due_date
+        WHERE client_id = 
+                        ( SELECT client_id
+                        FROM clients
+                        WHERE name = 'Myworks' )
+        
+    
+    e.x update the invoices for all clients located in NY or CA state. Here a subquery returns multiple records.
+        In this case return client_id 1 and client_id 3
+
+        UPDATE invoices
+        SET
+            payment_total = invoice_total*0.5,
+            payment_date = due_date
+        WHERE client_id IN
+                        ( SELECT client_id
+                        FROM clients
+                        WHERE state IN ('CA' 'NY'))
+
+
+    e.x update all the invoices where payment_date is NULL. Look that we dont have a subquery(SELECT..FROM..)
+    
+
+        UPDATE invoices
+        SET
+            payment_total = invoice_total*0.5,
+            payment_date = due_date
+        WHERE payment_date IS NULL
+
+        as a best practice, before execute the entire UPDATE statement, we create a subquery a execute only
+        that subquery(SELECT..FROM...WHERE). Then we revert changes and execute the previous code.
+
+        UPDATE invoices
+        SET
+            payment_total = invoice_total*0.5,
+            payment_date = due_date
+        SELECT *
+        FROM invoices
+        WHERE payment_date IS NULL
+        
+
+
+Exercise. In sql_store db, write a SQL statement to update the comments for orders(orders table) for customers
+         who have more than 3000 points(customers table). We comment these customers as Gold customers.
+
+
+-- Query
+
+USE sql_store;
+
+UPDATE orders
+SET comments = 'Gold customer'
+WHERE customer_id IN 
+                    (SELECT customer_id
+                    FROM customers 
+                    WHERE points > 3000)
+
+
