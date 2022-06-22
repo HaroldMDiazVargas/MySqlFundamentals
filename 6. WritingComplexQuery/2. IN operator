@@ -1,0 +1,23 @@
+The IN operator
+    write a subquery using the IN operator. This operator is used here because our subquery returns a list of values
+
+    e.x In sql_store find the products that have never been ordered
+        SELECT *
+        FROM products
+        WHERE product_id NOT IN (
+                            SELECT DISTINCT product_id => get the uniques of products that have been ordered
+                            FROM order_items 
+        )
+        
+        
+Exercise. In sql_invoicing db write query to find the clients without invoices
+
+-- Query
+
+SELECT *
+FROM clients
+WHERE client_id NOT IN (
+    SELECT DISTINCT client_id
+    FROM invoices
+
+)
