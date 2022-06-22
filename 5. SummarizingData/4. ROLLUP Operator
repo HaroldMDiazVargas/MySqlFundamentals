@@ -1,0 +1,48 @@
+The ROLLUP Operator
+    Only in MySQL we have a powerful operator for summaryzing data called WITH ROLL UP
+    This is used to summaryzes our entire result cell => Sum of total 
+    This operator only is applied to columns that aggregate values
+
+    When we use GROUP BY clause and group by multiple columns. And at the same time we use ROLLUP operator,
+    we see summary values for each group as well as the entire result set.
+
+    Syntax:
+        ...
+        GROUP BY columnName WITH ROLLUP
+
+
+    e.x get the total_sales by client_id. And also the result of total_sales by all clients
+        USE sql_invoicing;
+        SELECT
+            client_id,
+            SUM(invoice_total) AS total_sales
+        FROM invoices
+        GROUP BY client_id WITH ROLLUP
+
+    e.x get the total_sales by state and city. An also see the result of total_sales by each state(across different
+        citys in the same state) and finally the total sales of all states.
+        USE sql_invoicing;
+        SELECT
+            state,
+            city,
+            SUM(invoice_total) AS total_sales
+        FROM clients
+        JOIN invoices
+            USING(client_id)
+        GROUP BY state, city WITH ROLLUP
+
+
+Exercise. Produce report => payment_method and total. To see the total for each payment_method as well as the
+                            total amount we have received
+
+-- Query
+
+USE sql_invoicing;
+
+SELECT 
+    pm.name AS payment_method,
+    SUM(amount) AS total
+FROM payments p
+JOIN payment_methods pm
+    ON p.payment_method = pm.payment_method_id
+GROUP BY pm.name WITH ROLLUP
