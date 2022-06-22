@@ -1,0 +1,29 @@
+Subqueries(Inner query)
+    We can write the subqueries in parenthesis. To pass the result to our alter query
+    We can write subqueries inside the WHERE clause, in the FROM clause and in the SELECT clause
+
+
+    e.x Find all the products that are more exprensive than Lettuce( id = 3) in  products table
+        SELECT *
+        FROM products
+        WHERE unit_price > (
+                            SELECT unit_price
+                            FROM products
+                            WHERE product_id = 3
+        )
+    
+Exercise. In sql_hr db write query to find all the employees whose earn more than average
+
+-- Query
+
+USE sql_hr;
+SELECT 
+    employee_id, 
+    first_name,
+    last_name,
+    salary
+FROM employees
+WHERE salary > (
+                SELECT AVG(salary)
+                FROM employees
+)
