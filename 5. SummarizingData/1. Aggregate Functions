@@ -1,0 +1,97 @@
+Aggregate Functions
+    Write queries that summaryze data. Extremely useful for large organization with lot of data.
+
+    Function => piece of code that we can reuse.
+    MySQL comes with a bunch of built-in functions, some of these functions are called Aggregate Functions.
+    Aggregate Functions => take a set of values an aggregate them to produce a single value
+                        e.x MAX() functions calculates the maximum in a set of values
+                            MIN()
+                            AVG()
+                            SUM()
+                            COUNT()
+                        => With all these functions we use parenthesis to call and execute them and we can apply
+                           to columns with Numeric values, dates and strings.
+                        => These aggregate functions only operate on NOT NULL values. So if we have a NULL value
+                           is not gonna be include in these functions
+                        => All these functions take duplicate values, we need to use the DISTINCT keyword
+                           if we want to exclude duplicates
+    e.x select the maximium of invoice_total(invoices table)
+        SELECT MAX(invoice_total) AS highest
+        FROM invoices
+
+    e.x get the max, min, avg of invoice_total
+        SELECT 
+            MAX(invoice_total) AS highest,
+            MIN(invoice_total) AS lowest,
+            AVG(invoice_total) AS average
+        FROM invoices
+
+    e.x get the latest date when a payment was received
+        SELECT 
+            MAX(payment_date) AS latest_date,
+        FROM invoices
+
+    e.x get the total of values of invoice_total column and count the records
+        SELECT 
+            SUM(invoice_total) AS total,
+            COUNT(invoice_total) AS number_of_invoices
+        FROM invoices
+
+    e.x get the count of payments. But remember we only count the payments made, because we have NULL values where
+        have not paid yet.
+        SELECT 
+            COUNT(payment_date) AS count_of_payments
+        FROM invoices
+    
+    e.x get the total records of the invoices table
+        SELECT 
+            COUNT(*) AS total_records
+        FROM invoices
+    
+    e.x get the total of invoice_total and multiply each invoice by 1.1. An only for invoices for the second
+        half of the year => '2019-07-01'
+        SELECT 
+            SUM(invoice_total * 1.1) AS total
+        FROM invoices
+        WHERE invoice_date > '2019-07-01'
+
+    e.x get the count of records that have a client_id but only the unique values.
+        SELECT
+            COUNT(DISTINCT client_id) AS total_records
+        FROM invoices
+    
+
+Exercise. Using the invoices table, generate report:
+          for 3 records: First half of 2019, Second half of 2019 and the total 
+            date_range: description of the range
+            total_sales
+            total_payments
+            what_we_expect => difference bewteen total_sales and total_payments
+
+
+--  Query 
+           
+USE sql_invoicing;
+SELECT 
+    'First half of 2019' AS date_rage,
+    SUM(invoice_total) AS total_sales,
+    SUM(payment_total) AS total_payments,
+    SUM(invoice_total-payment_total) AS what_we_expect
+FROM invoices
+WHERE invoice_date BETWEEN '2019-01-01' AND '2019-06-30'
+UNION
+SELECT 
+    'Second half of 2019' AS date_rage,
+    SUM(invoice_total) AS total_sales,
+    SUM(payment_total) AS total_payments,
+    SUM(invoice_total)-SUM(payment_total) AS what_we_expect
+FROM invoices
+WHERE invoice_date BETWEEN '2019-07-01' AND '2019-12-31'
+UNION
+SELECT 
+    'Total' AS date_rage,
+    SUM(invoice_total) AS total_sales,
+    SUM(payment_total) AS total_payments,
+    SUM(invoice_total)-SUM(payment_total) AS what_we_expect
+FROM invoices
+WHERE invoice_date BETWEEN '2019-01-01' AND '2019-12-31'
