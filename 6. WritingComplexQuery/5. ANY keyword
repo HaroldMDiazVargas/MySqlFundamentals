@@ -1,0 +1,32 @@
+The ANY or SOME keyword
+    To compare a column value to a multiple values given by a subquery. 
+    
+    = ANY is equivalent to IN operator
+
+    e.x Select clients with at least 2 invoices
+
+        SELECT *
+        FROM clients
+        WHERE client_id IN (
+                            SELECT
+                                client_id
+                            FROM invoices
+                            GROUP BY client_id
+                            HAVING COUNT(*) >= 2
+        )
+
+
+    e.x Make the same exercise but using equality operator with ANY
+        SELECT *
+        FROM clients
+        WHERE client_id = ANY (
+                            SELECT
+                                client_id
+                            FROM invoices
+                            GROUP BY client_id
+                            HAVING COUNT(*) >= 2
+        )
+    
+
+        
+
