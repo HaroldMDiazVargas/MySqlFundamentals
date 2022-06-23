@@ -1,0 +1,50 @@
+Updatable views
+    We can use our views in the SELECT statement just like our tables. But we can also use them in:
+    INSERT, UPDATE and DELETE statements, but only under certain circustances.
+
+    If the view:
+        - Doesn't have DISTINCT keyword
+        - Doesn't have Aggregate Functions like MIN, MAX SUM, etc
+        - Doesn't have GROUP BY/ HAVING clauses
+        - Doesn't have UNION
+        This means is an UPDATABLE VIEW, so we can update data throught it. And we can use our view in 
+        INSERT, UPDATE or DELETE statements
+    
+    DELETE & UPDATE are pretty easy, just like a normal table.
+    But to INSERT a new record => only work if the view has ALL the require columns in the underline table
+                                  e.g if view miss a column of the underline table and that column does not allow
+                                      NULL values, so we can not insert a new record, because will not accept 
+                                      null value that will pass to that column by default.
+
+    Note: Most of the time we update data throught our tables, but ther're times we may not have permission
+          to table for security reasons, so our only option is to modify our data throught the views. So we can 
+          use the views to INSERT, UPDATE or DELETE data assuming that our views are UPDATABLES.
+
+    e.x create a view for invoices table that contains the balance for each invoice_id
+        CREATE OR REPLACE VIEW invoices_with_balance AS
+        SELECT 
+            invoice_id,
+            number,
+            client_id,
+            invoice_total,
+            payment_total,
+            invoice_total - payment_total AS balance,
+            invoice_date,
+            due_date,
+            payment_date
+        FROM invoices
+        WHERE (invoice_total - payment_total) > 0
+
+        Once we execute this SQL code => we will have an object view stored in Views folder in the respective
+        database. So in a new sql query we can use:
+
+        e.x delete the record corresponding to invoice_id 1 from the invoices_with_balance view
+            DELETE FROM invoices_with_balance
+            WHERE invoice_id = 1
+        
+        e.x update the due_date to 2 days after for the record corresponding to invoice number 2
+            UPDATE invoices_with_balance
+            SET due_date = DATE_ADD(due_date, INTERVAL 2 DAY) 
+            WHERE invoice_id = 2
+        
+        e.x insert a new invoice to the view
