@@ -1,0 +1,39 @@
+Subqueries in the SELECT Clause
+    We have only used subqueries in the SELECT statement(WHERE clause). But we also can use in the SELECT clause
+    Later we can see that we also can use subqueries in the FROM clause
+
+    e.x write a query to have the AVG of all invoices and a colum for the difference between the each invoice
+        and the total avg.
+
+        SELECT 
+            invoice_id,
+            invoice_total,
+            (SELECT AVG(invoice_total)
+             FROM invoices) AS invoice_average
+            invoice_total - (SELECT invoice_average) AS difference
+        FROM invoices
+
+        In the last example we:
+            - make a subquery for AVG of invoice_total and give an alias to that new column
+            - for the last column we could choose between duplicate the previous subquery or convert
+              the invoice_average into a subquery using SELECT and parenthesis.
+            
+Exercise. Query to get the total_sales for each client, the average of all invoices and the difference
+          between total_sales and the global avg
+
+
+
+USE  sql_invoicing;
+SELECT DISTINCT
+    client_id,
+    name,
+    (SELECT SUM(invoice_total)
+		 FROM invoices
+		 WHERE client_id = c.client_id
+		 ) AS total_sales,
+    (SELECT AVG(invoice_total)
+		FROM invoices) AS average,
+     (SELECT total_sales - average) AS difference
+FROM clients c
+JOIN invoices 
+	USING(client_id)
