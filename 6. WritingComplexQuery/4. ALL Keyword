@@ -1,0 +1,31 @@
+The ALL keyword
+    Compare(>,<,...) with a list of values given in a subquery.
+    Prefix the subquery with ALL keyword, but if we dont want to use ALL keyword we can use MAX aggregate function
+    Both are the same, just is preference.
+
+
+    e.x Select invoices that are larger than all invoices of client 3 in our sql_invoicing db. Make this 
+        using the standard subquery. So here we use MAX to choose the highest invoice of client 3 as "umbral"
+        
+        SELECT *
+        FROM invoices
+        WHERE invoice_total > (
+                            SELECT MAX(invoice_total)
+                            FROM invoices
+                            WHERE client_id = 3
+        )
+
+    e.x solve the last example using ALL keyword. In this subquery we dont use MAX so we have a list of values
+
+        SELECT *
+        FROM invoices
+        WHERE invoice_total > ALL (
+                            SELECT invoice_total
+                            FROM invoices
+                            WHERE client_id = 3
+        )
+
+
+    
+        
+        
