@@ -1,0 +1,54 @@
+The CASE operator
+    Using IF operator we can only test single expression. When we have multiple expressions to test and we 
+    want to return different values for each test expression, we use CASE operator
+
+    Syntax:
+        CASE 
+            WHEN testExpression1 THEN valueToReturn1
+            WHEN testExpression2 THEN valueToReturn2
+            WHEN testExpression3 THEN valueToReturn3
+            ...
+            ELSE valueToReturn  => this is optional, and if none of the conditions is true, this value will return
+        END AS aliasName
+
+
+    e.x put a label to orders according of: if order year is current => Active
+                                            if order year is last year => Last year
+                                            if order year is less than 2 years ago => Archived
+                                            if none of these conditions => 'Future'
+
+        SELECT 
+            order_id,
+            CASE
+                WHEN YEAR(order_date) = YEAR(NOW()) THEN 'Active'
+                WHEN YEAR(order_date) = YEAR(NOW()) - 1 THEN 'Last year'
+                WHEN YEAR(order_date) < YEAR(NOW()) - 1 THEN 'Archived'
+                ELSE 'Future'
+            END AS category
+        FROM orders
+
+Exercise. classify customers based on their points:
+                                    - points >3000 Gold customer
+                                    - 3000  > points > 2000  Silver customer
+                                    - points < 2000 Bronze customer
+         Dont use UNION operator, instead use the CASE operator
+
+
+-- Query
+
+USE sql_store;
+USE sql_store;
+SELECT 
+    CONCAT(first_name, ' ', last_name) AS customer,
+    points,
+    CASE 
+        WHEN points >= 3000 THEN 'Gold'
+        WHEN points >= 2000 THEN 'Silver'
+        ELSE 'Bronze'
+	END AS category
+FROM customers
+ORDER BY points DESC
+
+
+
+                
