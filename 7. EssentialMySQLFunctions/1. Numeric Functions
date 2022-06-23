@@ -8,4 +8,6 @@ Numeric Functions
         FLOOR(value) => smallest int that is <= to the value
         ABS(value) => get the absolute value of a number
         RAND() => generate a random floating point number between 0to1
+
+
     
