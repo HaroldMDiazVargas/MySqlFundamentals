@@ -1,0 +1,15 @@
+Formatting Dates and Times
+    In MySQL we represent dates as string 'yyy-mm-dd'
+    This format is good for others developers, but when we present this to users is not ideal.
+    Couple of functions to format dates and time in a more frindly way:
+        DATE_FORMAT(dateValue, '') => format various part of the date using specifiers
+                              '%y' => get a 2 digit year e.g 22
+                              '%Y' => get a 4 digit year e.g 2022
+                              '%m %Y' => get 2 digit month and 4 digit year e.g 06 2022
+                              '%M %Y' => get month name and 4 digit year e.g JUNE 2022
+                              '%M %d %Y'
+        TIME_FORMAT(dateValue, '') => format various part of the time using specifiers
+                               '%H:%i' => get the hour:minute e.g 11:32
+                                '%p' => to display the PM or AM
+
+    search for MySQL date format string to see few examples of others specifiers
