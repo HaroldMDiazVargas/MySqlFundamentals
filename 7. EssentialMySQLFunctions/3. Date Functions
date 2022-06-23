@@ -1,0 +1,29 @@
+Date Functions
+    Useful function to work with dates and times.
+        NOW() => get current date and time on the current machine
+        CURDATE() => get current date without time component7
+        CURTIME() => get current time
+        YEAR(dateOrTimeFunction or just a date) => extract year, we need to pass NOW() or any date function
+        MONTH(dateOrTimeFunction or just a date) => extract the current month as numeric e.g 11
+        MONTHNAME(dateOrTimeFunction or just a date) => extract the current month as string e.g November
+        DAY(dayOrTimeFunction or just a date) => extract the current day as numeric e.g 31
+        DAYNAME(dayOrTimeFunction or just a date) => extract the current day as a string e.g Monday
+        HOUR(dayOrTimeFunction or just a date) => extract the current hour
+        MINUTE(dayOrTimeFunction or just a date) => extract the current minute
+        SECOND(dayOrTimeFunction or just a date) => extract the current second
+
+    Apart of these functions we also have the EXTRACT functions, to able put our code to other DBMS 
+    because is part of standard SQL code.
+        EXTRACT(unit FROM dateOrTimeFunction or just a date) => we can extract the 'unit', the unit can be:
+                                                DAY, YEAR, MONTH, HOUR, MINUTE, SECOND
+
+
+Exercise. Get the orders place in the current year.
+
+-- Query
+
+USE sql_store;
+
+SELECT *
+FROM orders
+WHERE YEAR(order_date)  > YEAR(NOW())
