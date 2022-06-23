@@ -1,0 +1,80 @@
+Creating Views
+    Queries get complex specially when we use multiple joins and subqueries. This is where views help.
+    We can save these queries in a view => simplify our SELECT statement. Then we can reuse these views
+    to avoid code these queries again.
+    Syntax:
+        CREATE VIEW viewName AS
+        SELECT ...
+        FROM...
+        ....
+    
+    CREATE VIEW statement => doesnt return result like the SELECT statement, so we dont see display anything
+                             it creates a view object
+                                => in the corresponding database => views folder
+                                                                    => just like a table we can see the view
+                                                                        select any column,
+                                                                        order by any column,
+                                                                        filter using WHERE clause,
+                                                                        Join by anytable using the id column
+
+    Views are extemely powerful and can simplify our future queries. Views behave like a virtual table, but
+    remember => views DONT STORE data, the data is actually stoed in our tables.
+             => views just provide a view to the underline tables => thats why we call views
+
+    e.x in sql_invoicing database, get the total_sales for each client
+        SELECT 
+            c.client_id,
+            c.name,
+            SUM(invoice_total) AS total_sales
+        FROM clients c
+        JOIN invoices i
+            USING(client_id)
+        GROUP BY client_id, name
+
+        - we can reuse this query e.g later we want to see what are the top 3 customers according to total_sales
+    
+    e.x creates a view object of the last query
+
+        CREATE VIEW sales_by_client AS
+        SELECT 
+            c.client_id,
+            c.name,
+            SUM(invoice_total) AS total_sales
+        FROM clients c
+        JOIN invoices i
+            USING(client_id)
+        GROUP BY client_id, name
+
+    e.x order the total_sales in descending order
+        SELECT *
+        FROM sales_by_client                => we are selecting the object view
+        ORDER BY total_sales DESC
+
+
+    
+Exercise. Create a view to see the balance for each client. This view should have:
+            - client_id
+            - name
+            - balance => substracting the payment_total from the invoice_total in invoices table
+                      => difference bewteen what we charge client and how much they have pay to us
+
+
+-- Query
+
+USE sql_invoicing;
+CREATE VIEW clients_balance AS
+SELECT
+    c.client_id,
+    name,
+    SUM(invoice_total - payment_total) AS balance
+FROM clients c
+JOIN invoices i
+    USING(client_id)
+GROUP BY client_id, name
+
+
+
+
+
+
+
