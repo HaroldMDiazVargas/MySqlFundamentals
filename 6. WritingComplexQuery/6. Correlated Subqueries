@@ -1,0 +1,47 @@
+Correlated Subqueries
+    Is a subquery where we have a correlation with the outer query. We reference the alias to the outer query.
+    If we dont have a reference of the outer query, so MySQL will execute the subquery only once.
+    In contrast, we use correlated subqueries, the subquery will execute for each record.
+
+    Sometimes can be slow if we have a lot of data. But are very powerful
+
+    e.x From sql_hr db, select employees whose salary is above the average in their office. Look the office_id col
+
+        SELECT *
+        FROM employees
+        WHERE salary > (
+                        SELECT AVG(salary)
+                        FROM employees
+                        WHERE office_id = 1
+                        GROUP BY office_id
+
+        ) AND office_id = 1
+
+        So we have to write the last query the times that office_id exist. So we make the next thing:
+            - we give an alias to outer table 
+            - then we pass the column of that table in the WHERE(filter) of the inner query
+            With this, SQL will do the next thing:
+                - For each employee that iterate will execute the subquery, and will calculate the AVG 
+                  salary but only for the office_id corresponding to that employee.
+
+        SELECT *
+        FROM employees e
+        WHERE salary > (
+                        SELECT AVG(salary)
+                        FROM employees
+                        WHERE office_id = e.office_id
+        ) 
+    
+
+Exercise. In sql_invoicing db, get the invoices that are larger than the client's average invoice amount
+
+USE sql_invoicing;
+
+SELECT *
+FROM invoices i
+WHERE invoice_total > (
+                    SELECT AVG(invoice_total)
+                    FROM invoices
+                    WHERE client_id = i.client_id
+)
+
