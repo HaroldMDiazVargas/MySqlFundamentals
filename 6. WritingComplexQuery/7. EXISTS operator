@@ -1,0 +1,59 @@
+The EXISTS Operator
+    In our WHERE clause we dont reference a column => instead we use EXISTS operator to see if there's a row
+    that matches the criteria in the WHERE clause of the subquery
+
+    We reference the outer query in our subquery(correlated). So for each record MySQL will check if there exists
+    a record that matches the criteria of the subquery.
+
+    When we use IN operator => MySQL execute subquery and returns the result to WHERE clause
+                                if we have a list returned in our subquery so large, we end negative impact 
+                                of performance.
+    
+    When we use EXISTS operator => Subquery doesnot actually returns a result to the outer query. Instead
+                                   return an indication whether any rows of the subquery matches the search condition
+                                   As soon as find a record that matches the condition, will return true to the
+                                   EXISTS operator and this operator will include the current record in the final result.
+
+
+    Note: Use EXISTS operator when the return subquery is a list very large.
+
+    e.x query to get the clients that have an invoice
+
+        SELECT *
+        FROM clients
+        WHERE client_id IN (
+                        SELECT DISTINCT client_id
+                        FROM invoices
+        )
+
+        or using a JOIN
+
+        SELECT DISTINCT client_id, c.name
+        FROM clients c 
+        JOIN invoices i
+            USING(client_id)
+    
+        or 3rd way to solve this => using EXISTS operator
+
+        SELECT *
+        FROM clients c
+        WHERE EXISTS (
+                    SELECT client_id
+                    FROM invoices
+                    WHERE client_id = c.client_id 
+        )
+
+
+
+Exercise. Use sql_store, find the products that have never been ordered
+
+-- Query
+
+USE sql_store;
+SELECT *
+FROM products p
+WHERE NOT EXISTS (
+            SELECT *
+            FROM order_items
+            WHERE product_id = p.product_id
+)
