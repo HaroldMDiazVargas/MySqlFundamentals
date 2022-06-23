@@ -1,0 +1,39 @@
+The IF function
+    Test a condition and return different values depending on => if the condition is true or not.
+    Syntax:
+        IF(expression, firstValue, secondValue) => if the expression is valid, will return firstValue.
+                                                   Otherwise will return the secondValue these values can be 
+                                                   anything(number, string, date, etc)
+
+    e.x classify orders into 2 categories => active and archived, if the order is placed in the current year
+        we want to put it in the active category, otherwise in the archived. 
+        We used this using UNION operator writing 2 statements
+    
+        SELECT 
+            order_id,
+            order_date,
+            IF(
+                YEAR(order_date) = YEAR(NOW()), 
+                'Active', 
+                'Archived') AS category
+        FROM orders
+
+Exercise. Query to have => product_id, 
+                           name, 
+                           orders => number of times each product has been ordered 
+                           frequency => based of what we have in orders column
+                                        if orders > 1 => Many times
+                                        otherwise => Once
+
+-- Query
+
+USE sql_store;
+SELECT 
+    p.product_id,
+    p.name,
+    COUNT(*) AS orders,
+    IF ( COUNT(*) > 1, 'Many times', 'Once') AS frequency
+FROM products p
+JOIN order_items oi
+    USING(product_id)
+GROUP BY product_id
