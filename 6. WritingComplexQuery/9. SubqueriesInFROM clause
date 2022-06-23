@@ -1,0 +1,26 @@
+Subqueries in the FROM clause
+    We can pass subquery in the FROM clause.
+    We can see that subquery just like a virtual table that may be we in the future save the subquery, so we 
+    treat it like a real table in our database.
+
+    Ever we use a subquery in the FROM clause, is a requirement to give an Alias.
+    
+    Note: Write a subquery in the FROM clause, can make our main query more complex. 
+          A better way to solve this problem is using views.
+
+    e.x pass subquery result of the previous lesson in the FROM clause
+
+        SELECT *
+        FROM (
+                SELECT 
+                client_id,
+                name,
+                (SELECT SUM(invoice_total)
+                    FROM invoices
+                    WHERE client_id = c.client_id
+                    ) AS total_sales,
+                (SELECT AVG(invoice_total)
+                    FROM invoices) AS average,
+                (SELECT total_sales - average) AS difference
+            FROM clients c
+        ) AS sales_summary
