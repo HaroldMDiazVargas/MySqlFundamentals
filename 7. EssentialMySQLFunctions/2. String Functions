@@ -1,0 +1,21 @@
+String Functions
+    Most useful functions to work with the string values:
+        LENGTH(string) => number of characters of the string
+        UPPER(string) => convert to uppercase 
+        LOWER(string) => convert to lowercase
+        LTRIM(string) => left trim, so we remove spaces from left
+        RTRIM(string) => right trim, so we remove extra spaces from right
+        TRIM(string) => remove any extra spaces in both sides
+        LEFT(string, amount) => return the first amount of characters of the string
+        RIGHT(string, amount) => return the last amount of characters of the string
+        SUBSTRING(string, startPos, length) => return characters from anywhere in the string(index starts in 1)
+                                            => length argument is optional, so it takes froms startPost to last character
+        LOCATE(searchString, string) => return the first position of the 1st ocurrence of a character or sequence of characters    
+                                     => searchCharacter or searchString is not case sensitive, so can be upper or lowercase
+                                     => we get 0 if the searchString doesnot exist.
+        REPLACE(string, replace?, with? ) => replace a character or a squence of characters
+                                          => pass what we want to replace and with what.
+        CONCAT(string1, string2) => concatenate strings into a final string
+        CONCAT(string1, string2, string3,...)
+
+        Note: All string must be in quotes.
