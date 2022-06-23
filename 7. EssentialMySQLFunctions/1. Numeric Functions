@@ -1,0 +1,11 @@
+Numeric Functions
+    
+    Functions for working with numeric data. We have:
+        ROUND(vakue) => round a number
+        ROUND(value, digit) => we can optional give the number of digits we let
+        TRUNCATE(value, digit) => truncate a number to a determinate amount of digits
+        CEILING(value) => smallest int that is >= to the value
+        FLOOR(value) => smallest int that is <= to the value
+        ABS(value) => get the absolute value of a number
+        RAND() => generate a random floating point number between 0to1
+    
