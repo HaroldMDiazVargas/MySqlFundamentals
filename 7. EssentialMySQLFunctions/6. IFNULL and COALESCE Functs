@@ -1,0 +1,29 @@
+The IFNULL and COALESCE Functions
+    Couple more useful functions in MySQL.
+    - IFNULL(column, stringLabel) => sustitute the NULL values of a column for something else
+    - COALESCE(column1, column2, stringLabel ) => more flexible function. Sustitute NULL values of a column
+                                                  for a value of other column, and at the same time if not, for
+                                                  a string label
+
+    e.x. display label 'Not assigned' to the user for shipper_id for these orders that has shipper_id is NULL
+        SELECT
+            order_id,
+            IFNULL(shipper_id, 'Not assigned') AS shipper
+        FROM orders
+
+    e.x display the value of the comments column if shipper_id is null. and if comments is also null return 'Not assigned'
+        SELECT
+            order_id,
+            COALESCE(shipper_id, comments, 'Not assigned')
+        FROM orders
+    
+Exercise. In store database, write a query with customer and phone columns. In customer column display
+          full name and in the phone display phone number, but if is null display  'Unknown'
+
+-- Query
+
+USE sql_store;
+SELECT 
+    CONCAT(first_name,' ', last_name) AS customer,
+    IFNULL(phone, 'Unknown') AS phone
+FROM customers
