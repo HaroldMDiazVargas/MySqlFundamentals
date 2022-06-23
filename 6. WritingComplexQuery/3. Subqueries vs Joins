@@ -1,0 +1,70 @@
+Subqueries vs Joins
+    Often we can rewrite a subquery using a join or viceversa. The approach we use depends on couple of things.
+    - performance
+    - readibility
+    If both queries have the same performance, we should choose the one is more readible.
+    Sometimes using a subquery can make our query to complex => in thoses cases is better to use a JOIN
+
+e.x Rewrite the last exercise, but instead of subquery use a join. Find clients without invoices
+    SELECT *
+    FROM clients
+    LEFT JOIN invoices 
+        USING(client_id)
+    WHERE invoice_id is NULL
+
+
+Exercise. In sql_store write a query to find customers who have ordered lettuce(id=3). Select customer_id,
+          first_name, last_name
+
+-- Query using 2 inner subqueries
+
+USE sql_store;
+SELECT
+    customer_id,
+    first_name,
+    last_name
+FROM customers
+WHERE customer_id IN (
+                    SELECT customer_id
+                    FROM orders
+                    WHERE order_id IN (
+                                        SELECT order_id 
+                                        FROM order_items
+                                        WHERE product_id = 3
+                                        )
+                    )
+
+
+-- Query using 1 subquery and 1 join
+
+USE sql_store;
+SELECT
+    customer_id,
+    first_name,
+    last_name
+FROM customers
+WHERE customer_id IN (
+                    SELECT  DISTINCT o.customer_id
+                    FROM orders o
+                    JOIN order_items oi
+                        USING(order_id)
+                    WHERE oi.product_id = 3
+                    )
+
+-- Query using Join
+
+USE sql_store;
+SELECT DISTINCT
+    c.customer_id,
+    c.first_name,
+    c.last_name
+FROM customers c
+JOIN orders o
+    USING(customer_id)
+JOIN order_items oi
+    USING(order_id)
+
+WHERE  oi.product_id = 3
+
+The last Query is more readeble, is more meaningful. There's a natural relationsip between customers, orders and
+order items. So in this situation is better use Joins.
