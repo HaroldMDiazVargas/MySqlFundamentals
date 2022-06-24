@@ -1,0 +1,85 @@
+Parameter Validation
+    We have only seen Stored Procedures that select data (SELECT..FROM..WHERE). But we can also use them to
+    INSERT, UPDATE and DELETE data.
+
+    We use parameter validation as part of INSERT, UPDATE and DELETE data => to ensure our Stored Procedure
+    doesn't accidentally store bad data in our database
+
+    To validate parameter value we use IF statement with a condition => we use together with SIGNAL statement
+    to signal or raise an ERROR(equivalent to throw a exception in other programming languages). We need to pass
+    string literal that contains an ERROR CODE. => ¿ERROR CODES ? R/ sqlstate errors in google (ibm.com)
+
+    ERROR CODE => xx First 2 specify the class of the errors e.g 22 represents a Data Exception
+               => 22003 is the standard code for numeric value that is out of range
+
+    
+
+
+    Syntax:
+
+        IF parameter condition THEN
+            SIGNAL SQLSTATE 'ErrorCode' 
+                SET MESSAGE_TEXT = 'MeaningfulMessage' ;
+        END IF;
+
+        UPDATE...
+        ...
+
+
+
+    Note: If we write to much validation logic in our Stored Procedures, these will ended very polluted
+          and it will become hard to maintain. So keep validation logic to the better minimum. We should do 
+          more validation in our app at the time we receive input from the user(in html, css, js, java, python)
+          much faster than we put this errors in our app before in the database. So leave this param validation
+          as last resource in case someone directly call the Stored Procedure without using the app.
+
+    e.x create a Stored Procedure to UPDATE an invoice
+
+        DROP PROCEDURE IF EXISTS make_payment;
+
+        DELIMITER $$
+        CREATE PROCEDURE make_payment
+        (
+            invoice_id INT,
+            payment_amount DECIMAL(9,2),
+            payment_date DATE
+        )
+        BEGIN
+            UPDATE invoices i
+            SET
+                i.payment_total = payment_amount,
+                i.payment_date = payment_date
+            WHERE i.invoice_id = invoice_id;
+                      
+        END $$
+
+        DELIMITER ;
+
+        -- Create and then Call => we can see that invoices table of our database is updated!
+        --                      => But if we pass negative values for payment_amount => it updated but it shouldnt
+        
+
+        e.x make the validation of param when payment_out is less than 0 for the last example
+
+            DELIMITER $$
+            CREATE PROCEDURE make_payment
+            (
+                invoice_id INT,
+                payment_amount DECIMAL(9,2),
+                payment_date DATE
+            )
+            BEGIN
+                IF payment_amount < 0 THEN
+                    SIGNAL SQLSTATE '22003'
+                        SET MESSAGE_TEXT = 'Invalid payment amount';
+                END IF;
+
+                UPDATE invoices i
+                SET
+                    i.payment_total = payment_amount,
+                    i.payment_date = payment_date
+                WHERE i.invoice_id = invoice_id;
+                        
+            END $$
+
+            DELIMITER ;
