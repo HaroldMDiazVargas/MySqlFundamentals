@@ -1,0 +1,17 @@
+Other benefits of views
+    Views can help to simplify our queries. But there're couple more benefits of using views:
+        - Views can reduce the impact of changes to our database design
+            e.g imaigne we have few queries writen of a certain table. In future, we decide to make a change
+                in the table like rename table, rename column, move a column to a different table, etc.
+                so we have to come back and fix all the queries that reference that table
+            But if all queries are based on a view. So the only place we need to change is in the VIEW. 
+            These queries will not be affected by a change in the underline table.
+        - We can use views to restrict acces to the data in the underline table.
+            e.g In our view we can use WHERE clause to filter records or may exclude some columns of the underline
+                tables. If we remove direct access to the table => so user can only update dates throught our
+                views and the user will not be able to modify the value of a certain column or modify the rows
+                that are not returned througt our view.
+
+    Note: Don't apply these benefits to every situation, just remember all these benefits that can 
+          we make with views.
+          
