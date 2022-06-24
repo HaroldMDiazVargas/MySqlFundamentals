@@ -1,0 +1,50 @@
+Parameters
+    We use parameters:
+    - to pass values to our Stored Procedure.
+    - to send values to the calling program(we look it later).
+
+    Syntax:
+        CREATE PROCEDURE storedProcedureName(parameter1 typeOfparameter1, parameter2 typeOfparameter2)
+
+    Some people use conventions like:
+        - p_name, name_p, name_param, etc. => This for naming the parameters and difference for the column names
+        - better way is to give alias to the table and prefix the column with that prefix.
+
+    Note: All parameters are required in MySQL, so we get an ERROR if we dont pass the parameter/s.
+
+    e.x create Stored Procedure for get clients by state => procedure that receive the name of the state and 
+        return the client/s in that state
+
+        DROP PROCEDURE IF EXISTS get_clients_by_state;
+
+        DELIMITER $$
+        CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+        BEGIN
+            SELECT * FROM clients c
+            WHERE c.state = state;            => compare value of state column with value of state parameter
+        END $$
+
+        DELIMITER ;
+
+    
+        -- Execute and call the procedure:
+
+        CALL get_clients_by_state('CA')
+
+
+Exercise. Write a Stored Procedure to return invoices for a given client
+
+-- Query
+
+USE sql_invoicing;
+DROP PROCEDURE IF EXISTS get_invoices_by_client;
+
+DELIMITER $$
+CREATE PROCEDURE get_invoices_by_client(client_id INT)
+BEGIN
+    SELECT * FROM invoices i
+    WHERE i.client_id = client_id;
+
+END $$
+
+DELIMITER ;
