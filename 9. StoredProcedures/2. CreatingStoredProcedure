@@ -1,0 +1,73 @@
+Creating a Stored Procedure
+    We use CREATE PROCEDURE statement to create a Stored Procedure. A common convention of MySQL developers
+    is to write the name in lowercase separate by '_'. We can use parameters to pass a value to our 
+    Stored Procedure. Between BEGIN and END we can hace multiple statements e.g SELECT..FROM...; => we need to
+    terminate(delimiter) each statement using a semicolon(;) even if we have a single statement 
+                                                        => MySQL requirement(Dont worry e.g SQL Server)
+                                                           we dont have to change the default delimiter
+
+    We want to give all the statements to MySQL as a single unit rather than individual statements separated
+    by a semicolon => so we want that MySQL take all this as a single unit and create a Stored Procedure for us
+                      with the name we chose. We dont want to execute invidivual statements that we have here.
+                      => so we need to change the delimiter(;) for something else, for this just before 
+                         creating our Stored Procedure we use the DELIMITER statement to change the default 
+                         delimiter, by convention a lot of developers use $$, but we can literal use anything
+                         e.g //, any sequence of characters we dont use in our SQL code. We need to repeat 
+                         the $$ after END keyword.
+                         With all this we are telling MySQL => this is the new delimiter, and thake all the 
+                         statements as single unit.
+                         Finally we need to change the default DELIMITER back to a semicolon(;)
+                    
+
+
+    Syntax:
+        DELIMITER $$
+        CREATE PROCEDURE storedProcedureName(parameters)
+        BEGIN 
+            statement1;                => Body of Stored Procedure        
+            statement2;             
+            ...
+        END$$
+
+        DELIMITER ;
+
+
+    To call/execute the Stored Procedure:
+        - We can click over the ray icon 
+        - We can use the CALL statement
+            syntax:
+                CALL storedProecedureName()
+
+    
+    Note: Most of the time call a Stored Procedure is something we do in our app code like in C#, java, python, etc
+          But there're times we want to call Stored Procedure in our SQL code.
+
+
+    
+    e.x create a new Stored Procedure that get the clients of clients table
+        DELIMITE $$
+        CREATE PROCEDURE get_clients()
+        BEGIN 
+            SELECT * FROM clients;
+        END$$
+
+        DELIMITER ;
+
+        -- Then in Stored Procedures/ => we just click on the ray icon to call/execute the Stored Procedure
+
+        CALL get_clients()
+
+
+Exercise. Create a Stored Procedure called get_invoices_with_balance to return all the invoices with a balance > 0
+
+-- Query => We can use our invoice_with_balance view that has a column named balance
+
+DELIMITER $$
+CREATE PROCEDURE get_invoices_with_balance()
+BEGIN
+    SELECT *
+    FROM invoices_with_balance
+    WHERE balance > 0;
+END$$
+
+DELIMITER ;
