@@ -1,0 +1,34 @@
+Dropping Stored Procedures
+    Useful if we make a mistake and we want to recreate our Stored Procedure
+    
+    Syntax:
+        DROP PROCEDURE storedProcedureName
+
+    If we try to drop a procedure that doesn't exist => get ERROR. To prevent this, we can use the 
+    IF EXISTS keyword
+
+    Syntax:
+        DROP PROCEDURE IF EXISTS storedProcedureName
+
+    Also just like views, is a good practice to store the code for dropping and creating a each Stored Procedure
+    in a separate SQL file => then put the file under source control/ folder like git. This allow to share
+                              our repository to other team members and everyone can recreate this database with
+                              all its views and Stored Procedures on their machine.
+    
+    So, a basic template for dropping and create a Stored Procedure is like:
+    Syntax:
+        DROP PROCEDURE IF EXISTS storedProcedureName;
+
+        DELIMITER $$
+        CREATE PROCEDURE storedProcedureName(parameters)
+        BEGIN 
+            statement1;               
+            statement2;             
+            ...
+        END$$
+
+        DELIMITER ;
+
+    -- Then we save this SQL code in stored_procedures/ a file called => get_clients.sql 
+
+        
