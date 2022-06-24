@@ -1,0 +1,8 @@
+Creating Procedures Using MySQL Workbench
+    To avoid change the default DELIMITER every time we want to create a Stored Procedure. So an easier way
+    is:
+    - right click on the Stored Procedures/ folder
+        - create Stored Procedure
+            - we just give a name and focus in our SQL statements
+                - Then apply => apply => Done!
+        
