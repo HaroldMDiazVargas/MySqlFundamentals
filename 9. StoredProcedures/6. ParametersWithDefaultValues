@@ -1,0 +1,110 @@
+Parameters with Default Values
+    How to assign a default value to a parameter. For this we can use IF statement:
+    Syntax:
+        IF parameter IS NULL THEN
+            SET parameter = defaultValue;
+        END IF;
+
+    This IF statement must go before executing the statement when we use the parameter. However, recommend
+    to use IFNULL function
+    Syntax:
+        IFNULL(parameter, defaultValue)
+
+    e.x if the call of the Stored Procedure doesn't specify the state => return clients in California('CA') by
+        default
+    
+
+        DROP PROCEDURE IF EXISTS get_clients_by_state;
+
+        DELIMITER $$
+        CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+        BEGIN
+            IF state IS NULL THEN
+                SET state = 'CA';
+            END IF;
+
+            SELECT * FROM clients c
+            WHERE c.state = state;            
+        END $$
+
+        DELIMITER ;
+
+        
+        -- The we call the Stored Procedure:
+            CALL get_clients_by_state(NULL)         => We always have to speficy a value(NULL)
+
+        
+    
+    e.x return all clients by default when passing NULL value
+
+        DROP PROCEDURE IF EXISTS get_clients_by_state;
+
+        DELIMITER $$
+        CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+        BEGIN
+            IF state IS NULL THEN
+                SELECT * FROM clients
+            ELSE 
+                SELECT * FROM clients c
+                WHERE c.state = state;   
+            END IF;
+
+                     
+        END $$
+        DELIMITER ;
+
+        -- However this approach is verbose and it looks amature => Better combine the 2 queries into a single
+           query
+        
+    e.x Improve the SQL code of previous example
+
+        DROP PROCEDURE IF EXISTS get_clients_by_state;
+
+        DELIMITER $$
+        CREATE PROCEDURE get_clients_by_state(state CHAR(2))
+        BEGIN
+        
+            SELECT * FROM clients c
+            WHERE c.state = IFNULL(state, c.state);   
+
+                     
+        END $$
+        DELIMITER ;
+
+        -- IFNULL(state, c.state) => If 1st value is NULL the function return the 2nd value.
+
+
+Exercise. Write a Stored Procedure called get_payments with 2 optional params(can accept NULL):
+          - client_id(INT) => takes 4 bytes (larger numbers)
+          - payment_method_id(TINY INT) => takes 1 byte (0-255)
+
+-- Query
+
+USE sql_invoicing;
+
+DROP PROCEDURE IF EXISTS get_payments;
+
+DELIMITER $$
+CREATE PROCEDURE get_payments(client_id (INT), payment_method(TINYINT) )
+BEGIN
+
+    SELECT * FROM payments p
+    WHERE p.client_id = IFNULL(client_id, p.client_id) AND
+          p.payment_method = IFNULL(payment_method, p.payment_method)
+    
+
+
+
+END $$
+
+DELIMITER ;
+ 
+
+-- Call
+CALL get_paments(1, NULL) 
+
+
+
+-- Difference between arguments and Parameters
+    Arguments => values we supply to the parameters when we make the call
+    Parameters => placeholders are defined in our Stored Procedures or functions
