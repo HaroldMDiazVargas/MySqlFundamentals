@@ -1,0 +1,42 @@
+The WITH OPTION CHECK clause
+    With this we want to prevent that views disappear records when these views are UPDATE or DELETE. 
+    We dont want that a DELETE or UPDATE statement => exclude a row/record from the view.
+    It's fine that a DELETE or UPDATE statement modify our view, but not that remove from it(some cases)
+    Syntax:
+        CREATE OR REPLACE VIEW .... AS...
+        ...
+        ...                         => all the SQL code generate the view
+        ...
+        WITH CHECK OPTION
+
+    e.x update the invoides_with_balance view => set payment_total equal to invoice_total for invoice_id 2, 
+        so we will have a balance of 0. Remember that a filter was applied to create the view (balance > 0)
+
+        UPDATE invoices_with_balance
+        SET payment_total = invoice_total
+        WHERE invoice_id = 2
+
+        -- Then when we refresh the view => invoice number 2 will dispear. This is the default behaviour of views
+           So when we update or delete data throught the views, some of the rows may disappear.
+           There're times we want to prevent this.
+
+    e.x apply clause to prevent UPDATE or DELETE statements for excluding rows from the view. So we need
+        to recreate it.
+
+        CREATE OR REPLACE VIEW invoices_with_balance AS
+        SELECT 
+            invoice_id,
+            number,
+            client_id,
+            invoice_total,
+            payment_total,
+            invoice_total - payment_total AS balance,
+            invoice_date,
+            due_date,
+            payment_date
+        FROM invoices
+        WHERE (invoice_total - payment_total) > 0
+        WITH CHECK OPTION
+
+        -- when we execute the 1st example again => we get an ERROR
+                                                 => CHECK OPTION FAILED
