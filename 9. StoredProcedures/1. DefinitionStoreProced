@@ -1,0 +1,28 @@
+What are Stored Procedures
+
+
+    Let's say we're building an app that has a database. Where we write the SQL statements?
+    We will not to write in our app code, for these reasons:
+        - It will make our app messy and hard to maintain
+            e.g we make an app with C#, java, python => we dont want to mix java code with SQL, because the
+                SQL code gets in the way(in the same file) and makes our app messy and hard to maintain-
+                Also some language like C# or Java have compilation state, so if we have the SQL in our app code
+                we will have to recompile(and potentially redeploy) our app code for any change we make in the 
+                SQL code.
+
+    
+    So we should take our SQL code out of our app code => store our SQL code in a database where it belongs
+
+    Stored Procedure => is a database object that contains a block of SQL code. In our app code just call this
+                        procedure to get or save the data. So we use Stored Procedure to store and organize 
+                        our SQL code.
+
+    Benefits:
+        - Most other DBMS peform some kind of optimization to the code in Stored Procedures. So the 
+          SQL code in Stored Procedure can sometines be executed faster.
+        
+        - Also, just like views Stored Procedure allows us to enforce Data Security. We can remove 
+          the direct access to all the tables and allow various operations like: INSERTING, UPDATING and
+          DELETING to be perform by Stored Procedures, then we can decide who can execute which 
+          Stored Procedure. This limit what user can do with our data, so we for example can prevent certain 
+          user to UPDATE our data
