@@ -1,0 +1,29 @@
+Dropping Triggers
+    Very similar to dropping Stored Procedures
+
+    Syntax:
+        DROP TRIGGER IF EXISTS triggerName;  => IF EXISTS optionally but preffered
+
+    Note: We should DROP and CREATE TRIGGER statements in one SQL file that is also check in source control
+          repository =>So not only can everyone in the team create the same database in their machine, but over
+          time we can view the history of changes to our database.
+
+
+    Syntax:
+        DELIMITER $$
+
+        DROP TRIGGER IF EXISTS triggerName;
+
+        CREATE TRIGGER triggerName
+            AFTER/BEFORE INSERT/UPDATE/DELETE ON tableName
+            FOR EACH ROW                
+
+        BEGIN
+                           
+            ...
+                NEW/OLD.attribute         
+            ...;
+
+        END $$
+
+        DELIMITER ;
