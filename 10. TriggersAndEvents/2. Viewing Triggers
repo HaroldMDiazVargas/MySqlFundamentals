@@ -1,0 +1,30 @@
+Viewing Triggers
+    We have created a couple of triggers so far, but unfortunaly in MySQL workbench there's not way to 
+    visualize the Triggers we have created.
+    
+    We only can see => Tables, Views, Stored Procedures and Functions.
+
+    But we can use SHOW TRIGGERS statement to look all the Triggers in the current database:
+        We can see various attributes about the trigger:
+        - Tirgger name
+        - Event (INSERT, DELETE, UPDATE)
+        - Table 
+        - Statement (code for the trigger)
+        - Timing (BEFORE or AFTER)
+        - Creation datetime of the trigger
+
+        We can filter the result of this info using LIKE operator:
+            - LIKE 'patternString'
+        So if we have a name convention, with this operator we can easily find a trigger associated with a given
+        table.
+
+
+
+        e.x See triggers associated to the payments table
+
+            SHOW TRIGGERS LIKE 'payments%'
+
+
+
+
+    
