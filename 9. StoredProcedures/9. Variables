@@ -1,0 +1,52 @@
+Variables 
+    Define a user variable using SET statement and prefix it wit @. We quite often use them when we call a
+    Stored Procedure that have output parameters. We pass these variables to get the values of output params.
+
+    This variable will be in memory during the entire client session. When the client disconnect from MySQL
+    these variable are freedom. Thats why we refer them as User or Session Variables.
+
+    Syntax of User Variables:
+        SET @variableName = 0
+
+
+    In MySQL we also have nother type of variable called Local Variable. This is the variable we define inside
+    our Stored Procedure or function. This local variable dont stay in memory during the entire user session. As
+    soon our Stored Procedure finishes its execution, these variables are freedom. Quite often we use this
+    type of variables to perform calculation in our Stored Procedure
+
+    Syntax of Local Variables: 
+        BEGIN
+            DECLARE variable1Name type DEFAULT defaultValue1;
+            DECLARE variable2Name type DEFAULT defaultValue2;
+        ...
+        END
+
+    We use the SET statement to set the value of a variable.
+
+
+    e.x Define a new Stored Procedure get_risk_factor. where risk factor is equal to => invoices_total over
+        invoices_count*5 (local variables)
+        
+        DROP PROCEDURE IF EXISTS get_risk_factor;
+
+        DELIMITER $$
+        CREATE PROCEDURE get_risk_factor()
+        BEGIN
+            DECLARE risk_factor DECIMAL(9,2) DEFAULT 0;
+            DECLARE invoices_total DECIMAL(9,2);
+            DECLARE invoices_count INT;
+
+            SELECT COUNT(*), SUM(invoice_total)
+            INTO invoices_count, invoices_total
+            FROM invoices;
+
+            SET risk_factor = invoices_total / invoices_count * 5;
+
+            SELECT risk_factor;
+
+
+        END $$
+
+        DELIMITER ;
+
+        
