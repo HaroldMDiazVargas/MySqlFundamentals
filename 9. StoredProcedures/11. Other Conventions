@@ -1,0 +1,10 @@
+Other Conventions
+    Working in different organizations, we realize different people adopte different conventions.
+    
+    - prefix Function with fn, with or without underline'_'
+    - prefix Stored Procedures with proc, with or without underline'_'
+    - camel case when naming the functions and Stored Procedures e.g getRiskFactor
+    - separate naming using underline '_' e.g get_risk_factor
+    - for DELIMITER some people like $$, //
+    
+    Note: Don't try to invent our own conventions.
