@@ -1,0 +1,60 @@
+Events in MySQL
+    Event is a task or block of SQL code that gets executed according to a schedule. 
+    It can get execute: - once
+                        - in a regular basis like everyday at 10a.m, once at month, so on
+
+    With events we can automated database maintaining taks such as:
+        - deleting state data
+        - copy data from one table into an archived table
+        - aggregating data to generating reports.
+
+    Event Convention Name:
+        interval_action_of_the_event          => interval can be hourly, monthly, yearly, month, so on.
+        
+
+    Steps:
+        1. Turn on MySQL Event Schedule => process than runs in a background, constantly looks for events to execute
+            SHOW VARIABLES; => we can see all system variables of MySQL
+            SHOW VARIABLES LIKE 'event%'; => see only variables whose name start with 'event'
+                Result Grid we can see => event_scheduler set to ON
+
+            SET GLOBAL event_scheduler = ON/OFF => if we dont use events turn off to save system resources
+        
+        2. Syntax:
+
+            DELIMITER $$
+
+            CREATE EVENT eventName     
+            ON SCHEDULE                                                                          => provide a schedule for this event(how often) 
+                AT 'dateTimeValue'                                                               => execute once e.g AT '2022-01-01'
+                EVERY value partOfDateTimeValue STARTS 'dateTimeValue' ENDS 'dateTimeValue'      => execute more than once e.g EVERY 1 HOUR
+                                                                                                    STARTS and ENDS are optional
+            DO BEGIN
+                SQL code                                                                          => Body of Event
+            END $$
+
+            DELIMITER ;
+
+
+
+    e.x Create an event that every year delete audit records that are 1 year older.
+
+        CREATE EVENT yearly_delete_state_audit_rows
+        ON SCHEDULE
+            EVERY 1 YEAR START '2022-01-01' ENDS '2029-01-01'
+        DO BEGIN
+            DELETE FROM payments_audit
+            WHERE action_date < NOW() - INTERVAL 1 YEAR;            => Substract 1 year from the current year
+        END $$
+
+        DELIMITER ;
+
+git 
+        Notes:
+            - NOW() - INTERVAL 1 YEAR is equivalent to using DATESUB(NOW(), INTERVAL 1 YEAR) function  
+                                                             DATEADD(NOW(), INTERVAL -1 YEAR)
+
+
+
+
+    
