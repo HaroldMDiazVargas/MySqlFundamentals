@@ -1,0 +1,86 @@
+Functions
+    We have seen many of the built-in Functions in MySQL, aggregate functions like MIN, MAX, etc; functions
+    for working with numbers,dates, string, so on.
+    Now we are going to see how to create our own functions
+
+    Functions => Are very similar to Stored Procedures, but the main difference is that a function can only
+                 reuturn a single value, unlike Stored Procedures functions can not return result sets with 
+                 multiple rows and columns.
+                 In situations where we want to return a single value => we can create a function  
+
+    
+    Steps: 
+            1. Right click on Functions => Create a new function
+            2. Syntax:
+                    CREATE FUNCTION functionName(parameters)
+                    RETURNS returnDataType              => Specify the type of value that function returns
+                    ATTRIBUTES                          => Every MySQL Function must have at least 1 attribute
+                    BEGIN       
+
+                        RETURN 1;                       => Always we need a RETURN
+                    END 
+            3. Apply
+
+    ATTRIBUTES:
+        - DETERMINISTIC: If we give a function the same set of values, it always return the same value.
+                         Useful in situations where we're not going to return a value based on the data 
+                         in our database, because the data can change. A real world function is a function
+                         that calculates the shipping or tax for an order(formula), because it always
+                         return the same output for the same input.
+        - READS SQL DATA: This means we're going to have a SELECT statement in our function to read some data
+        - MODIFIES SQL DATA: This means we're going to have an INSERT, UPDATE or DELETE statement in a function
+        
+
+    Call the functions:
+        We can use the functions in our SELECT statement just like the built-in functions in MySQL
+        Syntax:
+            SELECT 
+                columns...,
+                functionName(parameters)
+            FROM table
+
+    Drop the functions:
+        Syntax:
+            DROP FUNCTION IF EXISTS functionName; => IF EXISTS is optionally and preferred
+
+    Notes: COUNT(*) if count empty values(0, NULL) => this is always >= 0
+           SUM(something) if SUM empty values(NULL) => this will return NULL
+           Is a good practice to similar to views and Stored Procedures=> save our functions in SQL files
+            and put them in a sourceControl.
+
+
+    e.x Create a function for the calculation of risk_factor per client.
+         => Is not DETERMINISTIC because if we give client_id the risk factor can change in a second
+            like the client makes a payment.
+
+        CREATE FUNCTIONS get_risk_factor_for_client
+        (
+            client_id INT
+        )
+        RETURNS INTEGER
+        READS SQL DATA           
+        BEGIN
+            DECLARE risk_factor DECIMAL(9,2) DEFAULT 0;
+            DECLARE invoices_total DECIMAL(9,2);
+            DECLARE invoices_count INT;
+
+            SELECT COUNT(*), SUM(invoice_total)
+            INTO invoices_count, invoices_total
+            FROM invoices i
+            WHERE i.client_id = client_id;
+
+            SET risk_factor = invoices_total / invoices_count * 5;
+
+            RETURN IFNULL(risk_factor, 0);
+        END
+    
+
+    -- Using the function
+        SELECT 
+            client_id,
+            name,
+            get_risk_factor_for_client(client_id) AS risk_factor
+        FROM clients
+
+
+
