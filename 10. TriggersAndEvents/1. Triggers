@@ -1,0 +1,90 @@
+Triggers
+    Is a block of SQL code that automatically gets executed before or after an INSERT, UPDATE or DELETE 
+    statement.
+    Quite often we use triggers to enforce data consistency. For example whenever we INSERT a new record
+    in a table that must be UPDATE about some user, we must be sure that another column of other table
+    that has a relationship with gets updated => e.g carry out the count about the total payment(abonos). This
+    is where we use trigger
+
+    Trigger Name Convention:
+        tableAssociatied_beforeOrAfter_typeOfSQLstatement 
+            => indicates the trigger gets fire before or after the INSERT, UPDATE or DELETE statement.
+
+
+    Syntax:
+        DELIMITER $$
+
+        CREATE TRIGGER triggerName
+            AFTER/BEFORE INSERT/UPDATE/DELETE ON tableName
+            FOR EACH ROW                => this means trigger gets fire for each row that is affected
+                                           some DBMS also support table level triggers(get fire only once)
+                                           e.g if we insert 5 rows, the trigger gets fire only once
+                                               really MySQL doesn't support this  
+
+        BEGIN
+                            => Body to write any SQL code to modify our data for consistency
+                               we can write raw SQL code or call a Stored Procedure
+            ...
+                NEW/OLD.attribute         => This keyword return the row that we just modify
+                                                NEW => return a row we was just inserted
+                                                OLD => return the old row with the old values before inserted/delete
+                                                    . => using a dot we can access individual attributes
+            ...;
+
+        END $$
+
+        DELIMITER ;
+
+
+    Note: In a trigger we can modify any data from any table except tha table that the trigger is for
+          otherwise, we will end up in a infinite loop because the trigger will fire itself.
+
+
+    e.x Each time a new payment is recorded => we must update the invoices table to update payment_total
+
+        DELIMITER $$
+
+        CREATE TRIGGER payments_after_insert
+            AFTER INSERT ON payments
+            FOR EACH ROW
+        BEGIN
+            UPDATE invoices
+            SET payment_total = payment_total + NEW.amount
+            WHERE invoice_id = NEW.invoice_id;
+
+        END
+
+        DELIMITER ;
+
+        -- Test
+
+        INSERT INTO payments
+        VALUES (DEFAULT, 5, 3, '2019-01-01', 10, 1)
+        
+        -- Now look the invoices table => we can see the payment_total is update for invoice_id 3
+
+
+Exercise. Create a trigger that gets fired when we delete a payment
+
+-- Query
+
+--Trigger
+
+DELIMITER $$
+
+CREATE TRIGGER payments_after_delete
+    AFTER DELETE ON payments
+    FOR EACH ROW
+BEGIN
+    UPDATE invoices
+    SET payment_total = payment_total - OLD.amount
+    WHERE invoice_id = OLD.invoice_id;
+END $$
+
+DELIMITER ;
+
+-- Test
+
+DELETE 
+FROM payments
+WHERE payment_id = 8
