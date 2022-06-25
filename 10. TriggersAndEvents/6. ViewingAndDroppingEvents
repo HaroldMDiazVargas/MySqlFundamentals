@@ -1,0 +1,30 @@
+Viewing and Dropping Events
+    View, drop or alter our events:
+        - View event in current database => use SHOW EVENTS statement
+                                            e.g SHOW EVENTS;
+                                         => we can see all events and their characteristics
+                                         => we can easily use LIKE operator to filter because the name convention
+                                            e.g SHOW EVENTS LIKE 'yearly%'; => see events get triggered every year
+
+        - Drop an event => use DROP EVENT IF EXISTS statement
+                            e.g DROP EVENT IF EXISTS yearly_delete_stale_audit_rows;
+        
+        - Alter an event to make changes without need to drop and recreate it.
+          We use ALTER EVENT statement => we can change schedule, SQL statement that will be executed
+            e.g     
+            DELIMITER $$ 
+
+            ALTER EVENT yearly_delete_state_audit_rows
+            ON SCHEDULE
+                EVERY 1 YEAR START '2022-01-01' ENDS '2029-01-01'  => as we have ALTER EVENT statement, we can change the schedule
+            DO BEGIN
+                DELETE FROM payments_audit
+                WHERE action_date < NOW() - INTERVAL 1 YEAR;           
+            END $$
+
+            DELIMITER ;
+
+
+          We also use the ALTER EVENT statement => to temporary Enable or Disable an event
+
+            ALTER EVENT eventName DISABLE/ENABLE;
