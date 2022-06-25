@@ -1,0 +1,51 @@
+Output Parameters
+    We can also use parameters to return values to the calling program.  By default all parameters in a 
+    Stored Procedure are input parameters(only used to pass values to our procedures), so we need to prefix
+    the output parameters with the OUT keyword
+    Syntax:
+        OUT parameter1 datatype,
+        OUT parameter2 datatype...
+        ..
+        BEGIN
+            SELECT ...
+            INTO   parameter1, parameter2, ...
+
+
+    So we can use these parameters to use them OUT of the Stored Procedure
+
+    Note: Using output parameters requires a little bit more effort to read data. Suggest avoid them, unless
+          we have a valid reason to use them.
+
+
+    e.x Create a Stored Procedure get_unpaid_invoices_for_client
+
+        DROP PROCEDURE IF EXISS get_unpaid_invoices_for_client;
+
+        DELIMITER $$
+        CREATE PROCEDURE get_unpaid_invoices_for_client
+        (
+            client_id INT,
+            OUT invoices_count INT,
+            OUT invoices_total DECIMAL (9,2)
+        )
+
+        BEGIN 
+            SELECT
+                COUNT(*), SUM(invoice_total)
+            INTO invoices_count, invoices_total
+            FROM invoices 
+            WHERE i.client_id = client_id AND payment_total = 0
+        END $$
+
+        DELIMITER ;
+
+        -- We can receive these values throught our parameters. So when we execute the Stored Procedure, we get:
+
+        set @invoices_count = 0;            => Define variable 1 (user defined variable)
+        set @invoices_total = 0;            => Define variable 2
+        call sql_invoicing.get_unpaid_invoices_for_client(3 , @invoices_count, @invoices_total);
+        select @invoices_count, @invoices_total;     => Read the values and display them. 
+
+        -- Variable is basically an object that we use to store a single value in memory. To define a varible
+           we need to prefix it with '@' using SET statement. 
+
