@@ -1,0 +1,90 @@
+Using Triggers for Auditing
+    Uses cases for triggers:
+        - Data consistency (we have seen already)
+        - Logging changes to the data por auditing(revisión de cuentas)
+          e.x whenever someone insert or delete a record => we can log it somewhere and later come back
+                                                            and see who make changes and when.
+                                
+        Open 4_create-payments-table.sql
+        - We're using the CREATE TABLE statement to create a new table(later) => Run and see new empty table
+
+        USE sql_invoicing; 
+
+        CREATE TABLE payments_audit
+        (
+            client_id 		INT 			NOT NULL, 
+            date 			DATE 			NOT NULL,
+            amount 			DECIMAL(9, 2) 	NOT NULL,
+            action_type 	VARCHAR(50) 	NOT NULL,               => Can be insert, update or delete
+            action_date 	DATETIME 		NOT NULL                => when this action was performed
+        )
+
+
+        e.x When we insert a new payment => we can insert a new record to our payments_audit table
+            When we delete a old payment => we can insert a new recor to our payments_audit table
+                                            Each new record will store like a history(changes throguth time)
+        
+        -- Trigger1 
+        DELIMITER $$
+
+        CREATE TRIGGER payments_after_insert
+            AFTER INSERT ON payments
+            FOR EACH ROW
+        BEGIN
+            UPDATE invoices
+            SET payment_total = payment_total + NEW.amount
+            WHERE invoice_id = NEW.invoice_id;
+
+            INSERT INTO payments_audit
+            VALUES (NEW.client_id, NEW.date, NEW.amount, 'Insert', NOW());
+
+
+
+        END
+
+        DELIMITER ;
+
+
+        -- Trigger2
+        DELIMITER $$
+
+        CREATE TRIGGER payments_after_delete
+            AFTER DELETE ON payments
+            FOR EACH ROW
+        BEGIN
+            UPDATE invoices
+            SET payment_total = payment_total - OLD.amount
+            WHERE invoice_id = OLD.invoice_id;
+
+            INSERT INTO payments_audit
+            VALUES (OLD.client_id, OLD.date, OLD.amount, 'Delete', NOW());
+
+        END $$
+
+        DELIMITER ;
+
+
+        --Test
+
+        INSERT INTO payments
+        VALUES (DEFAULT, 5, 3, '2019-01-01', 10, 1)
+
+        -- then we delete 
+
+        DELETE FROM payments
+        WHERE payment_id = 11
+
+        -- Output 
+        In payments_audit we can see 2 records:
+            - One record tell us at the time Insert action by clietn_id 5
+            - other record tell us at a date time was a Delete action by client_id 5
+
+
+        
+        Note: In a real world app we may want to log changes in many tables, so in that case 
+              we shouldn't create a separate audit table for each table in our database.
+              e.g in this example we created payments_audit table => for payments table
+              we shouldn't do this in real app.
+              Instead we need a General Structure for logging changes => See in Database Design folder
+                                                                         to learn about general audit tables.
+              
