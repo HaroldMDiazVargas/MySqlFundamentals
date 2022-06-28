@@ -1,0 +1,71 @@
+Transaction Isolation Levels
+    Review the Isolation Levels
+
+    
+
+                     Lost Updates         Dirty Reads        Non-Repating Reads         Phantom Reads
+    --------------------------------------------------------------------------------------------------------
+    READ 
+    UNCOMMITED
+
+    READ
+    COMMITED                                    X               
+
+    REPEATABLE              X                   X                       X
+    READ
+
+    SERIALIZABLE            X                   X                       X                       X
+
+
+    - READ UNCOMMITED: Doesn't protect from those problems because our transactions are not isolated from 
+                       each other, they can read uncommited changes by each other.
+
+    - READ COMMITED: Gives to our transactions a bit of isolation, we can only read commited data and this prevent
+                     Dirty Reads. But at this level is possible during the transaction we read something
+                     twice and we give different results because another transaction updates the data in 
+                     between the two reads.
+    
+
+    - REPEATABLE READ: We can confident that multiple reads return the same result, even if the data 
+                       get change in the meantime.
+
+    - SERIALIZABLE: Prevents all the problems. But this puts an overhead on the server because3 it needs
+                    extra resourcers in terms of memory and CPU to manage our transactions that have to wait.
+    
+    So the more we increase the isolation level => the more performance and scalability problems we're gonna
+    experience because more Locks will be involve to isolated transactions. 
+
+    So the Fast Isolation Level is READ UNCOMMITED => because it doesn't set any Locks and ignores locks set 
+                                                      by another transactions. But we experience all concurrency
+                                                      problems.
+    
+    In MySQL the default Transaction Isolation Level is REPEATABLE READ. Which work well for most scenarious.
+    
+    For READ UNCOMMITED and READ COMMITED levels => we can use in situations such as reporting or we dont need
+    precise consistency or when we deal with data that is rearely updated and we want to achive better 
+    performance.
+
+    So, only change the Isolation Level only if we have to, otherwise we can stick to the default level.
+
+
+    - See the current Transaction Isolation Level
+        SHOW VARIABLES LIKE 'transaction_isolation';
+    
+    -Change the Transaction Isolation Level
+        SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;         => Set isolation level for the next transaction 
+        SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE; => Set isolation level for all future transactions in the current session
+        SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;  => Set isolation level globally for all new transactions in all session
+
+    If we're app developer we may have a method somewhere in our app that connects our database to execute
+    a given transaction => we may use an ObjectRelationMapper or Directly connec to MySQL, either way
+    just before execute our Transaction we change the Isolation Level 'SESSION' only for that session or connection
+    and then run our transaction.
+
+    - Connect MySQL
+        - Change Isolation Level(SESSION)
+            - Execute transaction
+                - Disconnect    
+
+    This way other transactions in the database dont get affected.
+
+    
