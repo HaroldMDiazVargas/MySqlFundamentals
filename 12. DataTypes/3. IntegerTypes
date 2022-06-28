@@ -1,0 +1,26 @@
+Integer Types
+    We use Integer to store hold numbers that dont have a decimal point. 
+    In MySQL we have 5 integer types different in terms of number of bytes used and the range of values they
+    can store:
+    - TINYINT: takes 1byte  [-128, 127]
+    - UNSIGNED TINYINT: store [0, 255] e.g people age
+    - SMALLINT: takes 2bytes [-32K, 32K] 
+    - MEDIUMINT:takes 3bytes [-8M, 8M]
+    - INT: takes 4bytes      [-2B, 2B]
+    - BIGINT: takes 8byes [-9Z, 9Z]
+
+    We can mark a column as UNSIGNED(checkbox) to allow only positive numbers and also this prevent 
+      accidentally store negative values.
+
+    If we try to store a value outside of the range of column datatype => MySQL throws an error saying
+      the value is Out Of Range.
+
+    Numeric types have another attribute called => ZEROFILL
+      This is useful in situation where we want a zero pad the values, so they always have the same number of digits
+      When defining a Numeric Column we can specify the display size in parenthesis, e.g INT(4) our numbers
+      have always 4 digits e.g 0001 (number 1) => This only affect how MySQL display the values not how store them
+
+    Note: Use the smallest data type that suits our needs. Our database will be smaller in size and our queries
+          will execute faster. If we are dealing with large amount of data, our queries is going to perform
+          better if we use every byte consciously, because these bytes will have to transfer between the disk
+          and memory => less data in memory => faster queries !
