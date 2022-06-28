@@ -1,0 +1,54 @@
+Deadlocks
+    Classic Problem in databases.
+
+    Deadlock: Happen when different transactions can't complete because each transaction holds a Lock that the 
+              other needs. So both transactions keep waiting for each other and never realease the Lock
+
+
+    e.x
+
+    -- Local Instance 1
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers SET state = 'VA' WHERE customer_id = 1;
+    UPDATE orders SET status = 1 WHERE order_id = 1;
+    COMMIT;
+
+
+    -- Local Instance 2
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE orders SET status = 1 WHERE order_id = 1;
+    UPDATE customers SET state = 'VA' WHERE customer_id = 1;
+    COMMIT;
+
+    -- Simulate
+    We have 2 sessions but the UPDATE statements are in different order(swap).
+    - Run the 1st Transaction => till first UPDATE => state of customer 1 is updated
+                                 so this transaction put a Lock in this record
+                                 so other transactions will not be able to update this record(wait)
+                                 doesn't matter what isolation level is used.
+    - Run the 2nd Transaction => till first UPDATE => status of order 1 is updated
+    - At this point => 1st Transaction has to wait for 2nd UPDATE, because transaction 2 already put a Lock
+                       in this record. 
+                       Both transactions are waiting for each other => never be able to complete
+
+    
+    ERROR Deadlock Code 1213
+        - Deadlocks are not a big issue Unless they happen so frequently. 
+        - We should write our app in a way it can reissue the transaction if the transaction gets ROLLBACK
+            because of a Deadlock or just tell the user that operation fails => try again.
+        - There're a few things we can make to minimize these:
+            - If we are frequently detecting Deadlock between 2 transactions, look at the code:
+              these transaction can be part of two Stored Procedures. We may look the order of the 
+              statements of these transactions, if these transaction updates records in the reverse 
+              order => is likely we are gonna have a deadlock => SOL same order!
+            - Keep transactions small and shorter duration: We're not likely to collate with other transactions
+              because if we have transactions that operate in really large tables => these transactions may take
+              a long time to run (risk for collition).
+              See if we can Schedule these transaction to run in non-peek hours(not active users).
+              
+
+
+
+
