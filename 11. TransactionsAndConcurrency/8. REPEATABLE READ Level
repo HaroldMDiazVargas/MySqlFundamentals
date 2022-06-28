@@ -1,0 +1,65 @@
+REPEATABLE READ Transaction Isolation Level
+    This Isolation Level our reads are going to be consistence and repetable
+
+    e.x
+
+    -- Local Instance 1
+    USE sql_store;
+    SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+    START TRANSACTION;
+    SELECT points FROM customers WHERE customer_id = 1;
+    SELECT points FROM customers WHERE customer_id = 1;
+    COMMIT;
+
+
+
+    -- Local Instance 2
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers
+    SET points = 40
+    WHERE customer_id = 1
+    COMMIT;
+
+
+    -- Simulate
+    - Run the 1st Transaction but only the 1st SELECT => we get 30 points
+    - Run the 2nd Transaction to set points = 40
+    - Run again the 1st Transaction but now the 2nd SELECT => we get 30 points again
+
+    This is the default leve Isolation MySQL uses that solve most of the concurrency problems. But at this level
+    we have the Phantom Read problems
+
+
+    e.x Phantom Read Problem
+
+    -- Local Instance 1
+    USE sql_store;
+    SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+    START TRANSACTION;
+    SELECT * FROM customers WHERE state = 'VA';
+    COMMIT;
+
+
+
+    -- Local Instance 2
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers
+    SET state = 'VA'
+    WHERE customer_id = 1
+    COMMIT;
+
+    -- Simulate
+    - Run the 2nd Transaction but not COMMIT yet(pending transaction in memory)
+    - Run the 1st Transacton till SELECT statement => we see only one customer from VA
+    - COMMIT changes for 2nd Transaction (now we have 2 customers located in VA)
+    - If we Run the 1st Transacton till SELECT statement AGAIN => we see only one customer from VA(same result)
+      because our REPEATABLE READ are going to be consistence.
+    - So we have to COMMIT the 1st transaction => and then execute a new one Transaction to see the new(phantom)
+      customer updated by transaction 2
+
+
+
+
+    Note: Remember to COMMIT every transaction before make any change or a new demo.
