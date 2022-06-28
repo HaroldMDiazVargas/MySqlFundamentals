@@ -1,0 +1,38 @@
+Creating Transactions
+
+    Syntax:
+        START TRANSACTION;
+
+        ...
+        single statements
+        ...
+
+        COMMIT/ROLLBACK;    
+
+
+    COMMIT: When MySQL sees this command, it will write all changes to the database
+            if 1 change fails => automatically undo the previous changes and transaction is ROLL BACK
+
+    ROLLBACK: We use this instead COMMIT statement when we want to do some error checking and manually 
+              ROLL BACK the transaction. This will roll back the Transactions and undo all the changes
+
+    MySQL wraps every single statement that we write inside a Transaction and then it will do a commit if that
+    statement didn't return an error => this is controlled by a system variable called autocommit:
+        SHOW VARIABLES LIKE 'autocommit' => ON by default.
+
+    Note: To execute line by line use Ctrl+Enter (Execute Current Statement). And to simulate the server fail
+          we can close the instance and simulate => connection offline, server crash, so on. 
+
+    e.x Create a transaction to store an order with an item.
+        USE sql_store;
+
+        START TRANSACTION;
+
+        INSERT INTO orders(customer_id, order_date, status)
+        VALUES (1, '2019-01-01', 1);
+
+        INSERT INTO order_items
+        VALUES (LAST_INSERT_ID(), 1, 1, 1);
+
+        COMMIT;
+
