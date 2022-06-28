@@ -1,0 +1,39 @@
+SERIALIZABLE Isolation Level
+    Provides the highest level of Isolation and solves all concurrency problems.
+    So our transaction are executed in sequence => one after another
+    We really dont have concurrency => the experience we get is like a single user system.
+                                        one user executes different commands against the database
+                                        these commands are executed sequentially
+
+    e.x
+
+    -- Local Instance 1
+    USE sql_store;
+    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+    START TRANSACTION;
+    SELECT * FROM customers WHERE state = 'VA';
+    COMMIT;
+
+
+
+    -- Local Instance 2
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers
+    SET state = 'VA'
+    WHERE customer_id = 3
+    COMMIT;
+
+
+    -- Simulate
+    - Run 1st transaction => Only START 
+    - Run 2nd transaction => but not commit yet
+    - Run 1st transaction => SELECT statement => we get a spinner(waiting for the 2nd transaction to finish)
+    - Run 2nd transaction => COMMIT
+    - Now the 1st transaction is executed automatically and we have 3 customers in 'VA'
+
+
+    We solve all concurrency problems, we dont have Lost Updates, Phantom Reads or Dirty Reads. But the more 
+    users and the more concurrency request we have => more wait we are gonna experience.
+     - Use only to prevent Phantom Reads, not for every transaction in our system
+     - Repeatable Read level work for most scenearious
