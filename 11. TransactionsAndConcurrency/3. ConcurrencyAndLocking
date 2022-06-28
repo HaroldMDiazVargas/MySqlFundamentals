@@ -1,0 +1,39 @@
+Concurrency and Locking
+    We have been the only user in our database, but in a real world is quite often more than 1 user is trying 
+    to access to the same data at the same time => This is what we called Concurrency.
+    Concurrency can become a problem when user modifies the data that other users are trying to retrieve or
+    modify.
+
+    To simulate various users:
+        - open a new Local Instance(new connection/session to the server)
+        - execute line by line(Ctrl+enter) 1st session=> till statement but not COMMIT
+        - execute line by line 2nd session => til statement(spinner)
+
+    When we executed 1st sesison => MySQL put a Lock on the record that we modify. So if another transaction
+    try to modify the same record => it has to wait until the 1st transaction is completed(commited or rollback).
+
+
+    e.x Simulate 2 users trying to update the points for customer 1 in the same time.
+        -- Local instance 1
+        USE sql_store;
+        START TRANSACTION;
+        UPDATE customers
+        SET points = points + 10'
+        WHERE customer_id = 1
+        COMMIT;
+
+        -- Local instance 2
+        USE sql_store;
+        START TRANSACTION;
+        UPDATE customers
+        SET points = points + 10'
+        WHERE customer_id = 1
+        COMMIT;
+
+    
+    Note: If a transaction trys to modify a rows or multiple rows, it puts a Lock on these rows. And these 
+          Lock/s prevent other transactions for modify these rows until the 1st transaction is done.
+    
+    So for the default Locking of MySQL we dont have to worry for Concurrency problems most of the time. 
+    But there're special cases when the default bahaviour is not sufficient for specific scenarious for our 
+    app => We can overried the default bahaviour.
