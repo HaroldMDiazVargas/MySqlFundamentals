@@ -1,0 +1,26 @@
+Transactions in MySQL
+    Transaction is a group of SQL statements that represent a single unit of work. All the statements should
+    be completed succesfully or the transaction will fail.
+    e.g Bank Transaction => when we transfer money, these amount of money should be taken from our account
+                             and deposit into our friend's account. There're 2 operations, but these together
+                             represent a single unit of work.
+
+    We use Transactions in situations when we want to make multiple changes to the database and we want 
+    all these changes to succes or fail together as a single unit.
+
+    e.x Store an order with an item in a database. We need 2 SQL statement to store this order
+        - INSERT the order record into orders table
+        - INSERT the order item record into order_item table
+        But what if server crashed at the same we insert the order item ?
+         We ended with an incomplete order => our database is not in a consistence state.
+    
+    Transactions have few properties(ACID):
+        - Atomicity: Means our transactions are like atoms => they're unbreakable.
+                     each transaction is a single unit of work no matter how many statements it contains.
+        - Consistency: With these transaction our database will always remain in a consistence state
+        - Isolation: These trasactions are isolated or protected from each other, even if they try to modify
+                     the same data. Only 1 transaction at time can update these rows when are modifying the same
+                     data. So, other transactions have to wait to other transaction to be completed.
+        - Durability: Once a transaction is commited, the changes made by the transaction are permanent.
+                      So if we have a power failed or a system crashed, we're not going to lose the changes.
+            
