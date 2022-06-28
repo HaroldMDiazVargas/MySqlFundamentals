@@ -1,0 +1,59 @@
+READ COMMITTED Transaction Isolation Level
+    Read only commited data, we dont have dirty reads.
+
+    e.x
+
+    -- Local Instance 1
+    USE sql_store;
+    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    SELECT points
+    FROM customers
+    WHERE customer_id = 1;
+
+
+
+    -- Local Instance 2 
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers
+    SET points = 20
+    WHERE customer_id = 1;
+    ROLLBACK;
+
+
+    -- Simulate
+    - If we run Local Instance 2 but we dont commit(Before COMMITT or ROLLBACK)
+    - then if we run 1st transaction we see the original data of the table until we commit it.
+
+
+    So we dont have Dirty reads => But we have Unrepeatable reads:
+    Is possible during a transaction we need to read something twice, but we get different values each time.
+
+    e.x
+
+    -- Local Instance 1
+    USE sql_store;
+    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    START TRANSACTION;
+    SELECT points FROM customers WHERE customer_id = 1;
+    SELECT points FROM customers WHERE customer_id = 1;
+    COMMIT;
+
+
+
+    -- Local Instance 2 
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers
+    SET points = 20
+    WHERE customer_id = 1;
+    ROLLBACK;
+
+    -- Simulate
+    - If we run Local Instance 2 and commit the transaction => we have 20 points
+    - then if we run 1st transaction but only the 1st SELECT statement, we see we have 20 points
+    - then if we run Local Instance 2 and commit the transaction with new points => 30 points
+    - finally we run the 1st transaction but now the 2nd SELECT statement, we see that we have 30 points
+
+    So we have inconsistence reads, because we are SELECT the same data but we have different values.
+    To solve this problem we need to increase the Isolation Level for the 1st Transaction.
