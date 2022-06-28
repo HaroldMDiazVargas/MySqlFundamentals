@@ -1,0 +1,7 @@
+MySQL Data Types
+    In MySQL we have:
+        - String Types
+        - Numeric Types
+        - Date and Time Types
+        - Blob Types => Store binary data
+        - Spatial Types => Store geometry or geographical values
