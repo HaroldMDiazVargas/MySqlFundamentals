@@ -1,0 +1,9 @@
+Date and Time Types
+    In MySQL we have 4 data types for storing date and time values:
+     - DATE: Storing a date without a time component
+     - TIME: Storing a time value
+     - DATETIME: We can use for the same of TIMESTAMP => uses 8bytes, if we want to store for year > 2038
+                 we should use this.
+     - TIMESTAMP: Keeping track when a row was inserted or last updated. Use 4bytes and only store dates 
+                  up-to the year 2038 (2038 problem)
+     - YEAR: Storing a four digit year
