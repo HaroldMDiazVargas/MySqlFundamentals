@@ -1,0 +1,21 @@
+Boolean Types
+    Used to store a YES/TRUE or NOT/FALSE kind of values.
+    IN MySQL we have 1 datatype called:
+    - BOOL
+    - BOOLEAN (is the same of BOOL)
+    This datatype is really a synonym of TINYINT because:
+    - TRUE keyword internally is represented by a 1
+    - FALSE is representes as a 0
+
+    e.x 
+
+    UPDATE posts 
+    SET is_published = TRUE
+
+    -- Equivalent SQL code:
+    
+    UPDATE posts 
+    SET is_published = 1
+
+    TRUE and FALSE are more descriptive
+
