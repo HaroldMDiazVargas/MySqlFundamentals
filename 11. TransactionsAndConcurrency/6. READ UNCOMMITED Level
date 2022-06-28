@@ -1,0 +1,33 @@
+READ UNCOMMITED Transaction Isolation Level
+    We will able to read uncommited data, so we are gonna have dirty reads.
+
+
+    e.x
+
+    -- Local Instance 1
+    USE sql_store;
+    SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+    SELECT points                                    => Here we dont have START TRANSACTION(autocommit MySQL)
+    FROM customers
+    WHERE customer_id = 1;
+    
+
+    -- Local Instance 2
+    USE sql_store;
+    START TRANSACTION;
+    UPDATE customers
+    SET points = 20
+    WHERE customer_id = 1;
+    COMMIT;
+
+
+
+    -- Simulation
+    - Initially customer with id=1 has 2273 points
+    - If session2 run till the UPDATE statement (before COMMIT)
+    - then session1 we run => We have 20 points 
+                              now in the 2nd transaction instead of COMMIT is ROLLBACK or maybe the server crashed
+                              in the 1st transaction we're still working with a value that never existed.
+
+    Note: With this Level we may experience all concurrency problems
+      
