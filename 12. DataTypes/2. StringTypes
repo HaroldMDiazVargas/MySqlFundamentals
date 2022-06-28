@@ -1,0 +1,28 @@
+String Types
+    String category we have a bunch of data types:
+    - CHAR(x) => Store fixed-length strings e.g abbreviation, genre, so on.
+    - VARCHAR(x) => Store variable-length strings e.g username, password, emails, addresses, so on.
+                    maximum length is 65535 characters(~64kB)
+    - MEDIUMTEXT => Store 16MB(16 Million characters), e.g json objects, short-medium length book, css strings
+    - LONGTEXT => Store 4GB of textual data e.g text books, years of log files
+    - TINYTEXT => Store 255 characters(bytes)
+    - TEXT => Store 64KB, but is better VARCHAR because last one can be indexed(speed up our queries)
+
+    We can also use these String data types to store numeric values like zip codes and phone numbers. Because
+    we dont use these values in mathematical operations. Also these values may contain a hyphen(-) or 
+    parenthesis to group a few digits.
+
+    Is a good practice to use standard length for most of the VARCHAR columns:
+    - 50 => for short strings for username, passwords
+    - 255 => medium-length string for addresses
+    This consistency simplify the maintain of our databases, so we dont have to constant check the length of each
+    column
+
+
+    Finally, all these types support international characters:
+    - English letters uses 1 byte
+    - European and Middle-eastern use 2 bytes
+    - Asian languages use 3 bytes 
+
+    So if the type of a column is CHAR(10) => MySQL will reserve 30 bytes for the values in that column
+                                              because is the max bytes vaue when use Asian language
