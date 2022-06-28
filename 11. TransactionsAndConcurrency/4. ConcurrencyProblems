@@ -1,0 +1,40 @@
+Concurrency Problems
+    Common problems that Concurrency brings:
+     - Lost Updates: This happens when 2 Transactions try to update the same data and we dont use Locks.
+                     In this situation the transaction that commit later will override the changes made by
+                     the previous transactions. For this we use Locks => MySQL uses a Lock Mechanization to 
+                     prevent 2 transactions updating the same data at the same time, they will run in 
+                     sequence one after another to make both updates.
+    - Dirty Reads: This happens when a transaction reads data that hasn't been commited yet. This happens 
+                   when an User1 update a record but before commit this record an User2 reads the record.
+                   If before the User2 transaction finishes => the User1 transaction ROLLBACK, so the 
+                   transaction of User2 will have data that never existed => Dirty Reads.
+                   To solve this problem we need to provide a level of isolation around our transactions, so
+                   data modified by transaction is not inmmediately visible to other transactions, unless is
+                   COMMITED. The Standard SQL define 4 Transaction Isolation Levels e.g One of these is 
+                   READ COMMITED => Transaction can only read COMMITED data.
+    - Non-repeating Reads: By adding more Isolation to our transaction we guarantee that our transaction can 
+                           only read commited data. But during the course of our transaction we update something
+                           twice and get different results. We need to isolate our transaction so the modify
+                           of our data by other transaction are not visible. The SQL Standard define another 
+                           Isolation Level called REPEATABLE READ => With this level our reads are repeatable
+                           and consistence even if the data gets changed by other transactions, we see the 
+                           snapshot that was stablished by the 1st read.
+    - Phantom Reads: When we miss in our query a data because they get added, updated or removed after we 
+                     executed the query(appear suddenly like a ghost). This depends on the business problem we
+                     are trying to solve and how important it is to include in our transaction. We can always
+                     re-executed transaction A and then the data was updated by transaction B will be included.
+                     But if is absolutely CRITICAL to include all elegible data in transaction A, we have to 
+                     make sure that there're not other transactions running than can impact our query. For this
+                     we hav another Isolation Leve called SERIALIZABLE: This guarantee that our transaction will
+                     aware of changes currently been made by other transactions to ther data, so the transaction
+                     has to wait for these other transactions. So our transactions will execute in sequence. This
+                     is the highest level of isolation that we can apply to our transactions and gives us the 
+                     most certainly in our operations, But it comes with a cost:
+                        - The more users and concurrent transactions we have the more wait we're gonna
+                          experience and our system is gonna slow down.
+                    
+                    For this reason we can reserve this only in scenarious where is absolutely critial and
+                    neccesary to prevent Phantom Reads.
+    
+    
