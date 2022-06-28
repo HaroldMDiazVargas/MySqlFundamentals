@@ -1,0 +1,27 @@
+Enum and Set Types
+    ENUMS: Restrict the values for a column to limit the list of strings. 
+            e.g column called size allow ENUM('small', 'medium', 'large')
+           If we add anything else MySQL gives us an error. We can give only the values we specify but 
+              can be in lower or uppercase.
+    
+           Generally are bad and we should avoid:
+            - changing the members of an ENUM can be expensive
+                e.g rename or adding a new member => MySQL will rebuild entire table(expensive if we have million records)
+            - we can't add additional attributes to each member
+            - if ww want to display members in a drop-down list is hard word(not easy)
+            - ENUMS are not reusable, if we have another table and we want to reuse these values there
+              in that table we need to redefine this ENUM with these members(duplication, apply changes in
+              multiple places)
+    
+            A better approach instead of ENUMS is to have a separate table e.g SIZES table 
+              we can store all the sizes and all additional attributes they have. We can reuse this table 
+              in multiple places, and if we want to get all the sizes we write just a single SELECT statement.
+              We refer a table like this => Look Up table. We use quite often these tables to list a 
+              drop-down list.
+
+    SET: similar type, but a SET can store mutliple values
+         SET(...). Similar to ENUM we specify a list of values and then we can store multiple
+         values in a column.
+
+         Again this is really bad => a lot of issues.
+
