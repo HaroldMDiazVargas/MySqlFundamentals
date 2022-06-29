@@ -1,0 +1,29 @@
+Primary Keys
+    We need to add a Primary Key to each table
+    PK => column that uniques indentify each record in a given table.
+          Ideally PK value shouldn't change, ideally must be keep the same value forever
+
+    students table:
+        - we can't not use first_name, last_name, neither the composite of both.
+        - email certainly unique identify each record, but the problem is the several length
+          and if we use this, we need to repeat this column in enrollments table to define the relationship
+          That's not good idea, because we're repeating several characters. Also, a student can change 
+          the email later on. 
+        - We introduce a new column => ID column, we use that as Primary Key
+            - add new column:
+                - student_id INT => mark as PK an NN must mark automatically and also mark as AI
+                                    also by convention move to top this column
+
+    courses table:
+        - Here we also introduce a new column
+            - add new column:
+                - course_id INT => mark as PK and also mark as AI(auto increment)
+    
+   
+    
+
+
+
+
+        
+          
