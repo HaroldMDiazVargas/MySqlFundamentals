@@ -1,0 +1,67 @@
+Logical Models
+    We continue with the Conceptual Model that we built in the last lecture.
+    We refine the Conceptual Model to come with a Data Model or Data Structure for storing our data. This 
+     Logical Model is independent to database tecnhologies. This is just an abstract Data Model that clearly
+     shows the Entities and their relationships, but is a more detailed that the Conceptual Model.
+
+    Logical Model:
+        - We need to specify the type of each attribute:
+            For Student Entity:
+                - name (string) => good practice to split name to firstName and lastName, this helps to later 
+                                   we can query according the last name very easy. The same is true for addresses.
+                
+                - firstName (string)
+                - lastName (string)
+                - email (string)
+                - dateRegistered (dateTime)
+            For Course Entity:
+                - title (string)
+                - price (float)
+                - instructor (string)
+                - tags (string) => we can keep simple use string, but if a course has multiple tags we
+                                   can separate them using a comma(we will see later in Normalization)
+            
+        
+        - Then we need to specify the type of the relationship between our Entities:
+            We have 3 main types of Relationships:
+            - One-to-one   ----
+            - One-to-many  ----∊
+            - Many-to-many  Ǝ----∊
+            The other types are variation of these 3 types.
+        
+            In this case, we have a Many-to-many relationship between the Student and the Course Entity. 
+            Because the Student can enroll in multiple courses and a course can have multiple students.
+            In the Logical Model we should clearly specify the type of relationship between our Entities
+            but in the last Data Model (Conceptual Model) doesn't matter to be clear.
+
+        
+        - Attribute on the relationship:
+            What if we want to know the date a student enrolls the course? This attribute where should be?
+            - In Student Entity: Because a student may enroll in several courses, then we need a separate 
+                                 attribute for each course, but we wont be able in time how many courses 
+                                 each student is going to enroll in => Doesn't make sense
+
+            - In Course Entity: Doesn't make sense, because the enrrollment date will be different for each 
+                                student. So, the enrollment date is not attribute of Course Entity
+
+            - Relationship: The enrollment date is an attribute of the enrrollment, of the relationship 
+                            between the Student and Course Entity. 
+                            So we need to introduce a New Entity that represent this relationship.
+                            - We add this Entity called Enrollment:
+                                - Add attribute called date (dateTime)
+                            Then, we delete the relationship and recreate the relationship throught the 
+                            Enrollment Entity.
+                            - With Student Entity: Students can have many Enrollment, but each enrollment is for 
+                                                   a particular student. => One-to-many relationship 
+                            - With Course Entity: A Course can have multiple enrollments, but each enrollment 
+                                                  is for a particular course =>One-to-many relationship
+
+        Now, we have an Entity that clearly represents an Enrollment for Student in a particular Course.
+        Attributes of the Enrollment Entity:
+            - date (dateTime)
+            In future courses and price differ overtime. So each student may buy a course at different price.
+            - price (float) => price student pays at the time enrolls the course.
+
+
+        Note: Logical Model adds more details than our Conceptual Model, we almost know what structure or 
+              what tables we need to store data. The entities we have here eventually end tables in our database.
