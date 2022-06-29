@@ -1,0 +1,55 @@
+Foreign Keys
+    Foreign Key => Column in one table that references the PK of another table (is mark with a red diamond)
+    We need to analyze the relationships before define PK for enrollments table
+    Whenever we add a relationship between 2 tables, we will have:
+        - The Parent or Primary Key table
+        - The Child or Foreign Key table
+
+
+    Adding relationships:
+
+        - students and enrollments: In this case the students is the Primary Key table, because we can not have
+                                    an enrollment without have a student first. When adding a relationship
+                                    we need to select:
+                                        - first select the Foreign Key table  => enrollments table
+                                        - then select the Primary Key table => students table
+                                    then we will see that MySQL added new column(red diamond) in enrollments table:
+                                        - students_student_id INT => this column is referencing the student_id column
+                                                                    in the students table.
+                                                                    Rename to => student_id
+                                        
+        - courses and enrollments: In this case tue courses is the Primary Key table. Again when addin a 
+                                   relationship:
+                                        - first select the Foreign Key table => enrollments table
+                                        - then select the Primary Key table => courses table
+                                    then we will see new column in erollments table:
+                                        - courses_course_id => rename to => course_id 
+
+
+    Adding PK in the enrollments table:
+        - We have two choices:
+            - 1. Combination of student_id and course_id to unique identify each enrollment. So we can use 
+                 a composite PK.
+            - 2. Introduce a new column called enrollment_id, set it to AI.
+        There's not hard and fast rule(no one is better than other):
+            - The benefit of 1st approach is that prevents us for accidentally enrolling the same student 
+              in the same course twice. However, if we have another table in the future and it's going to be
+              relationship between the enrollments and that new table, these two keys need to be repeated
+              in that table as the Foreign Key. Depending on the context is not always a bad thing, depends:
+              amount of data we have and wheter that table also has another Child table.
+            
+            - The benefit of 2nd approach we wont have the problem of the 1st approach, so if we have another 
+              table in the future with a Parent-Child relationship between enrollments and that table, we only
+              have to repeat enrollment_id(PK) => only 1 value, 1 integer instead of 2.
+
+        However CURRENTLY we dont have a Child table relationship with enrollments table. So there's not need
+        to design for that scenarious may not happen in the future. So in this case, is better to use
+        the 1st approach => protect table for Bad Data. And if in future appear a Child table we can always 
+        come back and revisit design, change and update the design of the tables.
+
+        So finally => Mark PK for both student_id and course_id columns in the enrollments table
+                      and move to top!
+                      
+
+
+        
