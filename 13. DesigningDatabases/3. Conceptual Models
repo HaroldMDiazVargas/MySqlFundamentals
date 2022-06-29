@@ -1,0 +1,52 @@
+Conceptual Models
+    Imagine to build a webpage for buying online courses. 
+
+    First we need to create a CONCEPTUAL MODEL that represents the entities, things or concepts in this business
+    and their relationships with each other. Quite often these entities are things like people, events, 
+    locations and so on. 
+
+    ¿What concepts or entities do we have here ?
+        Student
+        Course
+
+    We need a way to visually see these entities and their relationships. There're 2 ways to do this:
+        - Entity Relationship(ER) Diagrams: Are often used for Data Modelling
+        - Unified Modeling Language(UML) Diagrams: Goes go way beyond Data Modelling
+    These are both equally good when it comes to building Conceptual and Logical Data Models. 
+
+    Here we'll use ER Diagrams. There're various tools out there for creating ER Diagrams:
+        - Microsoft Visio: On windows
+        - draw.io:  Popular online tool
+        - LucidCharts: Popular onlin tool
+    
+    Usin draw.io:
+        -  Left side we can see various kind of visual languages like UML, ER, FlowChart, so on.
+        - Student Entity: In ER, we see Entity object and we can add to a diagram
+                          We can rename this entity object e.g Student 
+                          Inside this box we can list all the attributes we need to know about each Student
+                            e.g name, email, dateRegister, so on. Using camal notation
+        - Course Entity: Create a new Entity a rename it to Course
+                         Inside we list all the attribute we need to know about the course
+                            e.g title, price, instructor, tags
+        - Define relationships between entities: We have various kind of relationships, we'll see them soon. 
+                        we select a Many to Many relationship ad attach the Student Entity(left side)
+                        with the Course Entity(right side). 
+        - Label to the relationship: Just double click over the relationship and type 'enrolls'
+                                    And we read the relationship from left to right:
+                                    " Stuent enrolls Course"
+
+
+                
+    Notes: Data Modelling is an iterating processing, we can't come with a perfect design in the 1st attemp
+           we need to constantly goes back and for between the requirements and our Models and keep refine 
+           them. e.g rename any attribute of any Entity, remove or add more, so on.
+
+            Conceptual Model gives a very high level overview of the business domain and the things involve
+            in this domain, we dont have any details about the type of each attribute. Neither do we know or 
+            care what DBMS we're gonna use to implement this Model, This is just a Conceptual Model used to 
+            comunicate with the business stakeholder, to know both are on the same page and we talk the same 
+            language.
+
+
+
+    
