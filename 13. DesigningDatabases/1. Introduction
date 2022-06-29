@@ -1,0 +1,16 @@
+Designing Databases
+    We've written our queries agains existing databases. But there're times we need to:
+     - design our new databases from scratch 
+     - add new tables to the existing databases
+
+
+    The idea is designed a well-structured database. A well desgined database requires:
+     - Quite planning at begining (take a time), this is critical for the sucess of our app
+     
+    If database is designed propertly :
+     - Support mew business requirements
+     - Easily query to extract useful information and queries will execute quickly
+     - Low maintainance
+     - Scalable
+    
+    
