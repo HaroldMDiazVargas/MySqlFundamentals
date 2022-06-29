@@ -26,7 +26,7 @@ Conceptual Models
                           Inside this box we can list all the attributes we need to know about each Student
                             e.g name, email, dateRegister, so on. Using camal notation
         - Course Entity: Create a new Entity a rename it to Course
-                         Inside we list all the attribute we need to know about the course
+                     git     Inside we list all the attribute we need to know about the course
                             e.g title, price, instructor, tags
         - Define relationships between entities: We have various kind of relationships, we'll see them soon. 
                         we select a Many to Many relationship ad attach the Student Entity(left side)
