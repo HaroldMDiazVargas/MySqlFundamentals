@@ -1,0 +1,144 @@
+JSON Type
+    In MySQL we can also store JSON documents.
+    JSON: Lightweight format for storing and transferring data over the internet
+          used heavily in web and mobile apps. Most of the time our mobile apps send data to backend 
+          using JSON.
+          In JSON we use curly braces to define an object ({})
+          Inside the braces we can have 1 or more key:value pairs
+            keys are always string(quotes)
+            values can be anything: strings, numbers, booleans, arrays or other objects
+        {
+            "key":value
+        }
+
+    -- Creating JSON in SQL
+        - We can use just single quotes and standard curly braces 
+        - We can use JSON_OBJECT function
+            JSON_OBJECT(key1, value1, key2, value2, ....)
+    
+    -- Extract individual key:value pairs in SQL
+        - Benefit of defining column as JSON column instead of VARCHAR. String is very difficult to extract
+          individual key:value pairs in a JSON object.
+          - We can use JSON_EXTRACT function
+            JSON_EXTRACT(jsonObject, 'path')      => use $ represent current JSON document and dot(.) access individuall keys
+          - We can use Calling path Operator
+            SELECT .. columnName -> path 
+
+    -- Updating/Adding JSON object properties in the database:
+        - We use JSON_SET(jsonObject, path(key1), newValue1, path(key2), newValuew2,...)
+
+
+    -- Removing JSON object properties in the database:
+        - We use JSON_REMOVE(jsonObject, path(key1), path(key2), ...)
+
+
+    Note: JSON_SET and JSON_REMOVE returna new JSON object which is passed to the object that is going to
+          place as value in the specific column.
+
+
+    e.x In a products table we may can have a new column called properties. This column represent serveral properties
+        for each product, is better to have this in a single column instead of using different columns 
+        where some of these columns are empty for certain products. So we use JSON.
+        Datatype => JSON
+
+    In case we get an error for define a column as JSON type => Edit => Preferences 
+                                                             => Make sure Target MySQL is at least 8
+
+
+    e.x Make an example of using the properties column(JSON type) in products table to add properties to 
+        product id 1
+        
+
+        -- Single quotes to create a JSON object in SQL
+
+        UPDATE products
+        SET properties = '
+        {
+            "dimensions": [1, 2, 3],
+            "weight": 10,
+            "manufacturer": {"name":"sony"}
+        }
+        '
+        WHERE product_id = 1;
+
+
+
+        -- Using SQL functions for creating JSON object
+
+        UPDATE products
+        SET properties = JSON_OBJECT(
+            'weigth',10, 
+            'dimensions', JSON_ARRAY(1, 2, 3),
+            'manufacturer', JSON_OBJECT('name', 'sony')
+            )
+        WHERE product_id = 1;
+
+
+
+
+    e.x Extract individual key:value pairs from the JSON object to see the weight property for product id 1
+
+
+        -- Calling the JSON_EXTRACT function
+
+        SELECT product_id, JSON_EXTRACT(properties, '$.weight' ) AS weight  => $ represent current JSON document
+        FROM products
+        WHERE product_id = 1;
+
+
+
+
+        -- Column path operator 
+
+        SELECT product_id, properties -> '$.weight'
+        FROM products
+        WHERE product_id = 1;
+
+
+    e.x Extract individual first item of the array dimensions(key) of properties column for product id 1
+
+
+        SELECT product_id, properties -> '$.dimensions[0]'       => access to first item of the array dimensions
+        FROM products
+        WHERE product_id = 1;
+
+    e.x Extract the name of manufacturer(key of nested object) of properties column for product id 1
+
+        SELECT product_id, properties -> '$.manufacturer.name'     => this returns "sony" 
+        FROM products
+        WHERE product_id = 1;
+    
+    e.x Extract the name "sony" but without quotes, maybe we want to use this in a WHERE clause.
+
+        SELECT product_id, properties ->> '$.manufacturer.name'     => this returns sony
+        FROM products
+        WHERE product_id = 1;
+
+    e.x Filter in all products, these products which manufacturer name is sony
+
+        SELECT product_id, properties ->> '$.manufacturer.name'     
+        FROM products
+        WHERE properties ->> '$.manufacturer.name'  = 'sony';
+    
+
+    e.x update/change the weight of product_id 1 and add new key called age
+        
+        UPDATE products
+        SET properties = JSON_SET(
+            properties,
+            '$.weight', 20,
+            '$.age', 10
+        )
+        WHERE product_id = 1
+
+
+    e.x. Remove the age property for product_id 1 in properties column
+
+        UPDATE products
+        SET properties = JSON_REMOVE(
+            properties,
+            '$.age'
+        )
+        WHERE product_id = 1
+
+
