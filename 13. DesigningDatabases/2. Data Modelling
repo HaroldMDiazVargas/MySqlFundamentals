@@ -1,0 +1,23 @@
+Data Modelling
+    Is the process of creating a Model for the data that we want to store in the database. This Data Modelling
+    involves 4 steps:
+     1. First we understand and analize the business requirements. Many developers jump this step and jump to 
+        creating tables in a database. This is the most important step, is a bit slow and takes times but
+        the better we understan the business problem we are trying to solve the better we can come with a 
+        solution, in this case the database.
+        We need to talk to the business stakeholders, domain experts and event end-user, looking at the existing
+        forms, documents, apps, spreadsheets, databases and anything relevant to the problem domain we're 
+        working on. In simple words is Collecting Information.
+     2. Then we build a CONCEPTUAL MODEL of the business. This involces identify the entities or things, concepts 
+        in the business and the relationship with each other. A Conceptual Model is a visual representation
+        of these concepts that we use to cominucate with the stakeholders, so we know both are in the same 
+        page.
+    3.  Next we define to come with a data Model or data structure for storing data => called a LOGICAL MODEL.
+        Logical Model is an abstract data dodel that is independent of database tecnhology, it just shows us 
+        the tables and columns we need.
+    4.  Next we refine this Logical Model to build a PHYSICAL MODEL for specific DBMS. A Physical Model is 
+        the implementation of Logical Model for a particular database tecnhology(like MySQL), in this Model we should 
+        have the exact datatypes supported by our database tecnhology, the default values for our columns,
+        whether they are NULLABLE, the primary keys for our tables, as well as other objects like 
+        Views, Stored Procedures, Triggers and so on. 
+    
