@@ -1,0 +1,49 @@
+Physical Models
+    The implementation of the Logical Model for specific database tecnhology.
+    We're going to take Logical Model and create a Physical Data Model for MySQL.
+
+    In MySQL workbench:
+        - File => New Model
+            We can see:
+            - + Add Diagram to create EER (Enhance Entity Relationship)
+                for create any relationship diagrams
+            
+            - By default this Model assumes a database called 'mydb'
+                we can right click => Edit schema => rename e.g school
+            
+            So on top + Add Diagram:
+                - Here we can add tables and views.
+                - Add a new table1 => double click:
+                    - rename it => students
+                    - add columns:
+                        - first_name  VARCHAR(50)
+                        - last_name VARCHAR(50)
+                        - email VARCHAR(255)
+                        - date_registered DATETIME
+                
+                - Add a new table => enrollments
+                    - add columns:
+                        - date DATETIME
+                        - price DECIMAL(5, 2)
+                
+                - Add a new table => courses
+                    - add columns:
+                        - title VARCHAR(255)
+                        - price DECIMAL(5, 2)
+                        - instructor VARCHAR(255)
+                        - tags VARCHAR(255)
+                
+
+
+
+            
+
+    Notes: 
+        When becomes to name our tables, personally prefer to name them in plural.
+         but we can name in singular. Remember stick the same convention name.
+        
+        MySQL name convention is to name a column => separate by underscore '_'
+
+        Consistence in the tables: In courses table we define all length VARCHAR 255 to keep consistency
+                                   In enrollments table we have the same 5, 2 for DECIMAL equal to price in courses table.
+        
