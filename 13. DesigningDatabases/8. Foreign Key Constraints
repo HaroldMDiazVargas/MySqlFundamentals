@@ -1,0 +1,66 @@
+Foreign Key Constraints
+    Whenever we have a Foreign Key in a table => we need to set the Constraints of that Foreign Key, basically
+    protects our data from getting corrupted.
+
+
+    In enrollments table: We have 2 Foreign Keys
+                         - student_id
+                         - course_id 
+                         The combination of these two columns, forms the Primary Key in this table.
+
+                        click over this table => in buttom we can see Foreign Keys tab
+                        We can see we have 2 Foreign Keys, by convention we use 'fk_foregnkeytable_primarykeytable' as naming
+
+                        - Foreign Key Name:
+                            - fk_enrollments_students: this means this Foreign Key references the students table
+                            - fk_enrollments_courses1: this means this Foreign Key references the courses table
+                                                       MySQL adds '1,..' at the end to prevent for clashing 
+                                                       with another Foreign Key in the database. But here we know 
+                                                       there's not other Foreign Key with this name => rename to remove 
+                                                       1 from the end.
+                        - Foreign Key Options(constraints):
+                            In the right-side we can see a drop-down list to what should happen when the corresponding
+                            record in the Primary Key Table(Parent) gets updated or deleted:
+                            - RESTRICT
+                            - CASCADE
+                            - SET NULL
+                            - NO ACTION
+                            e.x In the unlikely event that the Primary Key of a table changes(bad practice), but 
+                                we want to make sure that the Foreign Key Table is updated
+                            - In Update drop-down list:
+                                - RESTRICT: This will reject the update from happening
+                                - CASCADE: We select CASCADE, to MySQL automatically update the records in the Child 
+                                          table if the Primary Key changes.  
+                                - SET NULL: This will set Foreign Key to NULL if the Primary Key of a record changes.
+                                            We will end with a child record that doesn't have a parent(orphan record)
+                                            we dont want these records because are bad data.
+                                - NO ACTION: Exactly the same that RESTRICT, prevents or rejects the update operation
+                            
+                            - In Delete drop-down list:
+                                - RESTRICT: Reject the delete operation.
+                                - CASCADE: If we delete one record in the child table, this means the corresponding record in 
+                                           the parent table will get deleted by MySQL. We should do this depending of the context
+                                           e.x In this case in enrollments table we are storing 'financial' information and then
+                                               we can see how much we have sold, what courses have been most popular, so on.
+
+                                - SET NULL
+                                - NOT ACTION: Reject the delete operation, same as RESTRICT
+
+
+                            - Set Constraints for the Foreign Keys:
+                                - fk_enrollments_students:
+                                                            - On Updated: CASCADE
+                                                            - On Delete: NO ACTION or RESTRICT
+                                - fk_enrollments_courses:
+                                                            - On Updated: CASCADE
+                                                            - On Delete: NO ACTION or RESTRICT
+                                
+                                
+                            Notes:
+                            
+                                 If a student has at least 1 enrollment record => we shouldn't be able to delete that student
+                                                                                 unless we delete the enrollment first
+
+                                 If a course has at least 1 enrollment record => we shouldn't be able to delete that course
+                                                                                 unless we delete the enrollment first
+                                
