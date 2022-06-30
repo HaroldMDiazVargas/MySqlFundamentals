@@ -1,0 +1,20 @@
+Normalization 
+    Before go ahead and generate our database tables, we need to be sure that our design is optimal and doesn't
+    allow redundant or duplicated data. Because redundancy increases the size of our database and complicates
+    the INSERT, UPDATE or DELETE operations.
+
+    e.x If name of someone is repeated in different places and they decide to change their name, we have to
+        update several different places. If we dont update in the different places we will have inconsistence 
+        data and this gives us invalid reports.
+    
+    Normalization is the process of reviewing our design and ensure that it follows a few predefined rules 
+    that prevent data duplications. There're seven rules called 7 Normal Forms. Each rule assumes that 
+    we have applied the previous rule.
+
+    For almost 99% of the apps => we only need to apply the first 3 Normal Forms
+    - 1st Normal Form
+    - 2nd Normal Form
+    - 3rd Normal Form
+
+    We don't really to worry about the other Normal Forms.
+    
