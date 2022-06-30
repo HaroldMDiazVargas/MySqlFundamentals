@@ -1,0 +1,66 @@
+Second Normal Form (2NF)
+
+    Academic definition:
+     - To qualify for Second Normal Form, a relation must:
+        1. Be in the First Normal Form (1NF)
+        2. Shouldn't have any non-prime attribute that is dependent on any proper subset of any candidate key
+           of the relation.
+    
+     Simple definition:
+        2NF says that each table should have a single purpose. In other words it should represent ONE and ONLY ONE
+        type of entity and every column in that table should describe that entity.
+
+    e.x
+        - courses table: Has these columns:
+                        - course_id
+                        - title
+                        - price
+                        - instructor 
+                        The single pupose of this table is store course records.
+
+                        Every column in this table is an attribute of the course. So these columns describe 
+                        the course. If we would have a column that describe something else, we should take that
+                        column out and put it in a separate table. Otherwise we would end in duplicate values 
+                        in the same table.
+        
+        - orders table: suppose that this table has these columns:
+                        - order_id
+                        - date
+                        - customer_name
+                        This table is not in 2NF, because the purpose of this table is store orders. So 
+                        order_id and date are attributes of the order and belong to this table. However, 
+                        customer_name describes a customer not an order. So we could have different orders 
+                        of the same customer => so we end in repated data, so we waste space and updates 
+                        is going to be painful, because we should update in different places.
+    
+    So we need to ask ourselve ¿Where is that single place that we need to store the data to stop duplication?
+    
+    
+         
+    Analyzing our current design:
+        - courses table: Has instructor column that doesn't belong to this table, because if the same 
+                         instructor teaches multiple courses, their name is gonna be duplicated in this table.
+                         So we have to change in multiple places => ¿Where is that single place we need to 
+                         store the name of the instructor?
+                         R/= instructors table
+        
+    New instructors table: Add two columns
+                          - instructor_id SMALLINT a to 30K instructors
+                          - name VARCHAR(50)
+
+    In courses table: We delete instructor column
+                      - right click => delete!
+    
+    Relationship instructors-courses table: One-to-many because one course can has one instructor. But 
+                                            one instructor can teach in multiple courses.
+                                            - Select One-to-many,then click on Child table(courses) then 
+                                              click to Paren table(instructors)
+                                            
+                                            Then rename instructors_instructor_id column in courses table
+                                            to just => instructor_id
+    In courses table: We have a new Foreign Key 
+                     - In Foreign Keys tab => Set Foreign Key constraints:
+                                              - On Update CASCADE
+                                              - On Delete NO ACTION
+                                              So if an instructor has a course, we're not be able to delete that instructor
+    
