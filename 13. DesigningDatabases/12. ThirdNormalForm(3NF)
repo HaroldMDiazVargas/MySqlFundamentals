@@ -1,0 +1,26 @@
+Third Normal Form (3NF)
+    - Classic definition:
+        1. Our entity or table should be in Second Normal Form(2NF) to start with.  
+        2. And all the attributes in a table are determined only by the candidate keys of that relation and 
+           not by any non-prime attributes.
+        
+    e.x1 Imagine an invoices table with the next 3 columns:
+        - invoice_total
+        - payment_total
+        - balance: We know we can calculate balance by invoice_total - payment_total
+                   So balance can be derivated from the first 2 columns. We say is 'dependent' of these columns
+                   which means if value of these columns change => the balance has to be recalculated.
+        ¿What if we change one of the invoice_total or payment_total, but we forget change balance?
+         R/= Our data will not be consisted.
+    
+    - Simple definition:
+        3NF says that a column in a table should not be derived from other columns.
+
+    e.x2 Imagine customers table with the next 3 columns:
+        - first_name
+        - last_name
+        - full_name: This column shouldn't be here because is violating the 3NF. We can always calculating 
+                     by combining the first and last names.
+        
+    Note:
+        3NF just like the others Normal Forms help us to reduce duplication and increase data integrity.
