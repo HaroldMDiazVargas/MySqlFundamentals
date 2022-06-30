@@ -1,0 +1,38 @@
+Pragmatic Advice
+    Dont worry about the memorize about all these NF rules exactly.
+
+    When working in real world just focus on removing redundancy, dont apply Normalization Rules to each 
+    table and each column. 
+
+    So whenever we see duplicated values and are not Foreign Keys like 1, 2, 3 ,... that means our design is not
+    normalize. What normalization is ? Not matter, doesnt care about that stuff. 
+
+
+
+
+
+
+Don't Model the Universe
+    One of the mistakes that a lot of Data Modellers make is try to generalize their models. So they can 
+    support future requirements. 
+    Most of the time, these future requirements are just in the head => They may never happen
+    So they create a Model that is already complex => USELESS!
+
+    Remember:
+        - Scope of the project
+        - Context of the project
+        - Requirements of the project
+    
+    So => Develop the best solution for TODAY'S problems, not future problems that may never happen
+
+    In real world:
+    - people may change their legal name => dont add a previous name column in our customer table 
+    - People move houses => dont worry about supporting multiple address if all we need is just the customer CURRENT address.
+    
+    Only worry about these unless is really important for our problem domain!
+
+    In conclusion:
+     - Don't buil a model for the universe or real life
+     - Instead build a model for our problem domain based on the current requirements, not what happens in real 
+       world
+
