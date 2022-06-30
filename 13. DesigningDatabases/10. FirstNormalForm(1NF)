@@ -1,0 +1,71 @@
+First Normal Form (1NF)
+    This Normal Form says: Each cell should have a SINGLE VALUE and we cannot have repeated columns.
+
+    - In courses table:
+        - tags column: Here we are violating this rule, because we're gonna store multiple tags in this column
+                       and separate them using a comma. So we'll have multiple values in a cell or attribute.
+        
+                        - ¿What if we have multiple columns like tag1, tag2, tag3?
+                        The problem with this approach is that we dont know ahead of time how many tags each 
+                        course is going to have. What if in the future we want to add a tag4 ? We need
+                        to come back and modify our design. Plus we dont have guarantee that this wont happen again.
+                        This approach is not scalable8
+
+                        - We need to take the tags column out of the courses table and modelling as a separate
+                          table called 'tags', and then add a many-to-many relationship between tags and courses
+
+
+    - new tags table:
+        - Add columns:
+            - tag_id:
+                - Primary Key
+                - The data type of this column depends how many tags we're gonna have in this database
+                  and that question we need to ask the business. 
+                  - ¿These tags are going to be created by end-user?
+                     Is likely that we're gonna grow pretty quickly(many tags)
+
+                  - ¿These tags are going to be created by the admins?
+                     We're gonna have a maximum of 15-16 tags because that what admins defined.
+                    
+                    So we can use a TINYINT for this column 
+            - name:
+                - The data type of this column is VARCHAR(50) and mark as NN
+        
+    
+    - relationship between courses and tags table:
+        - We need to add many-to-many relationship. However in Relational Databases we dont have many-to-many
+          relationships, we only have:
+          - One-to-one
+          - One-to-many 
+        
+        So to implement many-to-many relationship we need to introduce a new table called 'Link Table' and 
+        we're gonna have One-to-many relationship with that table. We name this Link Table as course_tags
+        - course_tags: This table determinates the tags for each course.
+                        - Select the one-to-many relationship. Select the Child Table or Foreign Key Table 
+                          which is course_tags. Then select the Parent Table or Primary Key Table which is 
+                          courses table.
+                        - Then make the same, but between courses_tags(child) table and tags(parent) table.
+
+                        - New columns:
+                            - courses_course_id => simplify to course_id
+                            - tags_tag_id => simplify to tag_id
+                            We need to mark both tables as Primary Keys. Because the combination of both 
+                            should be unique.
+
+    - Remove the tags column from courses table
+
+
+    Notes:
+        Link tables are very common in RDBs, sometimes they only have two colums(Composite Primary Keys).
+        But in other cases they have additional columns(e.g enrollments table).
+
+        Now our database is in the First Normal Form 1NF. We dont have repeated columns, we dont have 
+        multiple values in a column. All tags are stored in tags table, if we need to rename a tag 
+        we only need to update in a single place(only 1 record). In previous design if we update a tag
+        MySQL as we know put Lock in the records(different places) where we need to make the update, doesn't
+        make sense Lock different courses records just to update a tag.
+    
+
+
+
+        
