@@ -1,0 +1,39 @@
+Reverse Engineering a Database
+    What if we want to change a database that doesn't have a Model
+
+    e.x sql_store database doesn't have a Model. To change this database:
+     - We need to Reverse Engineering this database to create a Model. Then we can use this Model for any 
+       future changes:
+
+       - First close all Models(see Notes)
+       - On top Database tab
+         - Reverse Engineer Database
+           - MySQL workbench automatically creates a new Model. In this Model we dont have any Diagram
+           - Select the connection 
+              Click on Next twice
+           - Select the database that we want to Reverse Engineer
+              in this case select sql_store database. Remember that we can select multiple databases(highly related)
+              Click on Next twice
+           - Asking us if we want to import all the 7 tables in this database. We can click on Show Filter to 
+             exclude 1 or more tables. But we dont want to do this.
+             Click on Execute and Next then Finish
+           - Now we can see our new Model and see the EER Diagram.
+             We can see the tables and their relationships and we can use this diagram to identify different 
+             problems in our design. In this case, we can see order_item_notes which is a table that is not 
+             related to any other tables. The problem is that we can insert any value in order_id column 
+             and MySQL workbench will not validated data => we dont have DATA INTEGRITY. We need to add a relationship
+             between our tables to MySQL workbench enforces the integrity of our data. 
+
+            
+
+    Notes:
+        Close all the Models before Reverse Engineering tha database. MySQL workbench will add the database
+        to the Model that is Open. Is better to have a separate Model for each database. We can include multiple
+        databases in one Model, but we only do this if these databases are HIGHLY RELATED and we want to work
+        with them in the SAME MODEL.
+
+        Diagrams helps us:
+         - better understand the design
+         - identify the problems
+         - allow us to make any changes in the design and script these changes to execute in other MySQL databases.
+        
