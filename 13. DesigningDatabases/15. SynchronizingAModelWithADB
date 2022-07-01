@@ -1,0 +1,54 @@
+Synchronizing a Model with a database
+    We have created the database 'school', but what if we want to make any changes:
+     - adding a new table
+     - modify one of existing table
+    We have 2 approaches:
+     1. We can always open any table in design model to:
+        - add new column
+        - modify any column
+        - drop any column
+        But it only works if we're the only person using this database. In other words, we can use this approach 
+        if we're working with the database in our machine and noone else is going to use it.   
+
+     2. In medium-large organizations we often have multiple servers that simulate the Production environment.
+        - Production environment is where our users access to our apps or databases. 
+        - Staging environment: is very close to the Production environment
+        - Testing environment: used pure for testing.
+        - Development environment.
+        Each environment has 1 or more servers, so any time we developers want to make any changes to these 
+        databases, we should be able to replicate the same changes on other databases. So all these databases 
+        that we have in various environments are consistent.
+        To do this:
+         - We go to our Model or EER Diagram:
+           we make our changes and the synchronize with the databases:
+           - Lets add new column in enrollments table: coupon VARCHAR(50) and dont mark NN.
+           - Click on Database menu on top 
+             - Click in Synchronize Model:
+               - We can see we're connected to a database in our Local Machine (Local Instance)
+                 If we're developer in an organization, we have access to a Testing env, Staging env,
+                 to maybe the Production env.  So we can select a connection to a database in the 
+                 Testing environment.
+                 Then click on Next.
+               - Leave all default settings as they are
+                 Then click on Next
+               - We can see that MySQL detects we're connecting to the 'school' database
+                 Click on Next
+               - We can see that MySQL detects the tables that need to be updated
+                 because we updated the enrollments table(green arrow), and enrollments table is associated
+                 or related to the courses table, so this table may be affected as well. MySQL workbench 
+                 has to temporaly drop the relationship between these two tables to apply the neccesary 
+                 changes in the enrollments table.
+                 Click on Next
+                - We cab see the chages to be applied, so we can see that first we drop the relationships
+                  using ALTER TABLE with DROP FOREIGN KEY statements, then we add the new 'coupon column' using
+                  ALTER TABLE with ADD COLUMN and finally enable these relationships ALTER TABLE and FOREIGN KEY 
+                  statements.
+                  We can:
+                   - Execute => To execute script and see the changes
+                   - Save to File => Better approach to save this script in our fileSystem and then check this
+                                     into a sourceControl repository like Git. We know exactly what changes we 
+                                     made and just we can replicate the same changes to all other databases. 
+                                     All we need to do is execute the script on those database servers.
+                
+             
+
