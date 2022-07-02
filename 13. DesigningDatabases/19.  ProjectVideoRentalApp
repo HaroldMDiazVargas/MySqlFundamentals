@@ -1,0 +1,25 @@
+Project Video Rental App
+    See the requirements for app called Vidly.
+    This app is going to be used in a Video Rental Store. 
+    Design a Datab Model for this app.
+
+
+Conceptual Model
+    We can extract from the requirements, different entities:
+
+    User: We have different users, so we assume each user must have an username an password as attributes.
+
+    Permission: We have differente permissions, we assume each permission has a description(name, about)
+
+    Customer: Each customer has name, email and phone
+
+    Movie: Each movie have a barcode, the daily rental rate for each movie and the stock(quantity) available
+           for each movie. Here we can also put the movie name, but is not required.
+
+    Rental: This entity appears from the relationship between the Customer and Movie entities, because 
+            the number of days that a customer has a movie is an attribute of this relationship. 
+    
+    Coupon: This entity we assume that may have a code(unique coupon), descripcion, discount of this offer.
+            Is related with Rental entity.
+    
+    
