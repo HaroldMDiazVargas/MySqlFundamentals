@@ -1,0 +1,48 @@
+Logical Model 
+    
+    Relationships:
+        Passenger-Ticket is one-to-many, because one passenger can purchase many tickets, but one ticket is only 
+        for one passenger.
+
+        Ticket-Flight is one-to-many, because one flight can have many tickets, but one ticket is used only 
+        for one flight.
+
+        Flight-Airport is many-to-two, because one ariport can arrive many flights, but one flight only 
+        fly between two airports. But here we dont have that kind of relationship, so we leave as many-to-many.
+
+        Flight-Airline is one-to-many, because one airline can manage multiple flights, but one flight only is 
+        managed by one airline. 
+
+        Ticket-FlightClass is one-to-many, because one flight class can be in multiple tickets, but one ticket 
+        only can be one kind of flight class. 
+
+    
+    Some of these relationship wee extracted when we analyzed repeated data(waste space):
+
+        FlightClass: In ticket we can have the class as column(attribute), but this would be a waste 
+                     of space repated strings. So is better to Normalize it adding a new entity.
+
+        Airline: In flight we can have the name of the airline, but again this would be a waste of space 
+                 so to Normalize it, we added a new entity.
+        
+    
+    De-Normalize situation:
+        Airport: In this entity we probably can have more than 1 airport in the same ciy, or even state. 
+                 so we can fall in duplicate state and city attributes. However, if we add a new entity,
+                 we see that the attributes as IATACode, name of airport are HIGH related to city and state 
+                 where is located the airport. So we always will have to make JOIN statements because 
+                 this information is very related. This JOIN will traslate in cost/time queries. Additionally
+                 are not many records are going to be repeated.
+        
+    
+    Finally, if we see the relationship of many-to-many(actually is two) of Flight-Airport entities, we know
+    that we will have to make a Link Table. So, to avoid add a Link Table that even can combine all airports 
+    with all the flights(problem because a flight can have only 2 airports) => SOL we add:
+        - departureAirportId
+        - arrivalAirportId 
+    
+    These new attributes in Flight entity, will be Foreigh Keys => because if an ID of one airport change 
+    we will like to have consistence and keep the same airport to the corresponding flight.
+
+    
+
