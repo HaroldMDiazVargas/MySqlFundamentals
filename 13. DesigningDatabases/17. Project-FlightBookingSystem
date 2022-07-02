@@ -1,0 +1,41 @@
+Project: Flight Booking System
+    Design a database for a Flight Booking System(see pdf) to see an example of a ticket that this 
+    system should generate.
+    Based on this information design the database.
+
+
+
+-- Conceptual Model
+    Based on the information we can see extract different entities:
+     - Passenger
+     - Flight
+     - Airline
+     - Airport
+     - Aircraft
+
+    Passenger Entity:
+        - Here we only need the name of the passenger. In a real world we can add address, email, phone, so on. 
+          But in the requirements based on the information of busineess => we dont see these attributes.
+
+    Flight Entity:
+        - Here we see Number of flight, DepartureDateTime, ArrivalDateTime, Duration of the flight, 
+          Distance total of the flight and the Airline name. 
+
+    Airline Entity:
+        - Here we only should need the name of the Airline. However, we put it in Flight Entity. 
+          We dont add this here for now, because that's something about Normalization Form.
+
+    Airport Entity:
+        - About this entity, we see IATACode, name of the airport, state and city where is located.
+          We also could have Country, but here we're assuming according the requirements that are only 
+          National Flights.
+    
+    Ticket Entity:
+        - This appears from the rekationship between Passenger-Flight Entity. Because the ticketNumber, 
+          flightClass, price and confirmationNumber are not attributes of the passenger. These are attributes
+          of the 'Booking' when a passenger books a flight is the only way these attributes appear.
+
+    
+    Notes:
+        Finally we just put many-to-many relationships just to define a relationship BUT this is not the 
+        real relationship. We analyze with more detail in the Logical Model.
