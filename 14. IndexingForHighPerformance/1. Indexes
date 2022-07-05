@@ -1,0 +1,33 @@
+Indexes
+    Are extremely important in large databases and high traffic websites, because they can improve the 
+    performance(speed up) of a queries dramatically.
+
+    Indexes are basically data structure that Databases Engines use to quickly find data. DBMs use indexes 
+    to find data quickly in a similar way of a directory contact.
+
+    In a lot of cases Indexes are small enough that they can fit into memory, that's why is much faster 
+    to use them to find data, because reading data from the MEMORY is always faster than reading from the DISK.
+
+    e.x find customers located in 'CA' in customers table
+        - Without index
+            MySQL scan every record in customers table to ask state = 'CA' ?. This is not a big deal in 
+            small table with 1000 records. But our table get larger the cost increases dramatically because
+            have to read each column and every record of every column.
+
+        - With index
+           Speed up the query by creating an INDEX on the state column. This is like creating a directory of 
+           customers sorted by their state. In this index we only have the state of our customers and references 
+           to the records in the customers table. So MySQL can quickly find the corresponding customer using 
+           this index and then will read those records from the table. This is way faster than scanning/reading 
+           every single record in the customer table.
+
+    Indexes help usfind data quickly, but they come with a cost:
+     - Increase size of our databases: Because have to be permanently stored next to our tables
+     - Slow down the writes: Everytime we add/update/delete a record MySQL has to update the corresponding 
+                             indexes, this will impact the performance of our write operations
+    
+    For these reasons we should reserve indexes for PERFORMANCE CRITICAL queries:
+     - One mistake is add indexes at the time of designing their tables. We dont create indexes based on 
+       our tables, we create them based on our QUERIES.
+    
+    Internally indexes are often stored as Binary Trees.
