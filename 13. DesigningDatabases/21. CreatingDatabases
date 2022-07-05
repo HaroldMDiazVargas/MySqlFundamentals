@@ -1,0 +1,17 @@
+Creating and Dropping Databases
+    We have learnt how to use the Wizards in MySQL Workbench to create and updating databases. But we need to 
+    understand the script that these tools generate, to review it and ensure that doesn't have any bad 
+    impact in our database.
+
+
+    - Create an empty database:
+        Syntax:
+            CREATE DATABASE databaseName;
+            CREATE DATABASE IF NOT EXISTS databaseName; => better approach is optional
+    - Drop a database:
+        Syntax:
+            DROP DATABASE databaseName;
+            DROP DATABASE IF EXISTS databaseName;       => better approach
+
+    
+    
