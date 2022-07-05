@@ -1,0 +1,100 @@
+Full-text Indexes
+    In MySQL and many other DBMs we have a special kind of index called Full-text Index. 
+    We use this index to build fast and flexible Search Engines in our apps.
+    - download script: create-db-blog.sql
+      with this script we create a new database called sql_blog. Lets say we want to create a blog website and 
+      give the user the ability to search for blog post.
+      - Run the script:
+        In navigator panel we see:
+        - sql_blog:
+          - posts table with 4 columns:
+            - post_id
+            - title
+            - body 
+            - date_published
+
+    e.x simulate user search for 'react redux' on our blog
+        USE sql_blog;
+        SELECT *
+        FROM posts
+        WHERE title LIKE '%react redux%' OR 
+                body LIKE '%react redux%';
+        
+        Issues with this query:
+         - currently we dont have an index on these columns, so as our posts table gets larger this query 
+           is going to be slow and slower.
+        - We can add prefix-length index here, but this index will only include the first few characters of 
+          the title or the body columns. What if the search phrase(react redux) is after the column prefix, 
+          so our index is not gonna include our search phrase, so MySQL has to do a full table scan.
+        - The query only returns the posts that has these exact two words in the exact sequence. It wont 
+          return a post that has either react or redux or post that has these two words but in the reverse order.
+          That's not how search engines work, if we search on google something, doesn't return documents that 
+          has the exact search phrase.
+        - In conclusion, this query is not very helpful for search engines. This is where we use 
+          Full-text indexes.
+    
+    Full-text indexes: We can implement a fast and powerful Search Engines in our apps. These indexes 
+                       work very differently from regular indexes:
+                       - they include the entire string columns
+                       - they dont store just a prefix-length
+                       - they ignore any stumb words like 'in,on,be'
+                       - they store a list of words and for each word they store a list of rows or documents 
+                         that these words 
+    Syntax:
+        CREATE FULLTEXT INDEX idx_columnsName ON tableName (columnsName);
+
+    Instead of LIKE operator we use two built-in functions to work with full-text indexes:
+     - MATCH(columnsName) AGAINST(searchPhrase)   => type the columns we include in our Full-text index
+     
+
+    One of the beautys of Full-text searcher is that they include:
+    - RELEVANCE SCORE: Based on a number of factors MySQL calculates a relevant score for each row that contains 
+                       the searchPhrase. The relevance score is a floating number between 0 to 1.
+                       0 means no relevance.
+    
+
+    e.x create a full-text index for title and body columns; search for 'react redux' on our blog
+        CREATE FULLTEXT INDEX idx_title_body ON posts (title, body)
+        
+        SELECT *
+        FROM posts
+        WHERE MATCH(title, body) AGAINST('react redux');        => we get 4 records, wether the searchPhrase is title, body or both
+    
+    e.x Display the relevance score for each record obtained in the previous output query
+        CREATE FULLTEXT INDEX idx_title_body ON posts (title, body)
+        
+        SELECT *,  MATCH(title, body) AGAINST('react redux');
+
+        FROM posts
+        WHERE MATCH(title, body) AGAINST('react redux');
+
+        -- We can see the scored:
+            0.97
+            0.17
+            0.14
+            0.09
+            So we can see the result is sorted by relevance scored in descending order, just like Search Engines
+        
+        This full-text seacher has two modes:
+        - Natural language mode: Default mode, we've used here
+        - Boolean mode: With this we can include/exclude certain words just how we use Google
+                        - using '-' => exclude a word e.g -redux
+                        - using '+' => include a word as a requirement e.g +form (must have this word)
+                        - using '""' => include exact phrase e.g "handling a form" 
+
+
+                
+
+            CREATE FULLTEXT INDEX idx_title_body ON posts (title, body)
+        
+            SELECT *,  MATCH(title, body) AGAINST('react redux');
+
+            FROM posts
+            WHERE MATCH(title, body) AGAINST('react -redux' IN BOOLEAN MODE); => We're looking for rows that has react BUT not redux
+                                                    
+
+    Note:
+        Full-text indexes are very powerful, we use them if we want to build search engines in our app specially
+        if we want search on long string columns like: body of newspaper, article, blogpost, description of product.
+        For short string columns like name, address => use prefix indexes. 
+
