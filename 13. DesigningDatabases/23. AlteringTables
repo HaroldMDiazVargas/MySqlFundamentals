@@ -1,0 +1,40 @@
+Altering Tables
+    Modify an existing table => forgot to add a column, we chose the wrong datatype of a column.
+    We use ALTER TABLE statement, and we can make multiple changes in one go: 
+     - add new column
+     - remove existing column
+     - change datatype of one or more columns
+     - change attributes of one or more columns
+
+
+    Syntax:
+        ALTER TABLE tableName 
+            ADD COLUMN columnName dataType attributesColumn; => add at the end list of column
+            ADD columnName dataType attributesColumn AFTER columnName; => add after a given column
+
+            MODIFY COLUMN columnName dataTypeChange attributesColumnChange,
+
+            DROP columnName
+
+
+
+            
+
+    e.x Add last_name column and city column. Modify the first_name the datatype and default. Remove points column
+        ALTER TABLE customers
+            ADD last_name VARCHAR(50) NOT NULL AFTER first_name,
+            ADD city      VARCHAR(50) NOT NULL,
+            MODIFY COLUMN first_name VARCHAR(55) DEFAULT '',
+            DROP points
+            
+            ;
+
+
+    Notes:
+        If we have space in columnName => we need to use backtick `` 
+
+        The COLUMN keyword is optional e.g ADD COLUMN, MODIFY COLUMN, so on.
+
+        We shouldn't alter a table in a production environment, because that can have really bad consequences. 
+        always try the changes in a test database=> make sure they work, sure not have impacts. Then 
+        execute them on a production database.
