@@ -1,0 +1,26 @@
+Altering Primary/Foreign Key Constraints
+    Drop or create relationships between tables that already exist.
+    We forgot to type FOREIGN KEY constrain to a table. So we forgot to create the relationship.
+    We can use ALTER TABLE statement we used earlier, to add/drop the FOREIGN KEY in a given table. Also 
+    we can use to add/drop PRIMARY KEY
+
+    Syntax:
+        ALTER TABLE tableName
+            ADD PRIMARY KEY (columnNamePartOfThisPK),                => set the primary key
+            DROP PRIMARY KEY,                                       => we dont need to specify the name of the columns
+            DROP FOREIGN KEY fk_childTable_parentTable,
+            ADD FOREIGN KEY fk_childTable_parentTable (columnName)
+                REFERENCES parentTable (primaryKeyOfParentTable)
+                ON UPDATE behaviour 
+                ON DELETE behaviour;
+
+-- Query
+
+ALTER TABLE orders 
+    ADD PRIMARY KEY (order_id),
+    DROP PRIMARY KEY,
+    DROP FOREIGN KEY fk_orders_customers,
+    ADD FOREIGN KEY fk_orders_customers (customer_id)
+        REFERENCES customers (customer_id)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION;
