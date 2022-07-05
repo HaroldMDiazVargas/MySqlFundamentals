@@ -1,0 +1,30 @@
+Storage Engines
+    Quick overview of Storage Engines.
+
+    In MySQL we have several Storage Engines. These determinate how the data store and what features are 
+    available to us
+
+    - SHOW ENGINES 
+      we can see all Storage Engines supported by the current version of MySQL
+      Engine, Support, Comment, Transactions, XA, Savepoints
+        The 2 most Storage Engines are:
+        - MyISAM: Older Storage Engine, used to be popular in version < 5.5. Dont use
+        - InnoDB: Superior Storage Engine,support features as Transactions and all features we've worked on.
+                  
+    There're situations when we're working with databases with older version of MySQL, and we want to 
+    grow that database to use InnoDB to add e.g Foreign Keys.
+    To change the Storage Engine:
+        - We can change at table-level visually:
+          In the same database we can use multiple Storage Engines. We open drop-down list in design mode(top)
+          We can select the Engine: InnoDB(default).
+        
+        - We can change at table-leve using SQL
+          ALTER TABLE tableName
+          ENGINE = InnoDB
+        
+    
+
+    Note:
+        Change Storage Engine for a table is an expensive operation, MySQL will rebuild the table. During the time
+        our table is not going to be accessible. So dont do in production unless we have schedule maintaince.
+    
