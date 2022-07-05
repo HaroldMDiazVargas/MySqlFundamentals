@@ -1,0 +1,34 @@
+Logical Model
+
+    Relationships:
+
+    
+     - User-Permission: We have a many-to-many relationship, but with this approach we dont have consistency 
+                        to have the same permission for the same kind of role users. One cashier can have 
+                        extra or different permissions of another cashier. So the idea is to have consistency and 
+                        keep the same permissions.
+                        In a case somewhere in the requirements says that we need to be able to have different 
+                        permissions for each user, but that's not this case.
+
+                        We introduce a new entity called => Role
+                        We put our users in roles(groups) and assign permission to those groups. Then we 
+                        register a new user, we introduce it to a new role and that user will inheritance all 
+                        permission of that role
+
+                        We dont really need Permission entity, because we are having fine-grained control 
+                        that we dont need over the permission. With this entity we could have a record for 
+                        update permission in store manager and delete permission for store manager as well. 
+                        So is better to have in our app a simple IF statement thart according of the role 
+                        we enable all features, is a cashier we hide certain features => all we need
+
+    - 
+
+
+    Datatypes:
+     - for al entities is easy define the datatypes for each attribute. However, for Rental entity
+       we had numberOfDays, but we replace it with two dateTime attributes:
+       - date someone rented a movie
+       - date someone returned a movie
+       with these we can calculated the revenue per month, per year (requirements)
+
+
