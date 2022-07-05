@@ -1,0 +1,41 @@
+Prefix Indexes
+    If the column we want to create an index on, is a String column like CHAR, VARCHAR, TEXT or BLOB. Our
+    indexes may consume a lot of space, it will not performance well. Smaller indexes are better 
+    because they can fit in memory and this may our search faster.
+    So when indexing string columns => we dont want to include the entire column in the index, just the first 
+                                       few characters or the prefix of the column to make our index smaller.
+                    
+    Syntax:
+        CREATE INDEX idx_columnName ON tableName (columnsName(numberCharactersInclude))
+
+        - In parenthesis we can specify the number of characters we want to include in the index:
+          - optional for CHAR and VARCHAR columns
+          - but is compulsory for TEXT and BLOB columns
+
+    To find the optimal number(prefix length) we have to look our data. We want to include enough characters that can 
+    unique identify each record:
+        Syntax:
+            SELECT COUNT(*) FROM tableName; => Get the total records
+            SELECT COUNT(DISTINCT LEFT(columnName, 1)) => get 1st character value of a given column (A,A,C,B,C...)
+                                                          so we need to apply DISTINCT keyword
+
+
+    e.x Create an index on the last_name column in customer table
+        SELECT 
+            COUNT(DISTINCT LEFT(last_name, 1))       =>  get 1st character of our customers last_name
+                                                     =>  this return 25 => means we have 25 unique values (a,b,c...)
+
+            COUNT(DISTINCT LEFT(last_name, 5))       => this return 966 unique values, this is pretty good 
+                                                        taking accound that we have 1010 records 
+
+            COUNT(DISTINT LEFT(last_name, 10))      => this return 996 unique values, we see very small
+                                                       improvement. We only have 30 more comparing to prefix 5
+        FROM customers;
+
+
+        In conclusion => 5 is the optimal prefix-length. By including only the first 5 characters we can 
+                         unique identify most of the last_names in this table
+
+        -- try different fix length:
+
+            CREATE INDEX idx_lastname ON customers (last_name(5))
