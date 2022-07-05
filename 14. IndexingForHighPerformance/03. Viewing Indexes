@@ -1,0 +1,49 @@
+Viewing Indexes
+    To view the indexes on a table we can write SQL or see less details in navigator panel.
+
+    Syntax:
+        ANALYZE TABLE customers;   => This will regenerate the statistics for this table
+        SHOW INDEXES IN tableName;
+
+
+    
+    e.x view indexes of customers table
+        SHOW INDEXES IN customers;
+
+        we will see three indexes:
+        - PRIMARY KEY => this is the Clustered Index, whenever we add PK to a table MySQL creates an index to 
+                         quickly find a record by their id
+
+        - idx_state & idx_points => these are reffered as Secondary Indexes. Whenever we create a secondary index
+                                    MySQL creates an id/PK column in the index(internally of the index) 
+                                    - id of each customer (PK) and -points (these are entries of the index)
+                                      we dont see id here, but is internally stored in the index.
+
+        - Collation => A, this represent how data is sorted in the index A(ascending), we also have 
+                        B(descending)
+        
+        - Cardinality => Represent an estimated number of unique values in the index. 
+
+        - Index_type => BTREE (Binary Tree)
+
+    e.x view indexes of orders table
+        SHOW INDEXES IN orders;
+
+        We will see four indexes:
+        - PRIMARY KEY
+        - fk_orders_customers_idx, fk_orders_shippers_idx, fk_orders_order_statudes_idx => these are Secondary Indexes
+            whenever we create a RELATIONSHIP between two tables, MySQL automcally creates an Index on the Foreign Keys 
+            so we can quickly JOIN our tables.
+
+
+    e.x view indexes of customers table to see more accurately values
+        ANALYZE TABLE customers; => This will regenerate the statistics for this table 
+
+        SHOW INDEXES IN customers; => Now we will see more accurate values
+
+    
+    e.x View indexes in navigator panel
+        click on customers table 
+         - we can see a folder Indexes
+          - we can see various attributes of each index when we click over one index.   
+            e.g BTREE No Unique, Visible(means enable) is placed on state column
