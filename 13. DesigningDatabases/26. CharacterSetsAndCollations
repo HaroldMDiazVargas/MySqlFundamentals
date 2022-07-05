@@ -1,0 +1,92 @@
+Character Sets and Collations
+    Character Set: When we store a string MySQL will convert each character to its numeric representation 
+                   using a Character Set. So a Character Set is table that maps each character to a number.
+
+        Collation: Is a bunch of rules that determinate how the characters in a given language are sorted.
+
+    SHOW CHARSET => We can see all Character Sets supported by the current version of MySQL
+        Chaset, Description, Default collation and Maxlen
+            Charsets:
+                - armscii8
+                - big5 tradition chinese
+                - utf8: we can store characters pretty much in most international languages
+                        this is the DEFAULT used by MySQL in version >= 5.
+            
+            Default collation:
+                - for utf8 the defaul collation is utf8_general_ci
+                 ci is short for Case Insensitive(MySQL treats lower/upper case the same when come to sorted)
+                 We dont need really to change the collation
+
+            Maxlen:
+                - for utf8 the Maxlen is 3, this means MySQL reserves a maximum of 3bytes for storing each character
+                  we saw early:
+                    - english: MySQL reserves 1 byte
+                    - western/european/middle east reserves 2 bytes
+                    - asian languages use 3 bytes
+                
+
+    We dont have to worry abput changing the Character Set. But there're cases where we may change it to
+    reduce our database size: 
+        - if we set datatype of CHAR(10) MySQL will reserve 10 x 3 = 30 x 1000000(records) = 30M
+
+    But if we change to latin1 Charset => MySQL will reserve only 1 byte for each character
+        - we reduce to 10M bytes
+
+    
+    Change Character Set:
+     Visual way:
+        - right click on database 
+        - click on Schema Inspector
+          - We can see the default collation and default characterset.
+
+        - Now in design mode of a table
+          - we can select a column and below we see Default Charset and Default Collation
+            additional, we can toggle a vertical arrow to see again the Default Charset/Collation
+        
+        So with this way we can change at table-level, not to database-level.
+
+
+     Using SQL
+        With this way we can change Charset at database-level an also at table-level and even to a particular column
+        See queries.
+
+
+
+
+
+-- Query1 - See all Character Sets
+SHOW CHARSET
+
+
+-- Query2 - Set Character Set when creating a database
+CREATE DATABASE db_name
+    CHARACTER SET latin1
+
+
+-- Query3 - Set Character Set on an existing database
+ALTER DATABASE db_name
+    CHARACTER SET latin1
+
+
+-- Query4 - Set Character Set when creating a table(table-level)
+CREATE TABLE table1
+(
+    ...
+    ...
+)
+CHARACTER SET latin1                  
+
+
+-- Query5 - Set Character Set on an existing table
+ALTER TABLE table1
+CHARACTER SET latin1   
+
+
+-- Query6 - Set Character Set to a particular column
+CREATE TABLE table1
+(
+    ...
+    first_name VARCHAR(50) CHARACTER SET latin1 NOT NULL...,
+    ...
+)
+               
