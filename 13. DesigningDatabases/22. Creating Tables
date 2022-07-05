@@ -1,0 +1,38 @@
+Creating Tables
+    To create a table:
+     - create database using CREATE DATABASE 
+     - choose that database using USE 
+     - drop the table only if exist   => use this approach if we use create table without IF statement
+     - create the table CREATE TABLE statement
+
+    Syntax:
+        CREATE TABLE tableName 
+        (
+            columnName dataType addColumnCharacteristics,
+            columnName dataType addColumnCharacteristics,
+            ...
+        )
+
+        The Column Characteristics are any attribute that we want to apply to that column:
+            - PRIMARY KEY
+            - AUTO_INCREMENT
+            - NOT NULL
+            - DEFAULT value e.g DEFAULT NULL or DEFAULT '0'
+            - UNIQUE
+
+        Syntax:
+            DROP TABLE tableName;
+            DROP TABLE IS EXISTS tableName; 
+
+    
+    e.x create a database calles sql_store2 and recreate customers table 
+        CREATE DATABASE IF NOT EXISTS sql_store2;
+        USE sql_store2;
+        CREATE TABLE IF NOT EXISTS customers 
+        (
+            customer_id INT PRIMARY KEY AUTO_INCREMENT,
+            first_name  VARCHAR(50) NOT NULL,
+            points      INT NOT NULL DEFAULT 0,
+            email       VARCHAR(255) NOT NULL UNIQUE
+
+        );
