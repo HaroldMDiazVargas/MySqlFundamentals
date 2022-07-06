@@ -1,0 +1,72 @@
+Composite Indexes in MySQL
+    We can index multiple columns.
+
+    Syntax:
+        CREATE INDEX idx_name_name ON tableName (columnName1, columnName2);
+        --The order of columnName1 and columnName2 doesn't matter.
+
+
+    e.x Look for customers located in CA who have more than 1000 points. Use EXPLAIN to see how MySQL executes
+        USE sql_store;
+        SHOW INDEXES IN customers;
+        EXPLAIN SELECT customer_id 
+        FROM customers 
+        WHERE state='CA' AND points > 1000;
+
+        -- We will see:
+        - possible_keys/indexes: idx_state, idx_points. 
+        - key: idx_state => MySQL picks one of the two indexes, no matter how many indexes we have, MySQL will pick
+                          only 1 index
+        - rows: 112 => using this index we can narrow down our search to customers located in 'CA'
+
+        So when MySQL executed this query:
+         - Uses our idx_state index to quickly find customers located in 'CA'. But then MySQL has to go 
+           throught all the customers and chek their points. This part of the query requires a table scan.
+           Because we dont have the number of points for each customer in our idx_state index. 
+           ¿What if we have 10M customers in 'CA'?
+           R/ Our index definitively helps our speed query, but it only does HALF of the job, only allows us
+              to quickly find customers in 'CA'.
+              The second part of the query involves a table scan => like we're reading data from the disk 
+              this will get slow as our customers table goes larger. 
+            
+    Composite Indexes
+        We can index multiple columns
+
+        e.x create a composite index on the state and points columns to quickly find customers located in a 
+            given state with a given number of points.
+            USE sql_store;
+            CREATE INDEX idx_state_points ON customers (state, points);  => Composite index 
+            EXPLAIN SELECT customer_id
+            FROM customers
+            WHERE state = 'CA' AND points > 1000;
+
+            -- We will see:
+            - possible_keys: we see idx_state, idx_points and idx_state_points (candidates)
+            - key: idx_state_points (MySQL realize that this composite idx does a better job)
+            - rows: 58 => better job and optimize our query
+
+
+    ¿How Many columns we should include in our indexes?
+    In MySQL an Index can have a MAXIMUM of 600 columns.(pretty high number), we dont want to hit that number.
+    Somewhere around 4-6 columns perform well. We should always experiment based on our queries and the 
+    amount of data that we have.
+
+    Drop Indexex:
+        DROP INDEX idx_points ON customers;
+        DROP INDEX idx_state ON customers;
+
+    
+    Notes:
+        In reality most of the time we should use Composite Indexes because a query can have multiple 
+        filters. Also indexes can help us sort data faster(we'll see later), so if we have multiple columns in
+        an index we can also speed up sorting our data .
+
+        One common mistake is create a separate index for each column. But these indexes only do half of the job,
+        they dont help us get optimize perfomance. Also take a lot of space, everytime we modify our data in tables 
+        these indexes have to be updated! The more indexes we have the slower our WRITE operation are gonna be.
+
+        MySQL includes the PK on the table in each Secondary Indexes, so the Second Column Indexes are gonna waste
+        a lot of space => thats why is btter to use Composite Indexes.
+
+        
+
