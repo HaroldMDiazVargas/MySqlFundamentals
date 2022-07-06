@@ -1,0 +1,60 @@
+Using Indexes for Sorting
+    We've used indexes only for filtering data, but we can also use indexes for sorting data.
+
+
+    e.x Sort the customers by their state
+        EXPLAIN SELECT customer_id 
+        FROM customers 
+        ORDER BY state;
+        -- We will see:
+        - type: index (index scan)
+        - key: idx_state_points
+        - rows: 1010 
+        - Extra: Using index
+
+    e.x Sort the customers by their first_name
+        EXPLAIN SELECT customer_id 
+        FROM customers 
+        ORDER BY first_name;
+        -- We will see:
+        - type: ALL, this means we have a full-table scan
+        - Extra: Using filesort. This filesort is a name of algorithm that MySQL uses to sort data in a table 
+                 filesort is an EXPENSIVE operation. General speaking dont sort data unless we really have to.
+                 and see if we design an index to avoid MySQL uses filesort operation.
+
+    e.x Look server variable used by MySQL server called LastQueryCost which returns the cost of last query. 
+        Compare the cost of the previous queries and analyze!
+        
+        EXPLAIN SELECT customer_id 
+        FROM customers 
+        ORDER BY state;
+        SHOW STATUS LIKE 'last_query_cost';         => Value 102.749 cost of this query
+
+        EXPLAIN SELECT customer_id 
+        FROM customers 
+        ORDER BY first_name;
+        SHOW STATUS LIKE 'last_query_cost';          => Value 1112.749000 cost of this query
+
+        The filesort operation is very expensive is almost 10 times of query getting data from index.
+        Is a good idea to design our indexes to use both:
+            - for filtering data
+            - for sorting data
+        But not always is simple, there're some complications depending of our queries, WHERE clause and of 
+        our ORDER BY clause, depending the columns we have in these columns MySQL may not use Index for sorting 
+        data.
+        The basic rule is:
+            - The columns we have in ORDER BY clause should be in the same order as the columns in the index:
+                index => idx_state_points
+
+                ORDER BY state,points 
+                ORDER BY state
+                ORDER BY state DESC, points DESC
+                This way we can use our index to sort our data. Also there's one more, if we narrowdown 
+                to use WHERE state = AC and then ORDER BY points, we can use our index to sort our data.
+
+                But if we have:
+                ORDER BY state, first_name, points
+                ORDER BY state, points DESC
+                ORDER BY points 
+                We will get a full-table scan and using the filesort operation.
+            
