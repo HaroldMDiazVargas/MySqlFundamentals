@@ -1,0 +1,21 @@
+IndexMaintenance    
+    Indexes can dramatically improve the performance of our queries. But too much a good thing can be a 
+    bad thing.
+
+    We need to watch for:
+    - Duplicate indexes: Are indexes on the same set of columns in the same orders. MySQL doesn't stop us 
+                         to create duplicate indexes, it will maintain each duplicate index separately.
+                         Sometimes we can create them without we aware of it, this happens when create 
+                         index without looking at existence index. Always check existent indexes!
+
+    - Redundant indexes: If we have an index in two columns like (A, B) and then create another index 
+                         on column A => This is considered redundant, because the formal index can also 
+                         optimize the queries that work with column A. However if we create an index 
+                         on column B or (B,A) is not redundant. Because these indexes satisfies 
+                         different queries
+
+    Always before creating new indexes CHECK the existing ones. Indexes maintenance is very important:
+    - make sure to drop:
+    - duplicate indexes
+    - redundant indexes 
+    - unused indexes
