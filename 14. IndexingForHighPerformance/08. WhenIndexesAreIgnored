@@ -1,0 +1,85 @@
+When Indexes are Ignored
+    There're situation where we have an Index but we still experience performance problems
+
+
+    e.x Get customers from CA or customers with more than 1000 points.
+        EXPLAIN SELECT customer_id FROM customers
+        WHERE state = 'CA' OR points > 1000;
+        --We will see:
+        - possible_keys: idx_state_points, idx_state_lastname
+        - key: idx_state_points
+        - rows: 1010  => it looks like a table scan, but rally is an index scan.
+        - type: index => we have a full index scan. This is faster than a table scan because it doesn't involve
+                         reading every record from the disk. But we still have to scan 1010 records
+        
+        ¿How to optimize this query further?
+        This is one of those situation where we have to write our query to utilize our indexes in the best 
+        possible way.
+        So in this case lets chop(split) our query into two smaller queries:
+        - select all the customers located in CA
+        - union last query with another query that picks customers who have more than 1000 points
+        
+        EXPLAIN 
+            SELECT customer_id FROM customers 
+            WHERE state = 'CA';
+            UNION
+            SELECT customer_id FROM customers 
+            WHERE points > 1000;
+
+        So the idx_state_points that we have satisfy the 1st part of the query: Because with this index we can 
+        quickly find customers located in CA. But this index is not an ideal index for searching customer by their 
+        points, because points is the 2nd column in this index. So MySQL has to go to every state and then pick 
+        customers who have more than 1000 points.
+        SOL => To speed up the 2nd part of the query, we're gonna create a separate index on the points column.
+        
+        CREATE INDEX idx_points ON customers (points);
+
+        -- Lets re execute the query:
+        EXPLAIN 
+            SELECT customer_id FROM customers 
+            WHERE state = 'CA';
+            UNION
+            SELECT customer_id FROM customers 
+            WHERE points > 1000;
+        -- We will see three records:
+           1. id 1 => represent the 1st select
+              select_type: PRIMARY
+              possible_keys: idx_state_points, idx_state_lastname
+              key: idx_state_points 
+              rows: 112 records scanned
+
+           2. id 2 => represent the 2nd select
+              select_type: UNION 
+              possible_keys: idx_state_points, idx_points
+              key: idx_points
+              rows: 528 records scanned
+
+           3. NULL (not have identifier)
+
+           if we sum total records scanned are 640, which is a significant improvement compared to 1010 with OR 
+           operator
+
+    
+    e.x  get customers who have points+10 > 2010 
+        EXPLAIN SELECT customer_id FROM customers 
+        WHERE points +10 > 2010;
+        -- We will see:
+        - rows: 1010
+        - key: idx_points
+
+    e.x get customers who have points > 2000 (this is the same that before example)
+        EXPLAIN SELECT customer_id FROM customers 
+        WHERE points  > 2000;
+        -- we will see:
+        - rows: 3                       => Huge improvement.
+        - key: idx_points
+    
+
+    Notes:
+        Whenever we use a column in an expression (column */+- value ><= value) MySQL is not able to utilize 
+        our index in the best possible way. So we need to Isolate our columns to utilize our indexes
+         
+         
+
+
+
