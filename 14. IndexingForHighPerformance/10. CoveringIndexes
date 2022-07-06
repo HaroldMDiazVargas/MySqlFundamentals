@@ -1,0 +1,31 @@
+Covering Indexes
+    We've only SELECT customer_id in the queries we have made.
+
+    e.x Select all columns from customers table and order by state
+        EXPLAIN SELECT * 
+        FROM customers
+        ORDER BY state;
+        -- We will see:
+        - type: ALL, we have a full-table scan. This is very expensive
+
+    The composite index that we put on the state & points columns contain 3 pieces of information about 
+    each customer:
+    - customer_id
+    - state
+    - points
+    So as we know everytime we created Secondary Indexes, MySQL adds to these indexes the PK, in this case
+    customer_id. So if we pick any of the columns like customer_id, state, points MySQL can satisfies 
+    our query entirely using our Index => This is called a Covering Index
+
+    Covering Index => Index that convers everything that our query needs. Using this index MySQL can execute 
+                      our query without TOUCHING our table. This is the fastest performance we can get. 
+    
+    So when designing our indexes:
+        - Look our WHERE clause: Look the columns that are more frequently there, include those in our indexes 
+                                 and with these we can narrow down our searches.
+
+        - Look the columns at ORDER BY clause: See if we include these columns in our indexes
+
+        - Look at the columns used in the SELECT clause: If we include these columns as well, then we will get 
+                                                         a Covering Index. So MySQL can uses just our index to 
+                                                         satisfies our query
