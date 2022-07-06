@@ -1,0 +1,140 @@
+Order of Columns in Composite Indexes
+    We have two basic rules:
+     1. We should order our columns such that the columns that are used more frequently come first.
+        e.g we have 5 queries and almost all these queries use a column to filter, it make sense to put 
+            this column first, because this help us narrow down our searches.
+
+     2. We should put the columns with a higher cadinality first. Cardinality represents the number of unique 
+        values in the index. 
+        - e.g column like gender has a Cardinality of 2, so if we have 1M records, so this column can narrow 
+              down our seachers from 1M to approximately 500K customer(assummin equal distribution).
+        - e.g state column have 48 unique states, if we have 1M records and assume even distribution of customers 
+              we will have 20K customers in each state. So this will narrow down our searches to a few records.
+        But dont take this as a fast-hard rule, just a starting point. we always have to analyze our queries
+    
+
+    e.x Get customers located in CA whose last_name start with A
+        SELECT customer_id
+        FROM customers
+        WHERE state = 'CA' AND last_name LIKE 'A%';
+        
+        - ¿Which column should come first in our index?
+          Lets look the Cardinality of these two columns(count how many unique values are in each column)   
+
+        SELECT 
+            COUNT(DISTINCT state),
+            COUNT(DISTINCT last_name)
+        FROM customers; 
+
+        -- The Cardinality of the state column is 48 and the Cardinality of last_name column is 996.
+           According to our 2nd rule if we ignore our queries, the last_name column is a better candidate
+           to come first, because it can break down our table => into smaller segments.
+           But this cadinality rule is not always the best practice, we should always take our queries 
+           into account.
+         
+         e.x create composite idx on the last_name and state columns in order that satisfies the 2nd rule
+         CREATE INDEX idx_lastname_state ON customers (last_name, state);
+
+         EXPLAIN SELECT customer_id
+         FROM customers
+         WHERE state = 'CA' AND last_name LIKE 'A%';
+
+         -- We will see:
+         key: idx_lastname_state
+         rows: 40 
+
+         e.x create composite idx on the last_name and state columns in the opposite order
+         CREATE INDEX idx_state_lastname ON customers (state, lastname);
+
+         EXPLAIN SELECT customer_id
+         FROM customers
+         WHERE state = 'CA' AND last_name LIKE 'A%';
+
+         -- We will see:
+         key: idx_state_lastname => MySQL decides to use our new Composite Index
+         rows: 7 => Only seven rows are scanned
+
+        
+        But these numbers passed from 40 rows scanned to 7 rows scanned are based on the constant values 
+        we used in the query (CA and A%).
+        ¿What if we search customers in NY, VA, or any other states?
+
+        e.x change and find customers located in NY using the idx_state_lastname 
+         EXPLAIN SELECT customer_id
+         FROM customers
+         WHERE state = 'NY' AND last_name LIKE 'A%';
+
+         -- We will see:   
+         key:  idx_state_lastname
+         rows: 2 
+        
+        We can force MySQL use a different index instead of the optimal index: Between FROM and WHERE clause
+        we type USE INDEX (idxName)
+
+        e.x force MySQL to use idx_lastname_state index:
+
+        EXPLAIN SELECT customer_id
+        FROM customers
+        USE INDEX (idx_lastname_state)
+        WHERE state = 'NY' AND last_name LIKE 'A%';
+        --We will see:
+        key: idx_lastname_state
+        rows: 40
+
+    In conclusion:
+        Our 2nd rule about Cardinality doesn't apply in our queries, thats why we always have to analyze our 
+        queries:
+        - Because in our query:
+            - we have an equality sign (=) on state column: this column is more restricted 
+            - the last_name column is more open (%) we are dealing with a range
+        With this particular query is more efficient to put the state first(quickly go to a particular state) then
+        find customers whose last name start with a given character (A)
+
+        
+
+        ¿What if we search for range of states?
+        e.x Look for customers in any state that start with A and last_name start with A
+        
+        EXPLAIN SELECT customer_id
+        FROM customers
+        USE INDEX (idx_lastname_state)
+        WHERE state LIKE 'A%' AND last_name LIKE 'A%';      => 40 records scanned
+
+        e.x
+
+        EXPLAIN SELECT customer_id
+        FROM customers
+        USE INDEX (idx_state_lastname)
+        WHERE state LIKE 'A%' AND last_name LIKE 'A%';      => 51 records scanned
+
+        In this example the 2nd Rule applies well => the index with less scanned record is idx_lastname_state.
+        But be REALISTIC:
+            - More realistic to have a query to find customer in a given state or customers in any state
+              that start with A, or B or C. So this example is NOT REALISTIC.
+
+
+        So lets DROP the other index:
+            DROP INDEX idx_lastname_state ON customers;
+
+
+        e.x Remove the state filter => So for this query the idx_state_lastname is not efficient. 
+            Because MySQL has to go to each state and then check the lastname of customers. So for this 
+            particular query if this is a performance critical query:
+            - We want to create a separate index that start with the last_name column. So we can have a 
+              single column index on the last_name column. In the future when we analyze more queries we may 
+              extend that index and add more columns
+
+        
+    
+    Recap:
+        - Start with a basic guidelines, put a columns that are frequently used first
+        - Then look Cardinality of the columns, is better to put columns with higher cardinality first
+        - But always take our queries into account. 
+
+        Try to understand how MySQL will execute our queries with different indexes. Be realistic in our queries!
+
+
+
+
+
+
