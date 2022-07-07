@@ -1,0 +1,11 @@
+Dropping Users
+    We need to drop the user account as people leave of the organization, so they can not longer access
+    to our MySQL server.
+
+    Syntax:
+        DROP USER username@hostname;
+
+    e.x Create a new user connect form codewithmosh.com and set a simple password and then remove the bob user
+        CREATE USER bob@codewithmosh.com IDENTIFIED BY '1234';
+        
+        DROP USER bob@codewithmosh.com;
