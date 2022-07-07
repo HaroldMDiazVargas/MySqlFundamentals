@@ -1,0 +1,13 @@
+Dropping/Revoking privileges
+    We may realize we made a mistake granting privileges.
+
+
+    e.x Revoke to moon_app account the privilege to create views
+
+        REVOKE CREATE VIEW
+        ON sql_store.*
+        FROM moon_app;
+
+    Notes:
+        Always grant the neccesary(minimal) privileges for any user account. Otherwise we open so many 
+        security host in our system.
