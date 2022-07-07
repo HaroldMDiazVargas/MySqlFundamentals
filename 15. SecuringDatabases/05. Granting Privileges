@@ -1,0 +1,79 @@
+Granting Privileges
+    Once we create the user account, we should assign some privileges.
+    Head over mysql privigeles => MySQL Reference Manual to see all privileges supported by MySQL.
+     - ALL => is the highest level of privigeles we can give to someone. This is typical for admins
+
+
+
+
+    There're two common scenarious:
+
+    1. Where we have a web/desktop app, and we want to allow this app to:
+       - read data from our database
+       - write data to our database
+      But nothing more => Not allow to create new table, modify existing ones(remove columns), so on. 
+
+        Syntax:
+            CREATE USER appName_app@hostname IDENTIFIED 'password';   => create user if not exists!
+
+            GRANT privileges
+            ON database.tableName   
+            TO appName_app@hostname;
+
+            -- privileges can be:
+                SELECT records
+                INSERT new records
+                UPDATE records
+                DELETE records
+                EXECUTE (execute Stored Procedures)
+    
+      e.x Imagine we have an app called 'moon' and this app needs to read and write data in the SQL store database
+
+        CREATE USER moon_app IDENTIFIED BY '1234';           => create an user account for this app not for a human
+        
+        GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE        => these are the tipycal privileges we want to give user account for an app  
+        ON sql_store.*                                       => this means all tables in the database
+        TO moon_app;                                          => specify the user account
+
+
+        -- Connect to our server using this user account:
+            - create a new connection
+              - Connection Name: moon_app_connection
+              - Username: moon_app
+              - Password: 1234
+              Test Connection and OK!!
+            
+            - Query:
+              USE sql_store;
+              SELECT * FROM customers;          => this works!
+              
+              USE sql_blog;
+              SELECT * FROM customers;          => ERROR! not access to this database for this user account
+            
+
+
+    2. For our admin/s.
+       Someone join to our organization and we give him admin privileges over 1 or more databases, perhaps 
+       the entire MySQL server.
+        
+        Syntax:
+            CREATE USER ...
+
+            GRANT privileges
+            ON database.tableName 
+            TO userName@hostname;
+
+            -- privigeles are gonna be more than reading and writing data:
+                create tables
+                create triggers
+                modify existing tables
+                ALL 
+
+
+
+        e.x Let's imagine john is gonna be an admin and give admin privileges on all tables of all
+            databases
+
+            GRANT ALL 
+            ON *.*
+            TO john;
