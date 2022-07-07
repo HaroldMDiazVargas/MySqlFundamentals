@@ -1,0 +1,36 @@
+Viewing Privileges
+    To see the permissions/Privileges assigned to a user account.
+    Two ways to do this:
+
+    1. Using SQL
+       
+       Syntax:
+            SHOW GRANTS;                            => See permissions for the current users
+            SHOW GRANTS FOR username@hostname;
+
+       ex. See all the privileges/grants for john
+            SHOW GRANTS FOR john;
+            -- we will see:
+            - GRANT SELECT, INSERT, UPDATE and DELETE data
+            - SHUTDOWN the server
+            - BACKUP_ADMIN for creating backups
+
+    2. Navigator panel
+
+
+        Click on Administration tab(left side)
+            Click on Users and Privileges
+                Select one user
+                    Click on Administrative Roles(right side)
+                        We can see:
+                        - Roles 
+                        - Privileges assigned
+
+                    Click on Schema Privileges
+                        We can see:
+                        - Specific permissions for various databases
+                          this is onyl for users account that doesn't have ALL privileges
+                          so we see the 'only databases access' that this user has acces to.
+                        - Click on the database(schema) and if we want to make neccesary 
+                          changes by selecting/unselecting below and then Apply!!
+                          
