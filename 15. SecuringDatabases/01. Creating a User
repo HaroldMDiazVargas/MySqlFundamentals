@@ -1,0 +1,62 @@
+Securing Databases
+    We've been used MySQL in our own computer, so we didn't worry about security in terms on:
+    - who can access to our data
+    - how much access they should have
+
+    In a real world, we typically have database somewhere in a server, if we dont take security seriously 
+    people can access to our data.
+
+
+Creating a User
+    We've connected to our database server using the root User, this is the same user account we created at 
+    time we installed MySQL. 
+    When we use MySQL in a production environment, we need to create additional user accoounts and give them 
+    specific privileges.
+
+    e.g. we're building a web or desktop app, our app needs to access data in a MySQL database, so we need to 
+         create a User account for our app and give it permission to:
+         - read data
+         - write data to our app database
+         But nothing more!
+         So the User account shouldn't be able to change the Structure of our database:
+         - Not allow to create new tables
+         - Not allow to drop existing tables
+         
+    e.g Someone in our job enters as Database Admin, we need to create an account for this person, so they can 
+        manage:
+        - one or more databases
+        - the entire MySQL server
+
+    Create a new user account in MySQL:
+     We use the CREATE USER statement, and we can optionally restrict where the user can connect from using @.
+     Syntax:
+        CREATE USER username                => we can just let user to connect from anywhere(no restrictions)
+        CREATE USER username@ipAddress      => we can specify the ip address
+        CREATE USER username@hostName       => we can specify a host name
+        CREATE USER username@domainName     => we can also specify a domain name
+        CREATE USER username@'%.domainName'  => we can also specify a domain name and its subdomains(use quotes)
+        After the CREATE USER ...:
+        IDENTIFIED BY 'password';
+
+     e.x create john user and restrict to our own computer(our ip address computer)
+        CREATE USER john@127.0.0.1 
+        CREATE USER john@localhost
+        -- This means this user can only connect to the same computer where we've installed MySQL. If they try
+           to connect from a different computer => MySQL declines the connection
+    
+     This is very useful in Cloud Environments: Typically we have:
+     - Web Server: 
+     - Database Server: When creating a new user account for our app, we want to make sure that the user account 
+                        can only connect from the Web Server. This is where we specify the IP adress of the Web Server
+
+     e.x create john user and restrict to connect from codewithmosh.com domain
+        CREATE USER john@codewithmosh.com
+        -- This means the user can connect from ANY computer but in this domain, and not in subdomains of 
+           codewithmosh.com. 
+
+     e.x create john user and restrict to connect from codewithmosh.com and all its subdomains 
+        CREATE USER john@'%.codewithmosh.com'
+
+-- Query 
+CREATE USER john IDENTIFIED BY '1234'
+
