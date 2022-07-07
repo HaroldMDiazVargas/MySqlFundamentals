@@ -1,0 +1,33 @@
+Viewing Users
+    See the list of users in our MySQL server. There're two ways to do this:
+
+    1. Using SQL: we have a database called 'mysql' and in this database we have a table called 'user'
+        SELECT * FROM mysql.user;
+        -we will see:
+        - Host: Represents where the user can connect from
+                e.g % means wildcard character just like we use the LIKE operator, this means connect from 
+                    anywhere, not restrictions.
+        - User: Represents the username accounts
+                e.g mysql.infoschema, mysql.session, mysql.sys are user accounts used by MySQL internally
+                    root is the user account we created when we installed MySQL.
+                    All these accounts mentioned their host is 'localhost', this means if we want to log in 
+                    as the root => we have to be in this computer => Not allow connect remotely and log in 
+                    as the root user.
+        - Select_priv:
+        - Insert_priv:
+        - Update_priv:
+        - Delete_priv:
+        ..
+        ..
+        - Show_db_priv:
+        All these columns determinates the permission for each user
+
+    2. We can also see the users in the navigator panel:
+        Click on Administration tab on left side:
+            Click on Users and Privileges
+                See the User and Host for each user account
+
+-- Query
+
+SELECT *
+FROM mysql.user;
